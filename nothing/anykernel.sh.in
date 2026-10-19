@@ -1,0 +1,30 @@
+#!/sbin/sh
+# Nothing device overlay for the upstream AnyKernel3 payload.
+properties() { '
+kernel.string=@KERNEL_STRING@
+do.devicecheck=1
+do.modules=0
+do.systemless=0
+do.cleanup=1
+do.cleanuponabort=0
+@DEVICE_NAMES@
+supported.versions=
+supported.patchlevels=
+supported.vendorpatchlevels=
+'; }
+
+block=boot
+is_slot_device=1
+ramdisk_compression=auto
+patch_vbmeta_flag=auto
+. tools/ak3-core.sh
+
+ui_print "Source: @SOURCE_SHA@"
+ui_print "For: @KERNEL_STRING@"
+split_boot
+if [ -f "$SPLITIMG/ramdisk.cpio" ]; then
+  unpack_ramdisk
+  write_boot
+else
+  flash_boot
+fi

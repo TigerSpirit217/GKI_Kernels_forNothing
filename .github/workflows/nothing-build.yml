@@ -1,0 +1,203 @@
+name: Nothing 设备内核 / AnyKernel3
+run-name: Nothing · ${{ inputs.model }} · ${{ inputs.version || inputs.operation }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 构建内核，或列出官方各分支的版本提交
+        type: choice
+        options: [build, list-versions]
+        default: build
+      model:
+        description: 手机型号（如 phone-2、phone-3a-pro、A065、cmf-phone-1）
+        required: true
+        type: string
+      version:
+        description: OS 版本 / 完整 build 编号 / 官方 Git 分支、tag 或 40 位 SHA（构建必填）
+        type: string
+      source_branch:
+        description: 可选：限定官方源码分支，区分同分支多个版本及跨分支重名版本
+        type: string
+      ksu_variant:
+        description: KernelSU 变体（None 为无 root 构建）
+        type: choice
+        options: [None, Official, SukiSU, BakaSU, 'SukiSU(40726)', 'SukiSU(40548)']
+        default: None
+      enable_susfs:
+        description: 启用 SUSFS（需要 KernelSU）
+        type: boolean
+        default: false
+      use_zram:
+        description: ZRAM 增强
+        type: boolean
+        default: false
+      use_bbg:
+        description: BBG 防格机
+        type: boolean
+        default: false
+      use_rekernel:
+        description: Re-Kernel
+        type: boolean
+        default: false
+      use_nomount:
+        description: NoMount
+        type: boolean
+        default: false
+      use_networking:
+        description: 网络增强
+        type: boolean
+        default: false
+      cve_2026_43499_patch:
+        description: CVE-2026-43499 修复
+        type: boolean
+        default: false
+      patch_options:
+        description: 进阶上游补丁选项 JSON（例如 {"droidspaces":"678","droidspaces_ntsync":true}）
+        type: string
+        default: '{}'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nothing-${{ github.ref }}-${{ inputs.model }}-${{ inputs.version }}-${{ inputs.source_branch }}
+  cancel-in-progress: false
+
+jobs:
+  nothing:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MANAGER_STR: ${{ vars.MANAGER_STR }}
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装 Nothing 适配层依赖
+        run: python -m pip install -r nothing/requirements.txt
+
+      - name: 整理用户补丁选项
+        if: inputs.operation == 'build'
+        env:
+          BUILD_INPUTS: ${{ toJSON(inputs) }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from nothing.upstream import RESERVED, load_upstream, patch_context
+          inputs = json.loads(os.environ['BUILD_INPUTS'])
+          options = {k: inputs[k] for k in ('ksu_variant', 'enable_susfs', 'use_zram', 'use_bbg',
+                      'use_rekernel', 'use_nomount', 'use_networking', 'cve_2026_43499_patch')}
+          advanced = json.loads(inputs['patch_options'])
+          if not isinstance(advanced, dict) or set(advanced) & RESERVED:
+              raise ValueError('patch_options 必须是仅包含上游功能开关的 JSON 对象，不能覆盖源码/机型/KernelSU 选项')
+          options.update(advanced)
+          _, schema = load_upstream()
+          patch_context(dict(android_version='android14', kernel_version='6.1', sub_level='0'), options, schema)
+          Path('nothing-options.json').write_text(json.dumps(options), encoding='utf-8')
+          PY
+
+      - name: 列出所有分支的官方版本提交
+        if: inputs.operation == 'list-versions'
+        env:
+          MODEL: ${{ inputs.model }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: python -m nothing.source --model "$MODEL" --branch "$SOURCE_BRANCH" --list-versions > nothing-versions.json
+
+      - name: 上传版本目录
+        if: inputs.operation == 'list-versions'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nothing-official-versions
+          path: nothing-versions.json
+          if-no-files-found: error
+
+      - name: 为内核源码和编译产物准备磁盘空间
+        if: inputs.operation == 'build'
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          df -h "$GITHUB_WORKSPACE"
+
+      - name: 定位发布提交并拉取 NothingOSS 源码
+        if: inputs.operation == 'build'
+        id: source
+        env:
+          MODEL: ${{ inputs.model }}
+          VERSION: ${{ inputs.version }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: python -m nothing.source --model "$MODEL" --version "$VERSION" --branch "$SOURCE_BRANCH"
+
+      - name: 从原工作流生成补丁步骤
+        if: inputs.operation == 'build'
+        id: adapter
+        run: python -m nothing.upstream --options nothing-options.json
+
+      - name: 安装编译依赖
+        if: inputs.operation == 'build'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential bc bison flex libssl-dev libelf-dev dwarves \
+            libncurses-dev device-tree-compiler lz4 zstd rsync curl git zip unzip \
+            gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libncurses5 libtinfo5
+
+      - name: 复用上游补丁流程
+        if: inputs.operation == 'build'
+        uses: ./.nothing-actions
+        with:
+          context: ${{ steps.adapter.outputs.context }}
+
+      - name: 拒绝不完整补丁
+        if: inputs.operation == 'build'
+        run: python -m nothing.verify rejects
+
+      - name: 缓存官方 Clang
+        if: inputs.operation == 'build'
+        uses: actions/cache@v4
+        with:
+          path: nothing-clang
+          key: nothing-clang-${{ runner.os }}-${{ steps.source.outputs.clang_version }}-v1
+
+      - name: 编译 Nothing 内核
+        if: inputs.operation == 'build'
+        run: bash nothing/build.sh
+
+      - name: 打包设备专用 AnyKernel3
+        if: inputs.operation == 'build'
+        run: python -m nothing.package
+
+      - name: 上传 AnyKernel3 ZIP 与校验值
+        if: inputs.operation == 'build'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nothing-${{ steps.source.outputs.device_id }}-${{ steps.source.outputs.source_sha }}-AnyKernel3
+          path: out/nothing/*
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: 收集补丁冲突
+        if: ${{ always() && inputs.operation == 'build' }}
+        shell: bash
+        run: |
+          mkdir -p build-logs
+          if [ -d nothing-kernel/common ]; then
+            find nothing-kernel -name '*.rej' -type f -exec cp --parents '{}' build-logs/ \;
+          fi
+
+      - name: 上传构建清单与诊断
+        if: ${{ always() && inputs.operation == 'build' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nothing-build-diagnostics-${{ github.run_id }}
+          path: |
+            nothing-plan.json
+            nothing-options.json
+            .nothing-actions/action.yml
+            build-logs/
+            susfs-patch/
+          if-no-files-found: warn
