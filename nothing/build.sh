@@ -36,6 +36,9 @@ out="$KERNEL_ROOT/out"
 collect_config() {
   local status=$?
   if [[ -f "$out/.config" ]]; then cp "$out/.config" build-logs/kernel.config; fi
+  if [[ -f "$out/include/config/auto.conf" ]]; then
+    cp "$out/include/config/auto.conf" build-logs/kernel.auto.conf
+  fi
   if [[ -f "$out/include/config/kernel.release" ]]; then
     cp "$out/include/config/kernel.release" build-logs/kernel.release
   fi
@@ -55,6 +58,10 @@ make "${make_args[@]}" gki_defconfig
 local_suffix="$(python -m nothing.versioning prepare --kernel "$kernel" --out "$out")"
 make_args+=(LOCALVERSION="$local_suffix")
 make "${make_args[@]}" olddefconfig
+# olddefconfig leaves an existing auto.conf unchanged, and kernelrelease skips
+# the normal build's automatic sync. Refresh the file setlocalversion reads.
+make "${make_args[@]}" syncconfig
+python -m nothing.versioning config --out "$out"
 # Query the kernel itself before starting parallel compilation. The name limit
 # applies to the full release, including source config and Android KMI suffixes.
 planned_release="$(make "${make_args[@]}" --no-print-directory -s kernelrelease | tail -n 1)"

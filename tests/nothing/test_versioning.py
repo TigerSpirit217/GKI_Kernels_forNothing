@@ -65,6 +65,30 @@ class VersioningTests(unittest.TestCase):
             versioning.prepare_version(self.plan, self.kernel, self.out)
         self.assertEqual(self.config.read_bytes(), before)
 
+    def test_stale_auto_conf_is_rejected_even_when_dot_config_is_correct(self):
+        auto = self.out / "include/config/auto.conf"
+        auto.parent.mkdir(parents=True)
+        auto.write_text('CONFIG_LOCALVERSION=\nCONFIG_LOCALVERSION_AUTO=y\n')
+        versioning.prepare_version(self.plan, self.kernel, self.out)
+        with self.assertRaisesRegex(ValueError, "auto.conf.*syncconfig"):
+            versioning.verify_naming_config(self.out)
+        # Kconfig's syncconfig writes the updated generated configuration.
+        auto.write_text('CONFIG_LOCALVERSION=\nCONFIG_KPM=y\n')
+        versioning.verify_naming_config(self.out)
+
+    def test_missing_generated_config_is_rejected(self):
+        versioning.prepare_version(self.plan, self.kernel, self.out)
+        with self.assertRaisesRegex(ValueError, "配置缺失.*syncconfig"):
+            versioning.verify_naming_config(self.out)
+
+    def test_77_byte_automatic_suffix_does_not_blame_custom_name(self):
+        self.plan["build_settings"]["version_name"] = "Ciallo-MadeByTigerSpirit"
+        failed = "5.10.252-android12-9-Ciallo-MadeByTigerSpirit-android12-9-ged888387f1aa-dirty"
+        self.assertEqual(len(failed.encode()), 77)
+        with self.assertRaisesRegex(ValueError, "77.*64.*自动后缀") as error:
+            versioning.validate_release(self.plan, failed)
+        self.assertNotIn("缩短", str(error.exception))
+
     def test_diagnostic_65_byte_failure_is_rejected_and_corrected(self):
         failed = "5.10.252-Ciallo-MadeByTigerSpirit-android12-9-ged888387f1aa-dirty"
         self.assertEqual(len(failed.encode()), 65)

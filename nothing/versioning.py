@@ -41,25 +41,41 @@ def prepare_version(plan, kernel, out):
     return suffix
 
 
+def verify_naming_config(out):
+    for relative in (".config", "include/config/auto.conf"):
+        path = Path(out) / relative
+        if not path.is_file():
+            raise ValueError(f"命名配置缺失：{path}，请先运行 make syncconfig")
+        config = path.read_text(encoding="utf-8")
+        local = re.search(r"^CONFIG_LOCALVERSION=(.*)$", config, re.M)
+        if "CONFIG_LOCALVERSION_AUTO=y" in config.splitlines() or (local and local[1] not in ('', '""')):
+            raise ValueError(f"命名配置尚未生效：{path}，请检查 make syncconfig 是否成功关闭自动后缀")
+
+
 def validate_release(plan, release):
     length = len(release.encode("utf-8"))
+    expected = expected_release(plan)
+    if release != expected:
+        detail = f"实际版本为 {length} 字节，超过 64 字节限制。" if length > 64 else ""
+        raise ValueError(f"内核版本名与预期不符：{release!r}，预期为 {expected!r}。"
+                         f"{detail}请检查生效配置及自动后缀。")
     if length > 64:
         raise ValueError(f"完整内核版本名为 {length} 字节，超过 64 字节限制：{release}。"
                          "请缩短自定义名称后重试。")
-    expected = expected_release(plan)
-    if release != expected:
-        raise ValueError(f"内核版本名与预期不符：{release!r}，预期为 {expected!r}")
     return release
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["prepare", "check"])
+    parser.add_argument("command", choices=["prepare", "config", "check"])
     parser.add_argument("--plan", default="nothing-plan.json")
     parser.add_argument("--kernel", default="nothing-kernel/common")
     parser.add_argument("--out", default="nothing-kernel/out")
     parser.add_argument("--release")
     args = parser.parse_args()
+    if args.command == "config":
+        verify_naming_config(args.out)
+        return
     path = Path(args.plan)
     plan = json.loads(path.read_text(encoding="utf-8"))
     if args.command == "prepare":
