@@ -81,7 +81,7 @@ def patch_context(plan, options, schema):
     context.update({key: plan[key] for key in ("android_version", "kernel_version", "sub_level")})
     # The fixed Nothing profile uses the original SukiSU patch paths, including
     # KPM and SUSFS export. Its immutable refs are supplied in extra steps.
-    upstream_variant = "SukiSU" if variant in ("SukiSU", "SukiSU(41013)") else variant
+    upstream_variant = "SukiSU" if variant == "SukiSU(41013)" else variant
     context.update(ksu_variant="Official" if variant == "None" else upstream_variant,
                    ksu_mode="禁用KSU" if variant == "None" else "关闭",
                    enable_susfs=options.get("enable_susfs", False),
@@ -125,11 +125,11 @@ def generate_action(steps):
         converted.append(step)
         if step["name"] == "确定 KernelSU 分支":
             converted.append({"name": "Nothing 固定 SukiSU 41013 提交", "shell": "bash",
-                              "if": "${{ fromJSON(inputs.context).ksu_variant == 'SukiSU' && fromJSON(inputs.context).ksu_mode != '禁用KSU' }}",
+                              "if": "${{ env.NOTHING_SUKISU_FIXED == 'true' && fromJSON(inputs.context).ksu_variant == 'SukiSU' && fromJSON(inputs.context).ksu_mode != '禁用KSU' }}",
                               "run": "python -m nothing.sukisu select"})
         elif step["name"] == "克隆 SUSFS 源码":
             converted.append({"name": "Nothing 固定 SukiSU 配套 SUSFS 提交", "shell": "bash",
-                              "if": "${{ fromJSON(inputs.context).ksu_variant == 'SukiSU' && fromJSON(inputs.context).enable_susfs }}",
+                              "if": "${{ env.NOTHING_SUKISU_FIXED == 'true' && fromJSON(inputs.context).ksu_variant == 'SukiSU' && fromJSON(inputs.context).enable_susfs }}",
                               "run": "python -m nothing.sukisu pin-susfs"})
     return {"name": "Nothing: inherited upstream patches",
             "description": "Generated at runtime from .github/workflows/build.yml; edit the upstream or adapter, not this file.",
@@ -145,7 +145,7 @@ def export_environment(plan, workspace):
            "SUSFS4KSU": str(workspace / "susfs4ksu"), "KERNEL_PATCHES": str(workspace / "kernel_patches"),
            "SUKISU_PATCHES": str(workspace / "SukiSU_patch"), "ZZH_PATCHES": str(workspace),
            "ANYKERNEL3": str(workspace / "AnyKernel3"), "ACTION_BUILD": str(workspace / "Action-Build"),
-           "LEGACY_SUKISU_CONFIG": "", "SUSFS_PATCH_EXPORT": "false"}
+           "LEGACY_SUKISU_CONFIG": "", "SUSFS_PATCH_EXPORT": "false", "NOTHING_SUKISU_FIXED": "false"}
     return env
 
 
@@ -167,6 +167,7 @@ def main():
     profile = profile_for(plan, options.get("ksu_variant", "None"), context["enable_susfs"])
     if profile:
         plan["ksu_profile"] = profile
+        env["NOTHING_SUKISU_FIXED"] = "true"
     else:
         plan.pop("ksu_profile", None)
     plan["patch_inputs"] = context

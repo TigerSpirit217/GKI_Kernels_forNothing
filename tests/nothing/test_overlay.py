@@ -239,9 +239,32 @@ class AdapterTests(unittest.TestCase):
             self.assertEqual(saved["ksu_profile"]["version"], 41013)
             self.assertEqual(saved["ksu_profile"]["source_sha"], "7f1c299af463d008e66e714077eb6a8079ff722b")
             self.assertIn("LEGACY_SUKISU_CONFIG=\n", env_path.read_text(encoding="utf-8"))
+            self.assertIn("NOTHING_SUKISU_FIXED=true\n", env_path.read_text(encoding="utf-8"))
             self.assertIn("context=", output_path.read_text(encoding="utf-8"))
             action = yaml.safe_load((root / "action/action.yml").read_text(encoding="utf-8"))
             self.assertEqual(action["runs"]["using"], "composite")
+
+    def test_latest_sukisu_does_not_inherit_a_previous_fixed_profile(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            plan_path, options_path, env_path = root / "plan.json", root / "options.json", root / "env"
+            plan_path.write_text(json.dumps({**self.plan, "device": source.device_for("phone-2"),
+                                             "source_sha": "a" * 40, "ksu_profile": {"version": 41013}}))
+            options_path.write_text('{"ksu_variant":"SukiSU","enable_susfs":true}')
+            with patch.dict(os.environ, {"GITHUB_ENV": str(env_path), "GITHUB_WORKSPACE": str(root)}), \
+                 patch("sys.argv", ["nothing.upstream", "--plan", str(plan_path), "--options", str(options_path),
+                                    "--output", str(root / "action")]):
+                upstream.main()
+            saved = json.loads(plan_path.read_text(encoding="utf-8"))
+            self.assertEqual(saved["patch_inputs"]["ksu_variant"], "SukiSU")
+            self.assertNotIn("ksu_profile", saved)
+            self.assertIn("NOTHING_SUKISU_FIXED=false\n", env_path.read_text(encoding="utf-8"))
+            self.assertNotIn("BRANCH=", env_path.read_text(encoding="utf-8"))
+            action = yaml.safe_load((root / "action/action.yml").read_text(encoding="utf-8"))
+            hooks = [step for step in action["runs"]["steps"] if step["name"].startswith("Nothing 固定")]
+            self.assertEqual(len(hooks), 2)
+            for hook in hooks:
+                self.assertIn("env.NOTHING_SUKISU_FIXED == 'true'", hook["if"])
 
 
 class PackagingTests(unittest.TestCase):

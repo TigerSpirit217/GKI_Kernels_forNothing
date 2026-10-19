@@ -9,7 +9,7 @@ import subprocess
 
 
 PROFILE = Path(__file__).with_name("sukisu.json")
-VARIANTS = {"SukiSU", "SukiSU(41013)"}
+VARIANTS = {"SukiSU(41013)"}
 
 
 def profile_for(plan, variant, susfs):

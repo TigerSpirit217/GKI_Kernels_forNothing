@@ -178,9 +178,9 @@ on:
         - Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260703-1843 | f58e3b16af36
       # END NOTHING VERSION MENU
       ksu_variant:
-        description: KernelSU 变体（SukiSU 固定 41013，需配套 41013-6 管理器）
+        description: KernelSU 变体（SukiSU 为上游最新版，41013 为可选固定版本）
         type: choice
-        options: [None, Official, 'SukiSU(41013)', BakaSU]
+        options: [None, Official, SukiSU, BakaSU, 'SukiSU(41013)']
         default: None
       version_name:
         description: 自定义版本后缀（可选，例如 Tig，生成 基础版本-Android-KMI-Tig；留空仅基础版本-Android-KMI）

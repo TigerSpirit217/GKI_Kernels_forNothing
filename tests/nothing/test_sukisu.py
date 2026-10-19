@@ -21,7 +21,6 @@ class SukiSUPinTests(unittest.TestCase):
         self.assertEqual(profile["source_sha"], "7f1c299af463d008e66e714077eb6a8079ff722b")
         self.assertEqual(profile["manager_commit"], "ffa00c0700604216de8a86ad9c74226af1add0d5")
         self.assertEqual(profile["susfs_sha"], "c06d5f8ef2b53d04c5e1c6b86dc3076f1e0e9f33")
-        self.assertEqual(sukisu.profile_for(self.plan, "SukiSU", True), profile)
 
     def test_without_susfs_uses_main_before_breaking_extension_change(self):
         profile = sukisu.profile_for(self.plan, "SukiSU(41013)", False)
@@ -30,10 +29,10 @@ class SukiSUPinTests(unittest.TestCase):
         self.assertNotIn("susfs_sha", profile)
 
     def test_other_variants_are_not_pinned_and_unknown_susfs_base_fails(self):
-        for variant in ("None", "Official", "BakaSU"):
+        for variant in ("None", "Official", "SukiSU", "BakaSU"):
             self.assertIsNone(sukisu.profile_for(self.plan, variant, True))
         with self.assertRaisesRegex(ValueError, "No pinned"):
-            sukisu.profile_for({"android_version": "android16", "kernel_version": "6.12"}, "SukiSU", True)
+            sukisu.profile_for({"android_version": "android16", "kernel_version": "6.12"}, "SukiSU(41013)", True)
 
     def test_pinned_variant_inherits_kpm_and_susfs_export_paths(self):
         _, schema = upstream.load_upstream()
