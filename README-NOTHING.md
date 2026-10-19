@@ -70,12 +70,13 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 Nothing 适配层另外负责：
 
 - 拉取选定 NothingOSS 提交，使用该源码声明的官方 Android Clang、Android 基线与 KMI generation，以源码自带的 `gki_defconfig` 编译 arm64 GKI `Image`。新版 `setlocalversion` 使用与源码一致的 KMI 后缀。
-- 跳过通用源码下载、通用内核重命名、其他厂商专用修复和通用 boot 镜像生成；保留 Nothing 的源码配置及 localversion。
+- 跳过通用源码下载、通用内核重命名、其他厂商专用修复和通用 boot 镜像生成；版本名按本文的固定规则生成。
+- 对齐上游使用 ThinLTO，保留源码启用的 CFI，并在 Kconfig 同步后校验，避免默认 Full LTO 的链接内存开销。构建使用独立进程组、普通日志文件和 120 分钟内部时限；失败或收到终止信号后，先通知进程组退出，3 秒后仍有残留则发送 SIGKILL。工作流通过 `exec` 直接运行监督进程，以便接收 Runner 的停止信号。
 - 打补丁后拒绝新增或修改的 `.rej`；在 Kconfig 处理后检查已选择的关键配置是否实际生效。
 - 复用上游获取的 AnyKernel3 工具，生成启用设备校验的 Nothing 安装脚本，更新当前槽位的 `boot` 内核。使用实际 boot 镜像保留 ramdisk，不替换 `init_boot`、DTB 或 vendor 模块。
 - 产出真正可刷入的 AnyKernel3 ZIP、SHA256，以及源码 SHA、上游工作流摘要、补丁选项、依赖提交、编译器信息和 Image 摘要清单。
 
-这是 **Nothing 官方源码的 GKI 内核替换构建**，不是完整厂商固件或 vendor 模块重编译。正确选取机型和官方版本仍不等于 ABI 与实机启动已验证；首次构建需保留原 boot 以便恢复，并在对应系统版本上验证。补丁在厂商树上发生冲突时会失败，诊断产物会保留 `.rej`、构建日志和实际 `.config`。
+这是 **Nothing 官方源码的 GKI 内核替换构建**，不是完整厂商固件或 vendor 模块重编译。正确选取机型和官方版本仍不等于 ABI 与实机启动已验证；首次构建需保留原 boot 以便恢复，并在对应系统版本上验证。补丁在厂商树上发生冲突时会失败，诊断产物会保留 `.rej`、构建日志、实际 `.config` / `auto.conf` 和构建前后内存状态。退出码 143 表示收到 SIGTERM，单凭该退出码不能确认 OOM；可结合 `build-resources.log` 的内存及 cgroup 计数判断。若 Runner 主机已失联或内核陷入不可中断等待，进程组清理无法保证主机立即恢复，仍需 GitHub 终止该运行。
 
 ## 同步上游与开发
 

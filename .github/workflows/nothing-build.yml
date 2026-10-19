@@ -332,7 +332,7 @@ jobs:
 
       - name: 编译 Nothing 内核
         if: inputs.operation == 'build'
-        run: bash nothing/build.sh
+        run: exec python -m nothing.run --timeout 7200 --grace 3 -- bash nothing/build.sh
 
       - name: 打包设备专用 AnyKernel3
         if: inputs.operation == 'build'

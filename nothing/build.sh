@@ -4,7 +4,6 @@ set -euo pipefail
 
 cd "$GITHUB_WORKSPACE"
 mkdir -p build-logs
-exec > >(tee -a build-logs/nothing-build.log) 2>&1
 
 kernel="$KERNEL_ROOT/common"
 toolchain="$GITHUB_WORKSPACE/nothing-clang"
@@ -45,6 +44,8 @@ collect_config() {
   exit "$status"
 }
 trap collect_config EXIT
+trap 'exit 143' TERM
+trap 'exit 130' INT
 branch="$(python -c 'import json; p=json.load(open("nothing-plan.json")); print(p["android_version"] + "-" + p["kernel_version"])')"
 kmi="$(python -c 'import json; print(json.load(open("nothing-plan.json"))["kmi_generation"])')"
 [[ "$branch" =~ ^android[0-9]+-[0-9]+\.[0-9]+$ && "$kmi" =~ ^[0-9]+$ ]]
@@ -56,12 +57,14 @@ make_args=(-C "$kernel" O="$out" ARCH=arm64 LLVM=1 LLVM_IAS=1 \
   BRANCH="$branch" KMI_GENERATION="$kmi" EXTRAVERSION=)
 make "${make_args[@]}" gki_defconfig
 local_suffix="$(python -m nothing.versioning prepare --kernel "$kernel" --out "$out")"
+python -m nothing.compile_config prepare --kernel "$kernel" --out "$out"
 make_args+=(LOCALVERSION="$local_suffix")
 make "${make_args[@]}" olddefconfig
 # olddefconfig leaves an existing auto.conf unchanged, and kernelrelease skips
 # the normal build's automatic sync. Refresh the file setlocalversion reads.
 make "${make_args[@]}" syncconfig
 python -m nothing.versioning config --out "$out"
+python -m nothing.compile_config check --out "$out"
 # Query the kernel itself before starting parallel compilation. The name limit
 # applies to the full release, including source config and Android KMI suffixes.
 planned_release="$(make "${make_args[@]}" --no-print-directory -s kernelrelease | tail -n 1)"

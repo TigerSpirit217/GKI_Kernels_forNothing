@@ -34,7 +34,8 @@ with open(os.environ["NOTHING_TEST_MAKE_LOG"], "a") as log:
 auto = out / "include/config/auto.conf"
 if target == "gki_defconfig":
     auto.parent.mkdir(parents=True)
-    config = ('CONFIG_LOCALVERSION=""\\nCONFIG_LOCALVERSION_AUTO=y\\n'
+    config = ('CONFIG_LTO_CLANG_FULL=y\\n# CONFIG_LTO_CLANG_THIN is not set\\nCONFIG_CFI_CLANG=y\\n'
+              'CONFIG_LOCALVERSION=""\\nCONFIG_LOCALVERSION_AUTO=y\\n'
               'CONFIG_TMPFS_XATTR=y\\nCONFIG_TMPFS_POSIX_ACL=y\\n')
     (out / ".config").write_text(config)
     auto.write_text(config.replace('"', ''))
@@ -63,7 +64,9 @@ class BuildConfigTests(unittest.TestCase):
         for name in ("", "Tig", "Ciallo-MadeByTigerSpirit"):
             with self.subTest(name=name), tempfile.TemporaryDirectory() as temp:
                 root = Path(temp)
-                (root / "nothing-kernel/common").mkdir(parents=True)
+                arch = root / "nothing-kernel/common/arch"
+                arch.mkdir(parents=True)
+                (arch / "Kconfig").write_text("config LTO_CLANG_THIN\n\tbool\n")
                 clang = root / "nothing-clang/bin/clang"
                 clang.parent.mkdir(parents=True)
                 clang.write_text("#!/usr/bin/env bash\necho 'test clang'\n", newline="\n")
@@ -101,6 +104,10 @@ class BuildConfigTests(unittest.TestCase):
                 saved = json.loads((root / "nothing-plan.json").read_text(encoding="utf-8"))
                 self.assertEqual(saved["expected_kernel_release"], expected)
                 self.assertNotIn("CONFIG_LOCALVERSION_AUTO=y", (root / "build-logs/kernel.auto.conf").read_text())
+                config = (root / "build-logs/kernel.config").read_text()
+                self.assertIn("CONFIG_LTO_CLANG_THIN=y", config)
+                self.assertNotIn("CONFIG_LTO_CLANG_FULL=y", config)
+                self.assertIn("CONFIG_CFI_CLANG=y", config)
 
 
 if __name__ == "__main__":
