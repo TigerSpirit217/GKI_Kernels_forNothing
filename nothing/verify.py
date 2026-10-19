@@ -7,6 +7,8 @@ import os
 from pathlib import Path
 import subprocess
 
+from nothing.versioning import validate_release
+
 
 def rejects(kernel):
     failures = []
@@ -63,10 +65,10 @@ def main():
     if args.command == "record":
         out = Path(args.out)
         plan["kernel_release"] = (out / "include/config/kernel.release").read_text().strip()
+        validate_release(plan, plan["kernel_release"])
+        if plan.get("expected_kernel_release", plan["kernel_release"]) != plan["kernel_release"]:
+            raise ValueError("Built kernel release differs from the version checked before compilation")
         plan["build_timestamp"] = os.environ.get("KBUILD_BUILD_TIMESTAMP", "")
-        kmi_suffix = "-" + plan["android_version"] + "-" + plan["kmi_generation"]
-        if kmi_suffix not in plan["kernel_release"]:
-            raise ValueError("Built kernel release is missing its declared Android KMI generation: " + kmi_suffix)
         plan["config_sha256"] = hashlib.sha256((out / ".config").read_bytes()).hexdigest()
         plan["image_sha256"] = hashlib.sha256((out / "arch/arm64/boot/Image").read_bytes()).hexdigest()
         plan["compiler"] = subprocess.check_output([args.clang, "--version"], text=True).strip()

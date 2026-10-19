@@ -183,7 +183,7 @@ on:
         options: [None, Official, SukiSU, BakaSU, 'SukiSU(40726)', 'SukiSU(40548)']
         default: None
       version_name:
-        description: 自定义内核附加版本名（可选，例如 NothingCustom；保留官方 KMI 标识）
+        description: 自定义版本后缀（可选，例如 Tig，生成 基础版本-Android-KMI-Tig；留空仅基础版本-Android-KMI）
         type: string
         default: ''
       build_time:

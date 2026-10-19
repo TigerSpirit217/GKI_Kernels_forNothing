@@ -60,10 +60,10 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 | NTSync | 勾选开启，同时自动启用 Droidspaces |
 | ZRAM、BBG、Re-Kernel、NoMount、网络增强、安全修复 | 各自独立勾选 |
 | 导出 SUSFS 补丁 | 独立勾选，需要启用 SUSFS 且选择 SukiSU / BakaSU；文件随诊断产物上传 |
-| 自定义版本名 | 可选，例如 `NothingCustom`；作为附加标记保留官方 KMI，ZIP 文件名和刷入说明也会显示 |
+| 自定义版本名 | 可选，例如 `Tig`；追加到固定的 `内核基础版本-Android-KMI` 末尾，留空则只有固定部分；ZIP 文件名和刷入说明也会显示 |
 | 构建时间 | 可选，例如 `2026-10-19 12:30:00 UTC`；留空使用构建时的当前 UTC，也接受原格式 `Sun Dec 01 08:10:00 UTC 2024` |
 
-版本名接受 1–32 位英文字母、数字、点、下划线和连字符，以字母或数字开头；最终内核版本长度仍受内核的 64 字节限制。时间会检查真实日期与星期，不正确的输入会在编译前报错。原有 [config/config](config/config) 和固定版本 SukiSU 配置继续由上游步骤读取。
+版本名接受 1–32 位英文字母、数字、点、下划线和连字符，以字母或数字开头。例如本次 5.10.252 / Android 12 / KMI 9 源码，留空生成 `5.10.252-android12-9`，填写 `Tig` 生成 `5.10.252-android12-9-Tig`。其他源码按自身的基础版本和 KMI 生成固定部分。无论是否填写，都不追加 Git 哈希、`dirty` 或 `+`，完整源码 SHA 仍记录在构建清单中。最终版本会在并行编译前由内核生成，检查格式及 64 字节限制。时间会检查真实日期与星期，不正确的输入会在编译前报错。原有 [config/config](config/config) 和固定版本 SukiSU 配置继续由上游步骤读取。
 
 构建过程中，[nothing/upstream.py](nothing/upstream.py) 会读取**当前仓库**的 [.github/workflows/build.yml](.github/workflows/build.yml)，生成临时 composite action，继承依赖获取及补丁区间内的步骤。[nothing/form.py](nothing/form.py) 负责把界面控件转换为上游需要的值并保留布尔类型，用户无需编辑 JSON。上游新增的区间内步骤会被继承；新增功能输入需在表单中暴露，测试会检查当前上游功能是否都有控件。步骤定位或输入契约不兼容时，检查直接失败，要求维护者审核适配层。
 

@@ -30,7 +30,6 @@ export KBUILD_BUILD_USER=NothingBuilder
 export KBUILD_BUILD_HOST=github-actions
 export KBUILD_BUILD_VERSION=1
 custom_time="$(python -c 'import json; print(json.load(open("nothing-plan.json")).get("build_settings", {}).get("build_time", ""))')"
-custom_name="$(python -c 'import json; print(json.load(open("nothing-plan.json")).get("build_settings", {}).get("version_name", ""))')"
 export KBUILD_BUILD_TIMESTAMP="${custom_time:-$(date -u '+%a %b %d %T UTC %Y')}"
 echo "Build timestamp: $KBUILD_BUILD_TIMESTAMP"
 out="$KERNEL_ROOT/out"
@@ -48,27 +47,19 @@ kmi="$(python -c 'import json; print(json.load(open("nothing-plan.json"))["kmi_g
 [[ "$branch" =~ ^android[0-9]+-[0-9]+\.[0-9]+$ && "$kmi" =~ ^[0-9]+$ ]]
 
 # Defconfig already contains the inherited upstream patch options. Preserve the
-# Nothing localversion/KMI settings; the generic workflow's naming step is skipped.
+# Nothing KMI identity; the generic workflow's naming step is skipped.
 make_args=(-C "$kernel" O="$out" ARCH=arm64 LLVM=1 LLVM_IAS=1 \
   CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
-  BRANCH="$branch" KMI_GENERATION="$kmi")
+  BRANCH="$branch" KMI_GENERATION="$kmi" EXTRAVERSION=)
 make "${make_args[@]}" gki_defconfig
-# Older Android scripts derive the KMI suffix from BRANCH/KMI_GENERATION.
-# Newer scripts use LOCALVERSION instead (normally supplied by Kleaf stamping).
-local_suffix=""
-if ! grep -q 'kmi_generation' "$kernel/scripts/setlocalversion"; then
-  suffix="-${branch%%-*}-$kmi"
-  local_versions="$(cat "$kernel"/localversion* "$out"/localversion* 2>/dev/null || true)"
-  if ! grep -qF -- "$suffix" "$out/.config" && [[ "$local_versions" != *"$suffix"* ]]; then
-    local_suffix="$suffix"
-  fi
-fi
-if [[ -n "$custom_name" ]]; then
-  local_suffix="$local_suffix-$custom_name"
-fi
-if [[ -n "$local_suffix" ]]; then
-  make_args+=(LOCALVERSION="$local_suffix")
-fi
+local_suffix="$(python -m nothing.versioning prepare --kernel "$kernel" --out "$out")"
+make_args+=(LOCALVERSION="$local_suffix")
+make "${make_args[@]}" olddefconfig
+# Query the kernel itself before starting parallel compilation. The name limit
+# applies to the full release, including source config and Android KMI suffixes.
+planned_release="$(make "${make_args[@]}" --no-print-directory -s kernelrelease | tail -n 1)"
+printf '%s\n' "$planned_release" > build-logs/kernel.release
+python -m nothing.versioning check --release "$planned_release"
 python -m nothing.verify config --kernel "$kernel" --out "$out"
 make "${make_args[@]}" -j"$(nproc)" Image
 test -s "$out/arch/arm64/boot/Image"
