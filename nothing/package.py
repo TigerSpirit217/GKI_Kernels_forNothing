@@ -9,11 +9,14 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 from nothing.source import ROOT
 from nothing.verify import verify_config
+from nothing.seccomp import verify_applied
 
 
 def package(plan_path, kernel, out, anykernel, destination):
     plan = json.loads(Path(plan_path).read_text(encoding="utf-8"))
-    verify_config(kernel, out, plan["patch_inputs"])
+    if plan.get("nothing_options", {}).get("enable_seccomp"):
+        verify_applied(Path(kernel).parent, plan.get("seccomp_filter"))
+    verify_config(kernel, out, plan["patch_inputs"], plan.get("nothing_options"))
     image = Path(out) / "arch/arm64/boot/Image"
     if not image.is_file() or image.stat().st_size == 0:
         raise ValueError("Missing compiled Image")

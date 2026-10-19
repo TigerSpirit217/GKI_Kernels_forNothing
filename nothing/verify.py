@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 
 from nothing.versioning import validate_release
+from nothing.seccomp import verify_applied
 
 
 def rejects(kernel):
@@ -24,9 +25,11 @@ def rejects(kernel):
         raise ValueError("Patch rejects remain; refusing to build/package a partially patched kernel:\n" + "\n".join(failures))
 
 
-def verify_config(kernel, out, inputs):
+def verify_config(kernel, out, inputs, nothing_options=None):
     actual = set((Path(out) / ".config").read_text(encoding="utf-8").splitlines())
     required = {"CONFIG_TMPFS_XATTR=y", "CONFIG_TMPFS_POSIX_ACL=y"}
+    if (nothing_options or {}).get("enable_seccomp"):
+        required.update({"CONFIG_SECCOMP=y", "CONFIG_SECCOMP_FILTER=y"})
     if inputs["ksu_mode"] != "禁用KSU":
         required.add("CONFIG_KSU=y")
     elif "CONFIG_KSU=y" in actual:
@@ -61,7 +64,9 @@ def main():
         rejects(args.kernel)
         return
     plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
-    verify_config(args.kernel, args.out, plan["patch_inputs"])
+    if plan.get("nothing_options", {}).get("enable_seccomp"):
+        verify_applied(Path(args.kernel).parent, plan.get("seccomp_filter"))
+    verify_config(args.kernel, args.out, plan["patch_inputs"], plan.get("nothing_options"))
     if args.command == "record":
         out = Path(args.out)
         plan["kernel_release"] = (out / "include/config/kernel.release").read_text().strip()

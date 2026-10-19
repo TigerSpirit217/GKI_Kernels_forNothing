@@ -22,6 +22,7 @@ START = "提取实际子版本号"
 END = "配置内核名称"
 EXCLUDED = {"添加一加 8E 处理器支持", "修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）"}
 VARIANTS = {"None", "Official", "SukiSU", "SukiSU(41013)", "BakaSU"}
+NOTHING_SWITCHES = {"enable_seccomp"}
 RESERVED = {"android_version", "kernel_version", "sub_level", "os_patch_level", "ksu_variant",
             "ksu_mode", "enable_susfs", "version", "revision", "build_time", "supp_op", "artifact_upload_mode"}
 
@@ -36,7 +37,7 @@ def load_upstream(path=UPSTREAM):
 def patch_context(plan, options, schema):
     if not isinstance(options, dict):
         raise ValueError("Patch options must be a JSON object")
-    unknown = set(options) - set(schema) - {"ksu_variant"}
+    unknown = set(options) - set(schema) - {"ksu_variant"} - NOTHING_SWITCHES
     if unknown:
         raise ValueError("Unknown upstream patch options: " + ", ".join(sorted(unknown)))
     if set(options) & (RESERVED - {"ksu_variant", "enable_susfs"}):
@@ -44,6 +45,11 @@ def patch_context(plan, options, schema):
     variant = options.get("ksu_variant", "None")
     if variant not in VARIANTS:
         raise ValueError("Unsupported KernelSU variant: " + str(variant))
+    for key in NOTHING_SWITCHES:
+        if type(options.get(key, False)) is not bool:
+            raise ValueError(key + " must be a JSON boolean")
+    if options.get("enable_seccomp") and variant not in ("SukiSU", "SukiSU(41013)"):
+        raise ValueError("seccomp 过滤模式选项需要选择 SukiSU 或 SukiSU(41013)；BakaSU 已原生保留过滤模式")
     context = {}
     for key, definition in schema.items():
         if key in RESERVED:
@@ -171,6 +177,9 @@ def main():
     else:
         plan.pop("ksu_profile", None)
     plan["patch_inputs"] = context
+    # Nothing-only options must not change the inherited workflow's input contract.
+    plan["nothing_options"] = {key: options.get(key, False) for key in sorted(NOTHING_SWITCHES)}
+    plan.pop("seccomp_filter", None)
     plan["upstream_workflow_sha256"] = hashlib.sha256(UPSTREAM.read_bytes()).hexdigest()
     Path(args.plan).write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if os.environ.get("GITHUB_ENV"):

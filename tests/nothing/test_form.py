@@ -20,6 +20,7 @@ class FormTests(unittest.TestCase):
         self.assertEqual(options["droidspaces"], "off")
         self.assertEqual(options["use_kpm"], "disabled (关闭)")
         self.assertFalse(any(options[key] for key in form.SWITCHES))
+        self.assertFalse(options["enable_seccomp"])
         self.assertEqual(form.build_settings({}), {"version_name": "", "build_time": ""})
 
     def test_kpm_and_containers_translate_to_upstream_options(self):
@@ -68,13 +69,26 @@ class FormTests(unittest.TestCase):
         self.assertEqual(configurable, (set(form.SWITCHES) | {"droidspaces", "use_kpm"}) - upstream.RESERVED)
         workflow = yaml.safe_load(catalog.WORKFLOW.read_text(encoding="utf-8"))
         controls = workflow[True]["workflow_dispatch"]["inputs"]
-        for key in (*form.SWITCHES, "use_kpm", "droidspaces"):
+        for key in (*form.SWITCHES, *upstream.NOTHING_SWITCHES, "use_kpm", "droidspaces"):
             self.assertEqual(controls[key]["type"], "boolean")
         self.assertEqual(controls["droidspaces_slot"]["type"], "choice")
         self.assertEqual(controls["version_name"]["type"], "string")
         self.assertEqual(controls["build_time"]["type"], "string")
         self.assertNotIn("patch_options", controls)
         self.assertEqual(controls["ksu_variant"]["options"], ["None", "Official", "SukiSU", "BakaSU", "SukiSU(41013)"])
+
+    def test_seccomp_is_a_nothing_only_sukisu_option(self):
+        for variant in ("SukiSU", "SukiSU(41013)"):
+            options = form.options_from_form({"ksu_variant": variant, "enable_seccomp": True})
+            self.assertTrue(options["enable_seccomp"])
+            _, schema = upstream.load_upstream()
+            context = upstream.patch_context(dict(android_version="android12", kernel_version="5.10", sub_level="252"), options, schema)
+            self.assertNotIn("enable_seccomp", context)
+        for options in ({"enable_seccomp": True}, {"enable_seccomp": "false"},
+                        {"ksu_variant": "Official", "enable_seccomp": True},
+                        {"ksu_variant": "BakaSU", "enable_seccomp": True}):
+            with self.subTest(options=options), self.assertRaises(ValueError):
+                form.options_from_form(options)
 
     def test_removed_fixed_versions_are_rejected(self):
         for variant in ("SukiSU(40726)", "SukiSU(40548)"):

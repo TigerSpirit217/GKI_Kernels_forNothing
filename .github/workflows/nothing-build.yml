@@ -194,6 +194,10 @@ on:
         description: 启用 SUSFS（需要 KernelSU）
         type: boolean
         default: false
+      enable_seccomp:
+        description: 启用 seccomp 过滤模式（SukiSU；保留管理器及授权应用的过滤器）
+        type: boolean
+        default: false
       use_kpm:
         description: KPM 模块支持（需要 SukiSU / BakaSU）
         type: boolean
@@ -318,6 +322,10 @@ jobs:
         uses: ./.nothing-actions
         with:
           context: ${{ steps.adapter.outputs.context }}
+
+      - name: Nothing 配置 seccomp 过滤模式
+        if: inputs.operation == 'build' && inputs.enable_seccomp
+        run: python -m nothing.seccomp
 
       - name: 拒绝不完整补丁
         if: inputs.operation == 'build'

@@ -60,6 +60,7 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 | NTSync | 勾选开启，同时自动启用 Droidspaces |
 | ZRAM、BBG、Re-Kernel、NoMount、网络增强、安全修复 | 各自独立勾选 |
 | 导出 SUSFS 补丁 | 独立勾选，需要启用 SUSFS 且选择 SukiSU / BakaSU；文件随诊断产物上传 |
+| 启用 seccomp 过滤模式 | 默认关闭；适用于 `SukiSU` / `SukiSU(41013)`，保留管理器及授权应用启动时的 seccomp 过滤器；BakaSU 原生支持，无需勾选 |
 | 自定义版本名 | 可选，例如 `Tig`；追加到固定的 `内核基础版本-Android-KMI` 末尾，留空则只有固定部分；ZIP 文件名和刷入说明也会显示 |
 | 构建时间 | 可选，例如 `2026-10-19 12:30:00 UTC`；留空使用构建时的当前 UTC，也接受原格式 `Sun Dec 01 08:10:00 UTC 2024` |
 
@@ -67,7 +68,11 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 
 **仅选择 SukiSU(41013) 时固定版本：** [nothing/sukisu.json](nothing/sukisu.json) 固定内核与管理器提交。启用 SUSFS 时使用 `builtin@7f1c299a` 及固定的配套 SUSFS；未启用时使用破坏性扩展接口改动之前的 `main@ffa00c07`。此选项通过 Make 参数固定 `KSU_VERSION=41013`，避免 SukiSU Makefile 查询在线 main 提交数而将同一份 builtin 源码显示成更高版本。普通 `SukiSU` 完全沿用上游分支选择和 `config/config` 自定义提交配置，不固定内核、SUSFS 或版本号。原 40726 / 40548 配置文件保留供同步上游，Nothing 表单不再提供这两个选项。
 
-选择固定版时，请使用 [41013-6 对应的官方 Manager 构建](https://github.com/SukiSU-Ultra/SukiSU-Ultra/actions/runs/39134589556)，其源码为 `ffa00c0700604216de8a86ad9c74226af1add0d5`。41014 起管理器改用统一扩展接口；单独把内核版本号改成 41013，继续使用 41017-6 管理器，不能消除接口差异。固定 builtin 源码已包含 KPM、Umount 路径和动态管理器的旧接口，但未包含 CPU 身份伪装实现，本适配层不回移新接口或伪报支持。SukiSU SUSFS 会解除管理器及授权进程的 seccomp 过滤，因此管理器自身显示“未启用”不等同于内核关闭 `CONFIG_SECCOMP_FILTER`。
+选择固定版时，请使用 [41013-6 对应的官方 Manager 构建](https://github.com/SukiSU-Ultra/SukiSU-Ultra/actions/runs/39134589556)，其源码为 `ffa00c0700604216de8a86ad9c74226af1add0d5`。41014 起管理器改用统一扩展接口；单独把内核版本号改成 41013，继续使用 41017-6 管理器，不能消除接口差异。固定 builtin 源码已包含 KPM、Umount 路径和动态管理器的旧接口，但未包含 CPU 身份伪装实现，本适配层不回移新接口或伪报支持。未勾选 seccomp 选项时，保留 SukiSU 原有行为：builtin 会解除管理器及授权应用启动时的过滤器，管理器自身显示“未启用”不等同于内核关闭 `CONFIG_SECCOMP_FILTER`。
+
+**seccomp 可选移植：** [nothing/seccomp.py](nothing/seccomp.py) 在原补丁流程结束后执行，参考 [LingLuo17/AnyKernel3 的过滤模式补丁](https://github.com/LingLuo17/AnyKernel3/commit/841ab62e8af77ee73a1d1538bd3838e33df093cc)，替换 builtin 的六处应用启动路径处理，保留 zygote 安装的过滤器，仅通过缓存放行 `reboot`。辅助函数加入本次下载的 `common/kernel/seccomp.c` 编译单元，直接使用 Nothing 源码自己的私有结构，避免按版本猜测结构偏移；AArch32 的 reboot 编号从该内核的 `unistd32.h` 读取。已经原生保留过滤模式的 SukiSU main 分支不会重复打补丁。选项会要求最终 `CONFIG_SECCOMP=y` / `CONFIG_SECCOMP_FILTER=y`，源码缓存或 hook 结构不兼容时明确失败。开关、处理方式和相关文件 SHA256 记录在 `nothing-build.json` / `nothing-plan.json` 中，编译和打包前复核。SUSFS 导出仍只记录原流程的 SUSFS 差异，复现启用过滤模式的构建还需应用此 Nothing 适配层。
+
+此选项保留的是管理器及授权应用启动时的过滤器，不会给本来没有过滤器的进程凭空安装规则，也不改变 `su` 真正提权时的处理；实机显示仍取决于系统给该进程安装的过滤器。选项不会修复最新 builtin 的其他独立编译问题。
 
 构建过程中，[nothing/upstream.py](nothing/upstream.py) 会读取**当前仓库**的 [.github/workflows/build.yml](.github/workflows/build.yml)，生成临时 composite action，继承依赖获取及补丁区间内的步骤。[nothing/form.py](nothing/form.py) 负责把界面控件转换为上游需要的值并保留布尔类型，用户无需编辑 JSON。上游新增的区间内步骤会被继承；新增功能输入需在表单中暴露，测试会检查当前上游功能是否都有控件。步骤定位或输入契约不兼容时，检查直接失败，要求维护者审核适配层。
 

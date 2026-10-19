@@ -6,17 +6,18 @@ from pathlib import Path
 from datetime import datetime, timezone
 import re
 
-from nothing.upstream import load_upstream, patch_context
+from nothing.upstream import NOTHING_SWITCHES, load_upstream, patch_context
 
 SWITCHES = ("enable_susfs", "use_zram", "use_bbg", "use_rekernel", "use_nomount",
             "use_networking", "cve_2026_43499_patch", "droidspaces_ntsync", "export_susfs_patches")
 
 
 def options_from_form(inputs):
-    for key in (*SWITCHES, "use_kpm", "droidspaces"):
+    for key in (*SWITCHES, *NOTHING_SWITCHES, "use_kpm", "droidspaces"):
         if type(inputs.get(key, False)) is not bool:
             raise ValueError(f"{key} 必须是勾选框的布尔值")
     options = {key: inputs.get(key, False) for key in SWITCHES}
+    options.update({key: inputs.get(key, False) for key in NOTHING_SWITCHES})
     options["ksu_variant"] = inputs.get("ksu_variant", "None")
     options["use_kpm"] = "enabled (开启)" if inputs.get("use_kpm", False) else "disabled (关闭)"
     enabled = inputs.get("droidspaces", False) or options["droidspaces_ntsync"]

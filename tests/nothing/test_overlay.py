@@ -226,7 +226,7 @@ class AdapterTests(unittest.TestCase):
             plan = {**self.plan, "device": source.device_for("A065"), "source_sha": "a" * 40}
             plan_path, options_path = root / "plan.json", root / "options.json"
             plan_path.write_text(json.dumps(plan))
-            options_path.write_text('{"ksu_variant":"SukiSU(41013)","enable_susfs":true,"use_zram":false}')
+            options_path.write_text('{"ksu_variant":"SukiSU(41013)","enable_susfs":true,"use_zram":false,"enable_seccomp":true}')
             env_path, output_path = root / "env", root / "output"
             with patch.dict(os.environ, {"GITHUB_ENV": str(env_path), "GITHUB_OUTPUT": str(output_path),
                                          "GITHUB_WORKSPACE": str(root)}), \
@@ -236,6 +236,8 @@ class AdapterTests(unittest.TestCase):
             saved = json.loads(plan_path.read_text(encoding="utf-8"))
             self.assertEqual(saved["upstream_workflow_sha256"], hashlib.sha256(upstream.UPSTREAM.read_bytes()).hexdigest())
             self.assertEqual(saved["patch_inputs"]["ksu_variant"], "SukiSU")
+            self.assertEqual(saved["nothing_options"], {"enable_seccomp": True})
+            self.assertNotIn("enable_seccomp", saved["patch_inputs"])
             self.assertEqual(saved["ksu_profile"]["version"], 41013)
             self.assertEqual(saved["ksu_profile"]["source_sha"], "7f1c299af463d008e66e714077eb6a8079ff722b")
             self.assertIn("LEGACY_SUKISU_CONFIG=\n", env_path.read_text(encoding="utf-8"))
