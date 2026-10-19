@@ -29,7 +29,10 @@ export KCFLAGS="${KCFLAGS:-} -D__ANDROID_COMMON_KERNEL__"
 export KBUILD_BUILD_USER=NothingBuilder
 export KBUILD_BUILD_HOST=github-actions
 export KBUILD_BUILD_VERSION=1
-export KBUILD_BUILD_TIMESTAMP="$(date -u '+%a %b %d %T UTC %Y')"
+custom_time="$(python -c 'import json; print(json.load(open("nothing-plan.json")).get("build_settings", {}).get("build_time", ""))')"
+custom_name="$(python -c 'import json; print(json.load(open("nothing-plan.json")).get("build_settings", {}).get("version_name", ""))')"
+export KBUILD_BUILD_TIMESTAMP="${custom_time:-$(date -u '+%a %b %d %T UTC %Y')}"
+echo "Build timestamp: $KBUILD_BUILD_TIMESTAMP"
 out="$KERNEL_ROOT/out"
 collect_config() {
   local status=$?
@@ -52,12 +55,19 @@ make_args=(-C "$kernel" O="$out" ARCH=arm64 LLVM=1 LLVM_IAS=1 \
 make "${make_args[@]}" gki_defconfig
 # Older Android scripts derive the KMI suffix from BRANCH/KMI_GENERATION.
 # Newer scripts use LOCALVERSION instead (normally supplied by Kleaf stamping).
+local_suffix=""
 if ! grep -q 'kmi_generation' "$kernel/scripts/setlocalversion"; then
   suffix="-${branch%%-*}-$kmi"
   local_versions="$(cat "$kernel"/localversion* "$out"/localversion* 2>/dev/null || true)"
   if ! grep -qF -- "$suffix" "$out/.config" && [[ "$local_versions" != *"$suffix"* ]]; then
-    make_args+=(LOCALVERSION="$suffix")
+    local_suffix="$suffix"
   fi
+fi
+if [[ -n "$custom_name" ]]; then
+  local_suffix="$local_suffix-$custom_name"
+fi
+if [[ -n "$local_suffix" ]]; then
+  make_args+=(LOCALVERSION="$local_suffix")
 fi
 python -m nothing.verify config --kernel "$kernel" --out "$out"
 make "${make_args[@]}" -j"$(nproc)" Image

@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 
@@ -62,6 +63,7 @@ def main():
     if args.command == "record":
         out = Path(args.out)
         plan["kernel_release"] = (out / "include/config/kernel.release").read_text().strip()
+        plan["build_timestamp"] = os.environ.get("KBUILD_BUILD_TIMESTAMP", "")
         kmi_suffix = "-" + plan["android_version"] + "-" + plan["kmi_generation"]
         if kmi_suffix not in plan["kernel_release"]:
             raise ValueError("Built kernel release is missing its declared Android KMI generation: " + kmi_suffix)

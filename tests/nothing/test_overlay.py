@@ -289,6 +289,14 @@ class PackagingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "differs"):
             package(self.plan_path, self.kernel, self.out, self.ak, self.root / "dist")
 
+    def test_custom_version_name_is_in_zip_and_install_title(self):
+        self.plan["build_settings"] = {"version_name": "NothingCustom", "build_time": ""}
+        self.plan_path.write_text(json.dumps(self.plan))
+        archive_path = package(self.plan_path, self.kernel, self.out, self.ak, self.root / "dist")
+        self.assertIn("NothingCustom", archive_path.name)
+        with ZipFile(archive_path) as archive:
+            self.assertIn("NothingCustom", archive.read("anykernel.sh").decode())
+
 
 if __name__ == "__main__":
     unittest.main()

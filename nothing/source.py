@@ -106,6 +106,7 @@ def release_history(repository, branches):
                                  and re.search(r"\d+\.\d+", line)]
                 if version_lines:
                     releases.append({"branch": branch, "sha": sha, "versions": version_lines,
+                                     "committed_at": commit["commit"].get("committer", {}).get("date", ""),
                                      "subject": commit["commit"]["message"].splitlines()[0]})
             if len(commits) < 100:
                 break
@@ -247,6 +248,8 @@ def main():
     parser.add_argument("--model", required=True)
     parser.add_argument("--version")
     parser.add_argument("--branch", default="", help="Restrict OS version lookup to this official branch")
+    parser.add_argument("--menu", action="store_true", help="Resolve an Actions dropdown choice")
+    parser.add_argument("--settings", help="Validated custom version name and build time JSON")
     parser.add_argument("--list-refs", action="store_true")
     parser.add_argument("--list-versions", action="store_true")
     parser.add_argument("--directory", default="nothing-kernel/common")
@@ -263,10 +266,21 @@ def main():
         return
     if not args.version:
         parser.error("--version is required unless --list-refs is used")
-    sha, ref = resolve(device["repository"], args.version, args.branch, device["branch_pattern"])
+    requested_label = args.version
+    if args.menu:
+        from nothing.catalog import select_entry
+        entry = select_entry(args.model, args.version)
+        args.version, args.branch = entry["version"], entry["branch"]
+        sha, ref = resolve(device["repository"], entry["sha"], args.branch, device["branch_pattern"])
+    else:
+        sha, ref = resolve(device["repository"], args.version, args.branch, device["branch_pattern"])
     metadata = checkout(device, sha, args.directory)
     plan = {"device": device, "requested_version": args.version, "requested_branch": args.branch, "source_ref": ref,
-            "source_sha": sha, **metadata}
+            "source_sha": sha, "requested_label": requested_label, **metadata}
+    if args.settings:
+        from nothing.form import build_settings
+        settings = json.loads(Path(args.settings).read_text(encoding="utf-8"))
+        plan["build_settings"] = build_settings(settings)
     Path(args.output).write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:

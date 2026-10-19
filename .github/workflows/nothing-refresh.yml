@@ -1,0 +1,32 @@
+name: Nothing 更新版本下拉目录
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r nothing/requirements.txt
+      - name: 从各机型官方分支抓取发布提交并生成下拉选项
+        run: python -m nothing.catalog --refresh --output-dir out/nothing-menu
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Nothing-updated-version-menu
+          path: out/nothing-menu/
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: 显示更新说明
+        run: |
+          echo '下载 Nothing-updated-version-menu，将其中两个文件放回仓库并提交，即可更新 Actions 版本下拉框。' >> "$GITHUB_STEP_SUMMARY"
+          echo '默认的“所选机型最新官方发布”会实时查询，不依赖这个静态目录。' >> "$GITHUB_STEP_SUMMARY"

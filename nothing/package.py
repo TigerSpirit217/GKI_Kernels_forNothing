@@ -24,8 +24,12 @@ def package(plan_path, kernel, out, anykernel, destination):
         if not (anykernel / required).is_file():
             raise ValueError("Incomplete upstream AnyKernel3: " + required)
     device = plan["device"]
+    custom_name = plan.get("build_settings", {}).get("version_name", "")
+    if custom_name and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,31}", custom_name):
+        raise ValueError("Invalid custom version name in manifest")
     template = (ROOT / "nothing/anykernel.sh.in").read_text(encoding="utf-8")
-    script = template.replace("@KERNEL_STRING@", device["name"] + " " + plan["requested_version"])
+    title = device["name"] + " " + plan["requested_version"] + (" " + custom_name if custom_name else "")
+    script = template.replace("@KERNEL_STRING@", title)
     script = script.replace("@SOURCE_SHA@", plan["source_sha"])
     script = script.replace("@DEVICE_NAMES@", "\n".join(f"device.name{i}={name}" for i, name in enumerate(device["device_names"], 1)))
     # Only safe identifier characters reach the shell template / archive name.
@@ -37,6 +41,8 @@ def package(plan_path, kernel, out, anykernel, destination):
     destination.mkdir(parents=True, exist_ok=True)
     version = re.sub(r"[^A-Za-z0-9._-]", "-", plan["requested_version"])
     variant = "NoKSU" if plan["patch_inputs"]["ksu_mode"] == "禁用KSU" else plan["patch_inputs"]["ksu_variant"]
+    if custom_name:
+        version += "-" + custom_name
     filename = f"Nothing-{device['id']}-{version}-{variant}-{plan['source_sha'][:12]}-AnyKernel3.zip"
     archive_path = destination / filename
     with ZipFile(archive_path, "w", compression=ZIP_DEFLATED) as archive:

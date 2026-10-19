@@ -19,6 +19,7 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -r nothing/requirements.txt
       - run: python -m unittest discover -s tests/nothing -v
+      - run: python -m nothing.catalog --check
       - run: |
           bash -n nothing/build.sh
           bash -n nothing/anykernel.sh.in

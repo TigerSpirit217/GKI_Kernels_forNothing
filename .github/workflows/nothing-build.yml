@@ -9,23 +9,206 @@ on:
         type: choice
         options: [build, list-versions]
         default: build
+      # BEGIN NOTHING MODEL MENU
       model:
-        description: 手机型号（如 phone-2、phone-3a-pro、A065、cmf-phone-1）
+        description: 选择你的手机型号
         required: true
-        type: string
+        type: choice
+        options:
+        - Nothing Phone (2)
+        - Nothing Phone (2a)
+        - Nothing Phone (3a)
+        - Nothing Phone (3a) Pro
+        - Nothing Phone (3)
+        - CMF Phone (1)
+        - Nothing Phone (4a)
+        - Nothing Phone (4a) Pro
+        - CMF Phone (2) Pro
+        - Nothing Phone (3a) Lite
+        - Nothing Phone (4b)
+      # END NOTHING MODEL MENU
+      # BEGIN NOTHING VERSION MENU
       version:
-        description: OS 版本 / 完整 build 编号 / 官方 Git 分支、tag 或 40 位 SHA（构建必填）
-        type: string
-      source_branch:
-        description: 可选：限定官方源码分支，区分同分支多个版本及跨分支重名版本
-        type: string
+        description: 默认自动查询所选机型的最新发布；旧版本请选择同机型的条目
+        required: true
+        type: choice
+        default: 所选机型最新官方发布（运行时查询）
+        options:
+        - 所选机型最新官方发布（运行时查询）
+        - Nothing Phone (2) | OS 4.1 | Pong-B4.1-260818-1726 | ed888387f1aa
+        - Nothing Phone (2) | OS 4.1 | Pong-B4.1-260618-1026 | cb74def2a843
+        - Nothing Phone (2) | OS 4.1 | Pong-B4.1-260414-1749 | 89e7a438e23a
+        - Nothing Phone (2) | OS 4.0 | Pong-B4.0-260226-0955 | 2ee971cbc73c
+        - Nothing Phone (2) | OS 4.0 | Pong-B4.0-251226-1110 | 44378229872f
+        - Nothing Phone (2) | OS 4.0 | Pong-B4.0-251119-1654 | c5a8655cd742
+        - Nothing Phone (2) | OS 3.2 | Pong-V3.2-250917-1451 | b422d73ad771
+        - Nothing Phone (2) | OS 3.2 | Pong-V3.2-250828-1921 | e13931e0db92
+        - Nothing Phone (2) | OS 3.2 | Pong-V3.2-250708-2227 | aebf190a83ca
+        - Nothing Phone (2) | OS 3.0 | Pong-V3.0-250506-1805 | 792b77b96b52
+        - Nothing Phone (2) | OS 3.0 | Pong-V3.0-250304-1717 | 67c59c6aab52
+        - Nothing Phone (2) | OS 3.0 | Pong-V3.0-250113-1723 | 3ac388baea39
+        - Nothing Phone (2) | OS 3.0 | Pong-V3.0-241226-2001 | a028f7425771
+        - Nothing Phone (2) | OS 2.6 | Pong-U2.6-241016-1700 | 077519039768
+        - Nothing Phone (2) | OS 2.6 | Pong-U2.6-240828-1751 | 43a86cb4be85
+        - Nothing Phone (2) | OS 2.6 | Pong-U2.6-240628-0430 | 43a86cb4be85
+        - Nothing Phone (2) | OS 2.6 | 2.6 | bea1466f1b20
+        - Nothing Phone (2) | OS 2.5.6 | 2.5.6 | 7d967cea9574
+        - Nothing Phone (2) | OS 2.5.5 | 2.5.5 | d235d32139f5
+        - Nothing Phone (2) | OS 2.5.3 | 2.5.3 | ca4d79fcd06e
+        - Nothing Phone (2) | OS 2.5.2 | 2.5.2 | f72845bc7d5c
+        - Nothing Phone (2) | OS 2.5.1 | 2.5.1 | 196cf7ed694b
+        - Nothing Phone (2) | OS 2.5.0.BETA2 | 2.5.0.BETA2 | cf676309772d
+        - Nothing Phone (2) | OS 2.5.0 | 2.5.0 | 3a6c9cb00ba6
+        - Nothing Phone (2) | OS 2.0.4 | 2.0.4 | c402fcdb3a15
+        - Nothing Phone (2) | OS 2.0.3 | 2.0.3 | a89d792b9d12
+        - Nothing Phone (2) | OS 2.0.2 | 2.0.2 | 51e36fc28a1a
+        - Nothing Phone (2) | OS 2.0.1 | 2.0.1 | 04ec8b96bc85
+        - Nothing Phone (2a) | OS 4.1 | Pacman-B4.1-260813-0941 | 974ca2a15642
+        - Nothing Phone (2a) | OS 4.1 | Pacman-B4.1-260609-1925 | e7db892eadc8
+        - Nothing Phone (2a) | OS 4.1 | Pacman-B4.1-260414-2141 | d8abecef8bf9
+        - Nothing Phone (2a) | OS 4.0 | Pacman-B4.0-260225-1817 | 81f08370e43a
+        - Nothing Phone (2a) | OS 4.0 | Pacman-B4.0-20251230-2052 | 02f45fecd3aa
+        - Nothing Phone (2a) | OS 3.2 | Pacman-V3.2-250815-1642 | 78d06aae6ad5
+        - Nothing Phone (2a) | OS 3.2 | Pacman-V3.2-250620-1021 | 077637ecb4e8
+        - Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-250429-1922 | 49ae55714ccc
+        - Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-250304-1904 | 1328bd7065df
+        - Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-20241210-2057 | 149e420911a4
+        - Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-150114-1909 | a5ed367edf93
+        - Nothing Phone (2a) | OS 2.6 | Pacman-U2.6-20241021-2253 | c09392da48d4
+        - Nothing Phone (2a) | OS 2.6 | Pacman-U2.6-20240828-1906 | c4b1f9d36024
+        - Nothing Phone (2a) | OS 2.6 | 2.6 | ee98ef4924cb
+        - Nothing Phone (2a) | OS 2.5.6 | 2.5.6 | eecc955f8004
+        - Nothing Phone (2a) | OS 2.5.5.a | 2.5.5.a | 72300d592421
+        - Nothing Phone (2a) | OS 2.5.5 | 2.5.5 | cab2a9211ec8
+        - Nothing Phone (2a) | OS 2.5.4.b | 2.5.4.b | 1de1445769dc
+        - Nothing Phone (2a) | OS 2.5.4.a | 2.5.4.a | e8c7337ad525
+        - Nothing Phone (2a) | OS 2.5.3 | 2.5.3 | b690b79a44e7
+        - Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260928-1204 | cf8c976798d9
+        - Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260810-1153 | 13c3e315ae1b
+        - Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260618-1048 | 11562380ec6c
+        - Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260414-1749 | b6b2b0fb2e8c
+        - Nothing Phone (3a) | OS 4.0 | Asteroids-B4.0-260225-1824 | 2670467a441b
+        - Nothing Phone (3a) | OS 4.0 | Asteroids-B4.0-251229-2335 | f155687681ce
+        - Nothing Phone (3a) | OS 4.0 | Asteroids-B4.0-251118-1551 | 3fd80122a15b
+        - Nothing Phone (3a) | OS 3.2 | Asteroids-V3.2-251013-1406 | d5f5f965fd0b
+        - Nothing Phone (3a) | OS 3.2 | Asteroids-V3.2-250924-1736 | 9d5dede960f1
+        - Nothing Phone (3a) | OS 3.2 | Asteroids-V3.2-250717-1803 | f3fb9d6f341b
+        - Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250610-1841 | c8fcfa7020af
+        - Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250529-1004 | ec39cc636fc3
+        - Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250417-1222 | 84bc3d7b7840
+        - Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250401-1916 | f2ab7c8fdd52
+        - Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250320-2319 | d5ed13964edb
+        - Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250302-1856 | 635de46a8386
+        - Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260928-1204 | cf8c976798d9
+        - Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260810-1153 | 13c3e315ae1b
+        - Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260618-1048 | 11562380ec6c
+        - Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260414-1749 | b6b2b0fb2e8c
+        - Nothing Phone (3a) Pro | OS 4.0 | Asteroids-B4.0-260225-1824 | 2670467a441b
+        - Nothing Phone (3a) Pro | OS 4.0 | Asteroids-B4.0-251229-2335 | f155687681ce
+        - Nothing Phone (3a) Pro | OS 4.0 | Asteroids-B4.0-251118-1551 | 3fd80122a15b
+        - Nothing Phone (3a) Pro | OS 3.2 | Asteroids-V3.2-251013-1406 | d5f5f965fd0b
+        - Nothing Phone (3a) Pro | OS 3.2 | Asteroids-V3.2-250924-1736 | 9d5dede960f1
+        - Nothing Phone (3a) Pro | OS 3.2 | Asteroids-V3.2-250717-1803 | f3fb9d6f341b
+        - Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250610-1841 | c8fcfa7020af
+        - Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250529-1004 | ec39cc636fc3
+        - Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250417-1222 | 84bc3d7b7840
+        - Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250401-1916 | f2ab7c8fdd52
+        - Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250320-2319 | d5ed13964edb
+        - Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250302-1856 | 635de46a8386
+        - Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260814-1733 | 5f6161492828
+        - Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260624-1457 | b2381b5e146c
+        - Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260603-1221 | 5f0c40321921
+        - Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260414-1846 | f77c201583fb
+        - Nothing Phone (3) | OS 4.0 | Metroid-B4.0-260206-1135 | 84d2c2bda87d
+        - Nothing Phone (3) | OS 4.0 | Metroid-B4.0-251224-1229 | d45428f469da
+        - Nothing Phone (3) | OS 4.0 | Metroid-B4.0-251117-1909 | 0089471b3751
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250923-1421 | 031e8669eb19
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250911-2112 | 5531712a747b
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250829_1700 | 31cbe1637106
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250808_1022 | daf87869f4db
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250801-1847 | 7e659b6c5b03
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250719-1646 | a9351e106b97
+        - Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250711-2047 | a3a2224b21d4
+        - CMF Phone (1) | OS 4.1 | Tetris-B4.1-260812-1726 | cd14396e7fd7
+        - CMF Phone (1) | OS 4.1 | Tetris-B4.1-260615-1652 | 088517d30b9c
+        - CMF Phone (1) | OS 4.1 | Tetris-B4.1-260415-1709 | b658c50271f7
+        - CMF Phone (1) | OS 4.0 | Tetris-B4.0-260225-1904 | 8a392bfa94bc
+        - CMF Phone (1) | OS 4.0 | Tetris-B4.0-260108-1653 | 480694b5110c
+        - CMF Phone (1) | OS 3.2 | Tetris-V3.2-250723-1800 | ed33ff758688
+        - CMF Phone (1) | OS 3.2 | Tetris-V3.2-250609-2111 | 56473a53e335
+        - CMF Phone (1) | OS 3.0 | Tetris-V3.0-250409-1734 | a2edd1deddbb
+        - CMF Phone (1) | OS 3.0 | Tetris-V3.0-250208-2015 | ac4cc3f55e08
+        - CMF Phone (1) | OS 3.0 | Tetris-V3.0-250111-2249 | c9266147b3e0
+        - CMF Phone (1) | OS 2.6.0 | 2.6.0 | 684dad5a6966
+        - CMF Phone (1) | OS 2.6 | Tetris-U2.6-241204-2338 | d6343dbbb3ea
+        - CMF Phone (1) | OS 2.6 | Tetris-U2.6-241021-2030 | d6343dbbb3ea
+        - CMF Phone (1) | OS 2.6 | Tetris-U2.6-240910-1735 | 560064cb3c90
+        - CMF Phone (1) | OS 2.6 | Tetris-U2.6-240813-2046 | 079372f4fd81
+        - CMF Phone (1) | OS 2.6 | Tetris-U2.6-240729-1047 | c333ed7bad0e
+        - CMF Phone (1) | OS 2.6 | Tetris-U2.6-240702-2200 | d94d4fd444df
+        - Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260808-1352 | 1f8b17e7b90e
+        - Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260630-1839 | 97cb5096ddc1
+        - Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260430-1731 | cd9c0f461a28
+        - Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260402-1229 | 857741777e27
+        - Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260309-1830 | b039f2496843
+        - Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260907-1153 | 5987ea9202be
+        - Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260723-1820 | 62e8c603d9da
+        - Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260522-1414 | 40c25ad9d88c
+        - Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260424-1447 | a1e19cd1e69f
+        - Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260323-1635 | 45f9164412a9
+        - CMF Phone (2) Pro | OS 4.1 | Galaga-B4.1-260812-1729 | c60af28d4da8
+        - CMF Phone (2) Pro | OS 4.1 | Galaga-B4.1-260615-1653 | 8bf9f1e1d2f7
+        - CMF Phone (2) Pro | OS 4.1 | Galaga-B4.1-260415-1710 | 6bed54e9d8b1
+        - CMF Phone (2) Pro | OS 4.0 | Galaga-B4.0-260226-1122 | fa043d713cff
+        - CMF Phone (2) Pro | OS 4.0 | Galaga-B4.0-260108-1654 | db23649bbf71
+        - CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250903-2153 | 58a876342adb
+        - CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250715-1813 | e31378405885
+        - CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250616-1258 | 5308fd367683
+        - CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250605-1102 | 2a5b1416182f
+        - CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250526-1427 | 3b77fb9c3062
+        - CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250425-1517 | 26887fbce641
+        - Nothing Phone (3a) Lite | OS 4.1 | Galaxian-B4.1-260819-1839 | a92e11aaa8fc
+        - Nothing Phone (3a) Lite | OS 4.1 | Galaxian-B4.1-260508-1508 | 7e0a04b72387
+        - Nothing Phone (3a) Lite | OS 4.1 | 4.1 | 8be25db93cca
+        - Nothing Phone (3a) Lite | OS 4.0 | Galaxian-B4.0-260303-1710 | f78c4de16d49
+        - Nothing Phone (3a) Lite | OS 4.0 | Galaxian-B4.0-260116-1904 | f8a889253415
+        - Nothing Phone (3a) Lite | OS 3.5 | Galaxian-V3.5-251029-1642 | 856c7d86fdfc
+        - Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260904-1739 | fae8691a386f
+        - Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260811-1606 | 869bf8306271
+        - Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260703-1843 | f58e3b16af36
+      # END NOTHING VERSION MENU
       ksu_variant:
         description: KernelSU 变体（None 为无 root 构建）
         type: choice
         options: [None, Official, SukiSU, BakaSU, 'SukiSU(40726)', 'SukiSU(40548)']
         default: None
+      version_name:
+        description: 自定义内核附加版本名（可选，例如 NothingCustom；保留官方 KMI 标识）
+        type: string
+        default: ''
+      build_time:
+        description: 构建时间（可选，例如 2026-10-19 12:30:00 UTC；留空使用当前 UTC）
+        type: string
+        default: ''
       enable_susfs:
         description: 启用 SUSFS（需要 KernelSU）
+        type: boolean
+        default: false
+      use_kpm:
+        description: KPM 模块支持（需要 SukiSU / BakaSU）
+        type: boolean
+        default: false
+      droidspaces:
+        description: Droidspaces 容器支持
+        type: boolean
+        default: false
+      droidspaces_slot:
+        description: Droidspaces 兼容槽位（保留默认 678 即可）
+        type: choice
+        options: ['678', '123', '345']
+        default: '678'
+      droidspaces_ntsync:
+        description: NTSync（同时自动启用 Droidspaces）
         type: boolean
         default: false
       use_zram:
@@ -52,16 +235,16 @@ on:
         description: CVE-2026-43499 修复
         type: boolean
         default: false
-      patch_options:
-        description: 进阶上游补丁选项 JSON（例如 {"droidspaces":"678","droidspaces_ntsync":true}）
-        type: string
-        default: '{}'
+      export_susfs_patches:
+        description: 导出 SUSFS 集成补丁（需启用 SUSFS 及 SukiSU / BakaSU）
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: nothing-${{ github.ref }}-${{ inputs.model }}-${{ inputs.version }}-${{ inputs.source_branch }}
+  group: nothing-${{ github.ref }}-${{ inputs.model }}-${{ inputs.version }}
   cancel-in-progress: false
 
 jobs:
@@ -87,28 +270,13 @@ jobs:
         env:
           BUILD_INPUTS: ${{ toJSON(inputs) }}
         run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          from nothing.upstream import RESERVED, load_upstream, patch_context
-          inputs = json.loads(os.environ['BUILD_INPUTS'])
-          options = {k: inputs[k] for k in ('ksu_variant', 'enable_susfs', 'use_zram', 'use_bbg',
-                      'use_rekernel', 'use_nomount', 'use_networking', 'cve_2026_43499_patch')}
-          advanced = json.loads(inputs['patch_options'])
-          if not isinstance(advanced, dict) or set(advanced) & RESERVED:
-              raise ValueError('patch_options 必须是仅包含上游功能开关的 JSON 对象，不能覆盖源码/机型/KernelSU 选项')
-          options.update(advanced)
-          _, schema = load_upstream()
-          patch_context(dict(android_version='android14', kernel_version='6.1', sub_level='0'), options, schema)
-          Path('nothing-options.json').write_text(json.dumps(options), encoding='utf-8')
-          PY
+          python -m nothing.form
 
       - name: 列出所有分支的官方版本提交
         if: inputs.operation == 'list-versions'
         env:
           MODEL: ${{ inputs.model }}
-          SOURCE_BRANCH: ${{ inputs.source_branch }}
-        run: python -m nothing.source --model "$MODEL" --branch "$SOURCE_BRANCH" --list-versions > nothing-versions.json
+        run: python -m nothing.source --model "$MODEL" --list-versions > nothing-versions.json
 
       - name: 上传版本目录
         if: inputs.operation == 'list-versions'
@@ -130,8 +298,7 @@ jobs:
         env:
           MODEL: ${{ inputs.model }}
           VERSION: ${{ inputs.version }}
-          SOURCE_BRANCH: ${{ inputs.source_branch }}
-        run: python -m nothing.source --model "$MODEL" --version "$VERSION" --branch "$SOURCE_BRANCH"
+        run: python -m nothing.source --model "$MODEL" --version "$VERSION" --menu --settings nothing-settings.json
 
       - name: 从原工作流生成补丁步骤
         if: inputs.operation == 'build'
@@ -197,6 +364,7 @@ jobs:
           path: |
             nothing-plan.json
             nothing-options.json
+            nothing-settings.json
             .nothing-actions/action.yml
             build-logs/
             susfs-patch/

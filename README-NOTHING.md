@@ -6,22 +6,24 @@
 
 1. 将本分支推送至自己的 GitHub 仓库并启用 Actions。
 2. 打开 **Actions → Nothing 设备内核 / AnyKernel3 → Run workflow**。
-3. 填写 `model` 和 `version`，按需填写 `source_branch` 和勾选补丁。
+3. 从 `model` 下拉框选择机型，从 `version` 下拉框选择官方版本，再勾选需要的功能。自定义版本名和构建时间均可留空。
 4. 成功后，从 Artifacts 下载 `Nothing-…-AnyKernel3`，解开 Actions 的外层压缩包，取得里面的 **`*-AnyKernel3.zip`** 和 `.sha256`。
 
-`version` 支持完整 Nothing OS build 编号、OS 版本号、官方 Git 分支、tag 或 **40 位 commit SHA**。推荐使用完整 build 编号或 SHA。填写分支名表示构建该分支当前最新提交，构建清单会保存它的实际 SHA。
+版本菜单包含 11 个机型的官方发布条目，每项显示机型、OS 版本、完整 build 编号和提交短 SHA，后台自动定位分支与完整 SHA，无需填写 JSON、分支或提交编号。默认选项 **“所选机型最新官方发布（运行时查询）”** 会在启动构建时查询该机型的官方发布记录；构建旧系统版本时请选择对应的完整条目。
 
-例如，`model=phone-3a`、`source_branch=sm7635/v/mr`、`version=Asteroids-V3.1-250302-1856`，对应官方 [发布记录](https://github.com/NothingOSS/android_kernel_msm-6.1_nothing_sm7635/blob/sm7635/v/mr/README.md)。示例用于说明输入格式；可用分支与提交以运行时查询为准。
+例如，选择 `Nothing Phone (3a)`，再选择包含 `Asteroids-V3.1-250302-1856` 的版本条目，对应官方 [发布记录](https://github.com/NothingOSS/android_kernel_msm-6.1_nothing_sm7635/blob/sm7635/v/mr/README.md)。
+
+[Actions 原生 `choice` 控件](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onworkflow_dispatchinputs) 使用工作流内的固定选项，不支持机型与版本的联动筛选。因此旧版本条目带机型前缀，选择错配时会在拉取源码前明确提示，不能混用其他机型的版本。
 
 **NothingOSS 同一仓库有多个分支，同一分支内又有多个版本提交。** 本入口会：
 
 - 从机型配置定位 NothingOSS 官方仓库，枚举其分支和 tag，再按机型的分支规则筛选。例如 Tetris、Galaga、Galaxian 共用 mt6878 仓库，但分别对应不同设备，不能混用分支。
-- 若填写 `source_branch`，仅在该分支内查询。
+- 下拉条目已固定对应分支和 SHA；“最新官方发布”只查询所选机型对应的分支。
 - 对 OS/build 版本，逐分支读取 `README.md` 的提交历史，匹配各提交**新增的发布条目**；累计 README 中保留的旧条目不会被当作新版提交的版本。`No update` 发布也按官方记录保留。
-- 同一个 SHA 出现在多个分支时去重；同一版本匹配到多个 SHA 时中止并列出候选，不会擅自选最新提交。此时填写分支、完整 build 编号或 SHA。
+- 同一个版本及 SHA 出现在多个分支时去重；同一 build 的不同提交显示各自的短 SHA，选择后固定到该提交。
 - 固定并仅检出目标 SHA，检查其所属设备分支和发布记录标识，再读取该提交的 Makefile 和 `build.config.*`，确定内核基线、子版本及 Clang。**手机系统的 Android 版本不能代替源码的 GKI Android 基线。**
 
-查询版本时，把 `operation` 改为 `list-versions`，填写机型，可选限定分支；产物 `Nothing-official-versions` 内的 JSON 包含分支、版本条目和 SHA，不会编译内核。尚未出现在官方发布记录中的版本不会自动回退到其他源码；可自行核对官方提交后填写明确的 ref/SHA。
+查询完整记录时，把 `operation` 改为 `list-versions`，选择机型；产物 `Nothing-official-versions` 内的 JSON 包含分支、版本条目和 SHA，不会编译内核。专家仍可通过 `python -m nothing.source` 使用明确的 ref/SHA、版本号或 `--branch` 参数。
 
 ## 机型范围
 
@@ -40,7 +42,7 @@
 | `phone-4a-pro` | Phone (4a) Pro | [sm7750](https://github.com/NothingOSS/android_kernel_msm-6.6_nothing_sm7750) | 6.6 |
 | `phone-4b` | Phone (4b) | [sm6650](https://github.com/NothingOSS/android_kernel_msm-6.1_nothing_sm6650) | 6.1 |
 
-也可填写机型全名、代号或配置内的型号别名，例如 `Nothing Phone (2)`、`Pong`、`A065`。
+Actions 显示完整机型名称；命令行也接受代号或型号别名，例如 `Pong`、`A065`。
 
 Phone (1) 的官方 5.4 源码不属于本项目现有 GKI 补丁范围，入口明确拒绝。Phone (2a) Plus 暂未配置独立的官方发布映射。其他未列出的机型需要先在 [nothing/devices.json](nothing/devices.json) 增加经过核对的仓库、分支规则及设备标识映射；不能仅凭相同 SoC 推断为受支持。
 
@@ -48,17 +50,22 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 
 ## 补丁与编译
 
-常用开关：KernelSU（含 SukiSU / BakaSU 和上游保留的固定版本）、SUSFS、ZRAM、BBG、Re-Kernel、NoMount、网络增强和安全修复。默认不启用 root 或可选补丁，可先验证官方源码基线。
+功能均有独立控件，默认不启用 root 或可选补丁：
 
-`patch_options` 是进阶上游输入的 JSON 对象，例如：
+| 控件 | 用法 |
+| --- | --- |
+| KernelSU | 下拉选择 None / Official / SukiSU / BakaSU / 上游保留的固定版本 |
+| SUSFS、KPM | 分别勾选；KPM 需要 SukiSU / BakaSU，SUSFS 需要 KernelSU |
+| Droidspaces | 勾选开启；兼容槽位默认 678，另可下拉选择 123 / 345 |
+| NTSync | 勾选开启，同时自动启用 Droidspaces |
+| ZRAM、BBG、Re-Kernel、NoMount、网络增强、安全修复 | 各自独立勾选 |
+| 导出 SUSFS 补丁 | 独立勾选，需要启用 SUSFS 且选择 SukiSU / BakaSU；文件随诊断产物上传 |
+| 自定义版本名 | 可选，例如 `NothingCustom`；作为附加标记保留官方 KMI，ZIP 文件名和刷入说明也会显示 |
+| 构建时间 | 可选，例如 `2026-10-19 12:30:00 UTC`；留空使用构建时的当前 UTC，也接受原格式 `Sun Dec 01 08:10:00 UTC 2024` |
 
-```json
-{"use_kpm":"enabled (开启)","droidspaces":"678","droidspaces_ntsync":true}
-```
+版本名接受 1–32 位英文字母、数字、点、下划线和连字符，以字母或数字开头；最终内核版本长度仍受内核的 64 字节限制。时间会检查真实日期与星期，不正确的输入会在编译前报错。原有 [config/config](config/config) 和固定版本 SukiSU 配置继续由上游步骤读取。
 
-KPM 需要兼容的 SukiSU/BakaSU；SUSFS 需要 KernelSU。进阶选项可覆盖常用功能开关，但不能覆盖机型、源码元数据或 KernelSU 选项。导出 SUSFS 集成补丁可添加 `"export_susfs_patches":true`，输出随诊断产物上传。原有 [config/config](config/config) 和固定版本 SukiSU 配置继续由上游步骤读取。
-
-构建过程中，[nothing/upstream.py](nothing/upstream.py) 会读取**当前仓库**的 [.github/workflows/build.yml](.github/workflows/build.yml)，生成临时 composite action，继承依赖获取及补丁区间内的步骤，使用 JSON 保留布尔开关类型。无需维护另一份 SUSFS、ZRAM 或网络补丁脚本。上游新增的区间内步骤会被继承；新增输入可通过 `patch_options` 传入。步骤定位或输入契约不兼容时，检查直接失败，要求维护者审核适配层。
+构建过程中，[nothing/upstream.py](nothing/upstream.py) 会读取**当前仓库**的 [.github/workflows/build.yml](.github/workflows/build.yml)，生成临时 composite action，继承依赖获取及补丁区间内的步骤。[nothing/form.py](nothing/form.py) 负责把界面控件转换为上游需要的值并保留布尔类型，用户无需编辑 JSON。上游新增的区间内步骤会被继承；新增功能输入需在表单中暴露，测试会检查当前上游功能是否都有控件。步骤定位或输入契约不兼容时，检查直接失败，要求维护者审核适配层。
 
 Nothing 适配层另外负责：
 
@@ -74,9 +81,12 @@ Nothing 适配层另外负责：
 
 所有新增内容位于 `nothing/`、`tests/nothing/`、`nothing-*.yml` 和本文档。同步原项目时可直接合并原文件的更新；Nothing 适配层继续引用它们，不需要复制更新补丁实现。新增检查工作流也会在原 `build.yml` 或 SUSFS 脚本发生变化时运行。
 
+维护版本菜单：运行 **Actions → Nothing 更新版本下拉目录**，下载 `Nothing-updated-version-menu`，将其中 `nothing/releases.json` 和 `.github/workflows/nothing-build.yml` 两个文件放回仓库提交。因为 Actions 菜单读取已提交的工作流，下载更新包不会直接改变菜单。默认的“最新官方发布”始终实时查询，不依赖这次更新。也可以本地使用带 GitHub API 读取权限的 `GH_TOKEN` 运行 `python -m nothing.catalog --refresh`。
+
 ```bash
 python -m pip install -r nothing/requirements.txt
 python -m unittest discover -s tests/nothing -v
+python -m nothing.catalog --check
 bash -n nothing/build.sh
 bash -n nothing/anykernel.sh.in
 
