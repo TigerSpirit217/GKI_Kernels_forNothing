@@ -184,6 +184,8 @@ class AdapterTests(unittest.TestCase):
     def test_original_patch_bodies_are_inherited(self):
         action = upstream.generate_action(self.steps)
         for converted in action["runs"]["steps"]:
+            if converted["name"].startswith("Nothing 固定"):
+                continue
             original = next(step for step in self.steps if step.get("name") == converted["name"])
             self.assertEqual(converted["run"], upstream.rewrite(original["run"]))
         names = [step["name"] for step in action["runs"]["steps"]]
@@ -191,6 +193,10 @@ class AdapterTests(unittest.TestCase):
         self.assertNotIn("配置内核名称", names)
         self.assertNotIn("修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）", names)
         self.assertIn("应用 SUSFS 补丁", names)
+        self.assertLess(names.index("确定 KernelSU 分支"), names.index("Nothing 固定 SukiSU 41013 提交"))
+        self.assertLess(names.index("Nothing 固定 SukiSU 41013 提交"), names.index("添加 KernelSU"))
+        self.assertLess(names.index("克隆 SUSFS 源码"), names.index("Nothing 固定 SukiSU 配套 SUSFS 提交"))
+        self.assertLess(names.index("Nothing 固定 SukiSU 配套 SUSFS 提交"), names.index("记录 SUSFS 基线快照"))
 
     def test_new_upstream_feature_is_inherited(self):
         steps = copy.deepcopy(self.steps)
@@ -220,7 +226,7 @@ class AdapterTests(unittest.TestCase):
             plan = {**self.plan, "device": source.device_for("A065"), "source_sha": "a" * 40}
             plan_path, options_path = root / "plan.json", root / "options.json"
             plan_path.write_text(json.dumps(plan))
-            options_path.write_text('{"ksu_variant":"SukiSU(40726)","use_zram":false}')
+            options_path.write_text('{"ksu_variant":"SukiSU(41013)","enable_susfs":true,"use_zram":false}')
             env_path, output_path = root / "env", root / "output"
             with patch.dict(os.environ, {"GITHUB_ENV": str(env_path), "GITHUB_OUTPUT": str(output_path),
                                          "GITHUB_WORKSPACE": str(root)}), \
@@ -229,8 +235,10 @@ class AdapterTests(unittest.TestCase):
                 upstream.main()
             saved = json.loads(plan_path.read_text(encoding="utf-8"))
             self.assertEqual(saved["upstream_workflow_sha256"], hashlib.sha256(upstream.UPSTREAM.read_bytes()).hexdigest())
-            self.assertEqual(saved["patch_inputs"]["ksu_variant"], "SukiSU(40726)")
-            self.assertIn("SukiSU(40726).config", env_path.read_text(encoding="utf-8"))
+            self.assertEqual(saved["patch_inputs"]["ksu_variant"], "SukiSU")
+            self.assertEqual(saved["ksu_profile"]["version"], 41013)
+            self.assertEqual(saved["ksu_profile"]["source_sha"], "7f1c299af463d008e66e714077eb6a8079ff722b")
+            self.assertIn("LEGACY_SUKISU_CONFIG=\n", env_path.read_text(encoding="utf-8"))
             self.assertIn("context=", output_path.read_text(encoding="utf-8"))
             action = yaml.safe_load((root / "action/action.yml").read_text(encoding="utf-8"))
             self.assertEqual(action["runs"]["using"], "composite")
@@ -296,6 +304,17 @@ class PackagingTests(unittest.TestCase):
         self.assertIn("NothingCustom", archive_path.name)
         with ZipFile(archive_path) as archive:
             self.assertIn("NothingCustom", archive.read("anykernel.sh").decode())
+
+    def test_fixed_sukisu_version_is_in_filename_and_manifest(self):
+        self.plan["patch_inputs"] = {"ksu_mode": "关闭", "ksu_variant": "SukiSU"}
+        self.plan["ksu_profile"] = {"name": "SukiSU(41013)", "version": 41013}
+        with (self.out / ".config").open("a") as config:
+            config.write("CONFIG_KSU=y\n")
+        self.plan_path.write_text(json.dumps(self.plan))
+        archive_path = package(self.plan_path, self.kernel, self.out, self.ak, self.root / "dist")
+        self.assertIn("SukiSU(41013)", archive_path.name)
+        with ZipFile(archive_path) as archive:
+            self.assertEqual(json.loads(archive.read("nothing-build.json"))["ksu_profile"]["version"], 41013)
 
 
 if __name__ == "__main__":

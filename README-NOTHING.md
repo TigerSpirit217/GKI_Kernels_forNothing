@@ -54,7 +54,7 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 
 | 控件 | 用法 |
 | --- | --- |
-| KernelSU | 下拉选择 None / Official / SukiSU / BakaSU / 上游保留的固定版本 |
+| KernelSU | 下拉选择 None / Official / SukiSU(41013) / BakaSU；Nothing 不再提供 40726、40548 或滚动更新的 SukiSU |
 | SUSFS、KPM | 分别勾选；KPM 需要 SukiSU / BakaSU，SUSFS 需要 KernelSU |
 | Droidspaces | 勾选开启；兼容槽位默认 678，另可下拉选择 123 / 345 |
 | NTSync | 勾选开启，同时自动启用 Droidspaces |
@@ -63,7 +63,11 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 | 自定义版本名 | 可选，例如 `Tig`；追加到固定的 `内核基础版本-Android-KMI` 末尾，留空则只有固定部分；ZIP 文件名和刷入说明也会显示 |
 | 构建时间 | 可选，例如 `2026-10-19 12:30:00 UTC`；留空使用构建时的当前 UTC，也接受原格式 `Sun Dec 01 08:10:00 UTC 2024` |
 
-版本名接受 1–32 位英文字母、数字、点、下划线和连字符，以字母或数字开头。例如本次 5.10.252 / Android 12 / KMI 9 源码，留空生成 `5.10.252-android12-9`，填写 `Tig` 生成 `5.10.252-android12-9-Tig`。其他源码按自身的基础版本和 KMI 生成固定部分。无论是否填写，都不追加 Git 哈希、`dirty` 或 `+`，完整源码 SHA 仍记录在构建清单中。最终版本会在并行编译前由内核生成，检查格式及 64 字节限制。时间会检查真实日期与星期，不正确的输入会在编译前报错。原有 [config/config](config/config) 和固定版本 SukiSU 配置继续由上游步骤读取。
+版本名接受 1–32 位英文字母、数字、点、下划线和连字符，以字母或数字开头。例如本次 5.10.252 / Android 12 / KMI 9 源码，留空生成 `5.10.252-android12-9`，填写 `Tig` 生成 `5.10.252-android12-9-Tig`。其他源码按自身的基础版本和 KMI 生成固定部分。无论是否填写，都不追加 Git 哈希、`dirty` 或 `+`，完整源码 SHA 仍记录在构建清单中。最终版本会在并行编译前由内核生成，检查格式及 64 字节限制。时间会检查真实日期与星期，不正确的输入会在编译前报错。
+
+**SukiSU 41013 配套关系：** [nothing/sukisu.json](nothing/sukisu.json) 固定内核与管理器提交。启用 SUSFS 时使用 `builtin@7f1c299a` 及固定的配套 SUSFS；未启用时使用破坏性扩展接口改动之前的 `main@ffa00c07`。构建通过 Make 参数固定 `KSU_VERSION=41013`，避免 SukiSU Makefile 查询在线 main 提交数而将同一份 builtin 源码显示成更高版本。旧的 `SukiSU` 文本输入也归一到此配置；原 `config/config` 与 40726 / 40548 配置文件保留供上游同步，但不会覆盖 Nothing 的固定配置。
+
+请使用 [41013-6 对应的官方 Manager 构建](https://github.com/SukiSU-Ultra/SukiSU-Ultra/actions/runs/39134589556)，其源码为 `ffa00c0700604216de8a86ad9c74226af1add0d5`。41014 起管理器改用统一扩展接口；单独把内核版本号改成 41013，继续使用 41017-6 管理器，不能消除接口差异。固定 builtin 源码已包含 KPM、Umount 路径和动态管理器的旧接口，但未包含 CPU 身份伪装实现，本适配层不回移新接口或伪报支持。SukiSU SUSFS 会解除管理器及授权进程的 seccomp 过滤，因此管理器自身显示“未启用”不等同于内核关闭 `CONFIG_SECCOMP_FILTER`。
 
 构建过程中，[nothing/upstream.py](nothing/upstream.py) 会读取**当前仓库**的 [.github/workflows/build.yml](.github/workflows/build.yml)，生成临时 composite action，继承依赖获取及补丁区间内的步骤。[nothing/form.py](nothing/form.py) 负责把界面控件转换为上游需要的值并保留布尔类型，用户无需编辑 JSON。上游新增的区间内步骤会被继承；新增功能输入需在表单中暴露，测试会检查当前上游功能是否都有控件。步骤定位或输入契约不兼容时，检查直接失败，要求维护者审核适配层。
 

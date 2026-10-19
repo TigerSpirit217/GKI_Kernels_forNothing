@@ -15,12 +15,13 @@ import re
 import yaml
 
 from nothing.source import ROOT
+from nothing.sukisu import profile_for
 
 UPSTREAM = ROOT / ".github/workflows/build.yml"
 START = "提取实际子版本号"
 END = "配置内核名称"
 EXCLUDED = {"添加一加 8E 处理器支持", "修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）"}
-VARIANTS = {"None", "Official", "SukiSU", "BakaSU", "SukiSU(40726)", "SukiSU(40548)"}
+VARIANTS = {"None", "Official", "SukiSU", "SukiSU(41013)", "BakaSU"}
 RESERVED = {"android_version", "kernel_version", "sub_level", "os_patch_level", "ksu_variant",
             "ksu_mode", "enable_susfs", "version", "revision", "build_time", "supp_op", "artifact_upload_mode"}
 
@@ -78,7 +79,10 @@ def patch_context(plan, options, schema):
     if context.get("use_kpm", "disabled").startswith("enabled") and variant in ("None", "Official"):
         raise ValueError("KPM requires a compatible SukiSU/BakaSU variant")
     context.update({key: plan[key] for key in ("android_version", "kernel_version", "sub_level")})
-    context.update(ksu_variant="Official" if variant == "None" else variant,
+    # The fixed Nothing profile uses the original SukiSU patch paths, including
+    # KPM and SUSFS export. Its immutable refs are supplied in extra steps.
+    upstream_variant = "SukiSU" if variant in ("SukiSU", "SukiSU(41013)") else variant
+    context.update(ksu_variant="Official" if variant == "None" else upstream_variant,
                    ksu_mode="禁用KSU" if variant == "None" else "关闭",
                    enable_susfs=options.get("enable_susfs", False),
                    os_patch_level="nothing", version="", revision="r1", build_time="",
@@ -102,7 +106,7 @@ def rewrite(value):
 
 def generate_action(steps):
     names = [step.get("name") for step in steps]
-    for anchor in (START, END, "克隆依赖仓库", "应用 Stock Config 伪装"):
+    for anchor in (START, END, "克隆依赖仓库", "应用 Stock Config 伪装", "确定 KernelSU 分支", "克隆 SUSFS 源码"):
         if names.count(anchor) != 1:
             raise ValueError("Upstream step anchor changed; review adapter: " + anchor)
     begin, end = names.index(START), names.index(END)
@@ -119,6 +123,14 @@ def generate_action(steps):
         if "if" in step and not step["if"].startswith("${{"):
             step["if"] = "${{ " + step["if"] + " }}"
         converted.append(step)
+        if step["name"] == "确定 KernelSU 分支":
+            converted.append({"name": "Nothing 固定 SukiSU 41013 提交", "shell": "bash",
+                              "if": "${{ fromJSON(inputs.context).ksu_variant == 'SukiSU' && fromJSON(inputs.context).ksu_mode != '禁用KSU' }}",
+                              "run": "python -m nothing.sukisu select"})
+        elif step["name"] == "克隆 SUSFS 源码":
+            converted.append({"name": "Nothing 固定 SukiSU 配套 SUSFS 提交", "shell": "bash",
+                              "if": "${{ fromJSON(inputs.context).ksu_variant == 'SukiSU' && fromJSON(inputs.context).enable_susfs }}",
+                              "run": "python -m nothing.sukisu pin-susfs"})
     return {"name": "Nothing: inherited upstream patches",
             "description": "Generated at runtime from .github/workflows/build.yml; edit the upstream or adapter, not this file.",
             "inputs": {"context": {"description": "Typed upstream inputs as JSON", "required": True}},
@@ -152,11 +164,11 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     (output / "action.yml").write_text(yaml.safe_dump(action, allow_unicode=True, sort_keys=False), encoding="utf-8")
     env = export_environment(plan, Path(os.environ.get("GITHUB_WORKSPACE", ROOT)))
-    if context["ksu_variant"].startswith("SukiSU("):
-        config = ROOT / "config" / (context["ksu_variant"] + ".config")
-        if not config.is_file():
-            raise ValueError("Missing upstream fixed-commit config: " + str(config))
-        env["LEGACY_SUKISU_CONFIG"] = str(config)
+    profile = profile_for(plan, options.get("ksu_variant", "None"), context["enable_susfs"])
+    if profile:
+        plan["ksu_profile"] = profile
+    else:
+        plan.pop("ksu_profile", None)
     plan["patch_inputs"] = context
     plan["upstream_workflow_sha256"] = hashlib.sha256(UPSTREAM.read_bytes()).hexdigest()
     Path(args.plan).write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

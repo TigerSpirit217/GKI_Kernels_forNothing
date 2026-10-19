@@ -27,6 +27,7 @@ class FormTests(unittest.TestCase):
                                           "use_kpm": True, "droidspaces": True, "droidspaces_slot": "123",
                                           "droidspaces_ntsync": True, "export_susfs_patches": True})
         self.assertEqual(options["use_kpm"], "enabled (开启)")
+        self.assertEqual(options["ksu_variant"], "SukiSU(41013)")
         self.assertEqual(options["droidspaces"], "123")
         self.assertTrue(options["droidspaces_ntsync"])
         self.assertTrue(options["export_susfs_patches"])
@@ -73,6 +74,12 @@ class FormTests(unittest.TestCase):
         self.assertEqual(controls["version_name"]["type"], "string")
         self.assertEqual(controls["build_time"]["type"], "string")
         self.assertNotIn("patch_options", controls)
+        self.assertEqual(controls["ksu_variant"]["options"], ["None", "Official", "SukiSU(41013)", "BakaSU"])
+
+    def test_removed_fixed_versions_are_rejected(self):
+        for variant in ("SukiSU(40726)", "SukiSU(40548)"):
+            with self.subTest(variant=variant), self.assertRaisesRegex(ValueError, "Unsupported KernelSU"):
+                form.options_from_form({"ksu_variant": variant})
 
 
 class CatalogTests(unittest.TestCase):

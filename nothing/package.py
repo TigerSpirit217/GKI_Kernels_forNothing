@@ -41,6 +41,8 @@ def package(plan_path, kernel, out, anykernel, destination):
     destination.mkdir(parents=True, exist_ok=True)
     version = re.sub(r"[^A-Za-z0-9._-]", "-", plan["requested_version"])
     variant = "NoKSU" if plan["patch_inputs"]["ksu_mode"] == "禁用KSU" else plan["patch_inputs"]["ksu_variant"]
+    if variant != "NoKSU" and plan.get("ksu_profile"):
+        variant = plan["ksu_profile"]["name"]
     if custom_name:
         version += "-" + custom_name
     filename = f"Nothing-{device['id']}-{version}-{variant}-{plan['source_sha'][:12]}-AnyKernel3.zip"

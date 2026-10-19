@@ -29,6 +29,8 @@ import sys
 out = Path(next(arg[2:] for arg in sys.argv if arg.startswith("O=")))
 targets = {"gki_defconfig", "olddefconfig", "syncconfig", "kernelrelease", "Image"}
 target = next(arg for arg in sys.argv if arg in targets)
+if os.environ.get("NOTHING_TEST_EXPECT_KSU_VERSION"):
+    assert "KSU_VERSION=" + os.environ["NOTHING_TEST_EXPECT_KSU_VERSION"] in sys.argv
 with open(os.environ["NOTHING_TEST_MAKE_LOG"], "a") as log:
     log.write(target + "\\n")
 auto = out / "include/config/auto.conf"
@@ -81,6 +83,7 @@ class BuildConfigTests(unittest.TestCase):
                 plan = dict(kernel_version="5.10", sub_level="252", android_version="android12",
                             kmi_generation="9", clang_version="r416183b",
                             patch_inputs={"ksu_mode": "禁用KSU"}, build_settings={"version_name": name})
+                plan["ksu_profile"] = {"version": 41013}
                 (root / "nothing-plan.json").write_text(json.dumps(plan), encoding="utf-8")
                 log = root / "make.log"
                 # Git Bash needs /c/... in values later appended to shell PATH.
@@ -91,6 +94,7 @@ class BuildConfigTests(unittest.TestCase):
                            KERNEL_ROOT=workspace + "/nothing-kernel",
                            PYTHONPATH=str(ROOT), PYTHONUTF8="1", RUNNER_TEMP=root.as_posix(),
                            NOTHING_TEST_PYTHON=Path(sys.executable).as_posix(),
+                           NOTHING_TEST_EXPECT_KSU_VERSION="41013",
                            NOTHING_TEST_MAKE=fixture.as_posix(), NOTHING_TEST_MAKE_LOG=str(log),
                            PATH=str(fakebin) + os.pathsep + os.environ["PATH"])
                 result = subprocess.run([str(BASH), (ROOT / "nothing/build.sh").as_posix()],

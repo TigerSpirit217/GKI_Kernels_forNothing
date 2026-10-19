@@ -18,6 +18,8 @@ def options_from_form(inputs):
             raise ValueError(f"{key} 必须是勾选框的布尔值")
     options = {key: inputs.get(key, False) for key in SWITCHES}
     options["ksu_variant"] = inputs.get("ksu_variant", "None")
+    if options["ksu_variant"] == "SukiSU":
+        options["ksu_variant"] = "SukiSU(41013)"
     options["use_kpm"] = "enabled (开启)" if inputs.get("use_kpm", False) else "disabled (关闭)"
     enabled = inputs.get("droidspaces", False) or options["droidspaces_ntsync"]
     slot = inputs.get("droidspaces_slot", "678")
@@ -28,7 +30,7 @@ def options_from_form(inputs):
         raise ValueError("启用 SUSFS / KPM 时，请先从 KernelSU 下拉框选择 SukiSU 或 BakaSU")
     if inputs.get("use_kpm", False) and options["ksu_variant"] == "Official":
         raise ValueError("KPM 需要 SukiSU / BakaSU，不能选择 Official")
-    if options["export_susfs_patches"] and (not options["enable_susfs"] or options["ksu_variant"] not in ("SukiSU", "BakaSU")):
+    if options["export_susfs_patches"] and (not options["enable_susfs"] or options["ksu_variant"] not in ("SukiSU(41013)", "BakaSU")):
         raise ValueError("导出 SUSFS 补丁需要启用 SUSFS，并选择 SukiSU 或 BakaSU")
     _, schema = load_upstream()
     patch_context(dict(android_version="android14", kernel_version="6.1", sub_level="0"), options, schema)

@@ -1,0 +1,19 @@
+{
+  "name": "SukiSU(41013)",
+  "version": 41013,
+  "uapi_version": 6,
+  "repository": "https://github.com/SukiSU-Ultra/SukiSU-Ultra.git",
+  "kernel_refs": {
+    "builtin": "7f1c299af463d008e66e714077eb6a8079ff722b",
+    "main": "ffa00c0700604216de8a86ad9c74226af1add0d5"
+  },
+  "manager_commit": "ffa00c0700604216de8a86ad9c74226af1add0d5",
+  "manager_run": "https://github.com/SukiSU-Ultra/SukiSU-Ultra/actions/runs/39134589556",
+  "susfs_repository": "https://github.com/ShirkNeko/susfs4ksu.git",
+  "susfs_refs": {
+    "gki-android12-5.10": "c06d5f8ef2b53d04c5e1c6b86dc3076f1e0e9f33",
+    "gki-android13-5.15": "054b2432ef4c4aec4bb4cd65a532332798ee8c04",
+    "gki-android14-6.1": "5369359dbd10f6dd8cbdd59d1df7b788b29b168c",
+    "gki-android15-6.6": "afb39173a6cc9f188093e7c8b71b709fc40f6565"
+  }
+}

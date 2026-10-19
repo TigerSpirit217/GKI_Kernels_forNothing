@@ -55,6 +55,12 @@ kmi="$(python -c 'import json; print(json.load(open("nothing-plan.json"))["kmi_g
 make_args=(-C "$kernel" O="$out" ARCH=arm64 LLVM=1 LLVM_IAS=1 \
   CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
   BRANCH="$branch" KMI_GENERATION="$kmi" EXTRAVERSION=)
+ksu_version="$(python -c 'import json; print(json.load(open("nothing-plan.json")).get("ksu_profile", {}).get("version", ""))')"
+if [[ -n "$ksu_version" ]]; then
+  [[ "$ksu_version" =~ ^[0-9]+$ ]]
+  # SukiSU otherwise queries the live main commit count even at a fixed SHA.
+  make_args+=(KSU_VERSION="$ksu_version")
+fi
 make "${make_args[@]}" gki_defconfig
 local_suffix="$(python -m nothing.versioning prepare --kernel "$kernel" --out "$out")"
 python -m nothing.compile_config prepare --kernel "$kernel" --out "$out"
