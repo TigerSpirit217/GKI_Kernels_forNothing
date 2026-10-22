@@ -74,6 +74,8 @@ Phone (3a) / Pro 的系统可能使用相同 `Asteroids` 设备标识，AnyKerne
 
 此选项保留的是管理器及授权应用启动时的过滤器，不会给本来没有过滤器的进程凭空安装规则，也不改变 `su` 真正提权时的处理；实机显示仍取决于系统给该进程安装的过滤器。选项不会修复最新 builtin 的其他独立编译问题。
 
+builtin 的编译入口同时兼容旧版 `kernel/ksu.c` 和加入 preinit 后的 `kernel/ksu_main.c`。适配层读取实际生效的 `Kbuild` / `Makefile`，确认入口包含应用启动 hook，并把入口与构建规则的摘要写入清单；源码里残留一个未参与编译的文件不会被误判为集成成功。
+
 构建过程中，[nothing/upstream.py](nothing/upstream.py) 会读取**当前仓库**的 [.github/workflows/build.yml](.github/workflows/build.yml)，生成临时 composite action，继承依赖获取及补丁区间内的步骤。[nothing/form.py](nothing/form.py) 负责把界面控件转换为上游需要的值并保留布尔类型，用户无需编辑 JSON。上游新增的区间内步骤会被继承；新增功能输入需在表单中暴露，测试会检查当前上游功能是否都有控件。步骤定位或输入契约不兼容时，检查直接失败，要求维护者审核适配层。
 
 Nothing 适配层另外负责：

@@ -27,7 +27,8 @@ CONFIGS = ("CONFIG_SECCOMP", "CONFIG_SECCOMP_FILTER")
 FILES = {"common/kernel/seccomp.c", "common/kernel/nothing_ksu_seccomp.inc",
          "common/include/linux/nothing_ksu_seccomp.h", "KernelSU/kernel/hook/lsm_hook.c",
          "KernelSU/kernel/hook/setuid_hook.c", "KernelSU/kernel/infra/seccomp_cache.c",
-         "KernelSU/kernel/ksu.c", "KernelSU/kernel/Kbuild"}
+         "KernelSU/kernel/ksu.c", "KernelSU/kernel/ksu_main.c",
+         "KernelSU/kernel/Makefile", "KernelSU/kernel/Kbuild"}
 
 
 def digest(path):
@@ -90,6 +91,34 @@ def native_filter_files(root):
     return (hook, cache, kbuild)
 
 
+def builtin_filter_files(root):
+    """Resolve the unity source actually selected by Kbuild/Makefile.
+
+    builtin renamed ksu.c to ksu_main.c when it made ksu.o a composite object
+    containing the preinit runner. Retain support for fixed 41013 as well.
+    Kbuild takes precedence over Makefile, as in the kernel build system.
+    """
+    kernel = root / "KernelSU/kernel"
+    build = kernel / "Kbuild"
+    if not build.is_file():
+        build = kernel / "Makefile"
+    if not build.is_file():
+        raise ValueError("SukiSU builtin has no Kbuild/Makefile; review Nothing adapter")
+    text = re.sub(r"#[^\n]*", "", build.read_text(encoding="utf-8")).replace("\\\n", " ")
+    target = re.search(r"^\s*obj-\$\(CONFIG_KSU\)\s*(?::=|\+=|=)\s*(\w+)\.o\s*$", text, re.M)
+    if not target:
+        raise ValueError("SukiSU builtin CONFIG_KSU build target changed; review Nothing adapter")
+    obj = target[1]
+    components = re.findall(rf"^\s*{re.escape(obj)}-(?:y|objs)\s*(?::=|\+=|=)\s*([^\n]*)", text, re.M)
+    objects = " ".join(components).split() if components else [obj + ".o"]
+    for name in ("ksu.c", "ksu_main.c"):
+        unity = kernel / name
+        if unity.with_suffix(".o").name in objects and unity.is_file():
+            if '#include "hook/lsm_hook.c"' in code(unity.read_text(encoding="utf-8")):
+                return (unity, build)
+    raise ValueError("SukiSU builtin build does not compile lsm_hook.c via ksu.c/ksu_main.c; review Nothing adapter")
+
+
 def enable_defconfig(text):
     pattern = r"^(?:CONFIG_SECCOMP(?:_FILTER)?=.*|# CONFIG_SECCOMP(?:_FILTER)? is not set)\n?"
     text = re.sub(pattern, "", text, flags=re.M)
@@ -131,11 +160,9 @@ def apply(root, plan):
         writes = {hook: patched, seccomp_path: seccomp_text.rstrip() + "\n" + TAIL,
                   kernel / "kernel/nothing_ksu_seccomp.inc": (PATCHES / "seccomp_filter.inc").read_text(encoding="utf-8"),
                   kernel / "include/linux/nothing_ksu_seccomp.h": (PATCHES / "seccomp_filter.h").read_text(encoding="utf-8").replace("@COMPAT_REBOOT@", str(compat_reboot))}
-        # The builtin single translation unit must actually compile these hooks.
-        unity = root / "KernelSU/kernel/ksu.c"
-        if '#include "hook/lsm_hook.c"' not in unity.read_text(encoding="utf-8"):
-            raise ValueError("SukiSU builtin no longer compiles hook/lsm_hook.c; review adapter")
-        mode, files = "patched-builtin", (*writes, unity)
+        # Record both the unity source and its build wiring: the source rename
+        # must not bypass the check that these hooks really get compiled.
+        mode, files = "patched-builtin", (*writes, *builtin_filter_files(root))
     else:
         mode, files = "upstream", native_filter_files(root)
     # All source contracts have passed before writing any files.

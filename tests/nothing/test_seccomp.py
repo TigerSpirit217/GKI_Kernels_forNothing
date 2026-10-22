@@ -67,6 +67,7 @@ class SeccompTests(unittest.TestCase):
             "common/arch/arm64/configs/gki_defconfig": "# CONFIG_SECCOMP is not set\nCONFIG_SECCOMP_FILTER=n\nCONFIG_KSU=y\n",
             "KernelSU/kernel/hook/lsm_hook.c": LSM,
             "KernelSU/kernel/ksu.c": '#include "hook/lsm_hook.c"\n',
+            "KernelSU/kernel/Makefile": 'obj-$(CONFIG_KSU) := ksu.o\n',
             "KernelSU/kernel/policy/app_profile.c": "void escalate() { disable_seccomp(); }\n",
         }
         for name, text in self.files.items():
@@ -108,6 +109,46 @@ class SeccompTests(unittest.TestCase):
         plan["nothing_options"]["enable_seccomp"] = False
         before = self.snapshot()
         self.assertIsNone(seccomp.apply(self.root / "nonexistent", plan))
+        self.assertEqual(before, self.snapshot())
+
+    def test_renamed_builtin_entry_with_preinit_is_compiled_and_recorded(self):
+        # Regression for run 39702225015: builtin no longer has kernel/ksu.c.
+        old = self.root / "KernelSU/kernel/ksu.c"
+        old.rename(old.with_name("ksu_main.c"))
+        self.write("KernelSU/kernel/Makefile", 'obj-$(CONFIG_KSU) := ksu.o\n'
+                   'ksu-y := ksu_main.o\nksu-y += preinit/preinit.o preinit/blob.o\n')
+        record = seccomp.apply(self.root, self.plan)
+        self.assertEqual(record["mode"], "patched-builtin")
+        self.assertIn("KernelSU/kernel/ksu_main.c", record["files"])
+        self.assertIn("KernelSU/kernel/Makefile", record["files"])
+        self.assertNotIn("KernelSU/kernel/ksu.c", record["files"])
+        seccomp.verify_applied(self.root, record)
+        before = self.snapshot()
+        self.assertEqual(seccomp.apply(self.root, self.plan), record)
+        self.assertEqual(before, self.snapshot())
+        self.write("KernelSU/kernel/Makefile", 'obj-$(CONFIG_KSU) := different.o\n')
+        with self.assertRaisesRegex(ValueError, "changed after integration"):
+            seccomp.verify_applied(self.root, record)
+
+    def test_stale_uncompiled_entry_cannot_satisfy_the_hook_check(self):
+        # A leftover ksu.c is insufficient when the composite target builds a
+        # different source. Also honor a Kbuild that shadows a valid Makefile.
+        for build_file in ("Makefile", "Kbuild"):
+            with self.subTest(build_file=build_file):
+                self.write("KernelSU/kernel/" + build_file,
+                           'obj-$(CONFIG_KSU) := ksu.o\nksu-y := other.o\n')
+                before = self.snapshot()
+                with self.assertRaisesRegex(ValueError, "does not compile lsm_hook.c"):
+                    seccomp.apply(self.root, self.plan)
+                self.assertEqual(before, self.snapshot())
+                self.assertNotIn("seccomp_filter", self.plan)
+                self.write("KernelSU/kernel/Makefile", self.files["KernelSU/kernel/Makefile"])
+
+    def test_missing_unity_source_fails_clearly_without_partial_writes(self):
+        (self.root / "KernelSU/kernel/ksu.c").unlink()
+        before = self.snapshot()
+        with self.assertRaisesRegex(ValueError, "does not compile lsm_hook.c"):
+            seccomp.apply(self.root, self.plan)
         self.assertEqual(before, self.snapshot())
 
     def test_changed_hooks_fail_without_partial_writes(self):
