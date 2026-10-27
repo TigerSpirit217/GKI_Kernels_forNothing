@@ -73,6 +73,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_thin_lto:
+        description: "强制 ThinLTO；关闭时保留上游 LTO 选择及校验"
+        required: false
+        type: boolean
+        default: false
       cve_2026_43499_patch:
         required: false
         type: boolean
@@ -132,6 +137,7 @@ jobs:
           echo "Re-Kernel     : ${{ inputs.use_rekernel }}"
           echo "网络增强      : ${{ inputs.use_networking }}"
           echo "TTL / HL 保持 : ${{ inputs.use_ttl_patch }}"
+          echo "强制 ThinLTO  : ${{ inputs.force_thin_lto }}"
           echo "CVE-2026-43499: ${{ inputs.cve_2026_43499_patch }}"
           echo "SUSFS 集成补丁导出: ${{ inputs.export_susfs_patches }}"
           echo "Droidspaces   : ${{ inputs.droidspaces }}"
@@ -1574,6 +1580,8 @@ jobs:
       - name: 编译内核
         id: compile_kernel
         uses: nick-fields/retry@v4
+        env:
+          FORCE_THIN_LTO: ${{ inputs.force_thin_lto }}
         with:
           shell: bash
           timeout_minutes: 30
@@ -1609,7 +1617,11 @@ jobs:
               sed -i '/KMI_SYMBOL_LIST_STRICT_MODE/d' ./common/build.config.gki.aarch64
 
               if [ -f "build/build.sh" ]; then
-                BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
+                LTO_ENV=()
+                if [ "$FORCE_THIN_LTO" = "true" ]; then
+                  LTO_ENV=(LTO=thin)
+                fi
+                env "${LTO_ENV[@]}" BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
                 strings "out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image" | grep 'Linux version'
               else
                 # 提取 gki_defconfig 修改到 fragment，避免 bazel trim 检查失败
@@ -1623,7 +1635,11 @@ jobs:
                 if [ -s "$FRAG" ]; then
                   FRAG_FLAG="--defconfig_fragment=//common:arch/arm64/configs/ksu.fragment"
                 fi
-                tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast $FRAG_FLAG //common:kernel_aarch64/Image || exit 1
+                LTO_FLAGS=()
+                if [ "$FORCE_THIN_LTO" = "true" ]; then
+                  LTO_FLAGS=(--lto=thin)
+                fi
+                tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast "${LTO_FLAGS[@]}" $FRAG_FLAG //common:kernel_aarch64/Image || exit 1
                 strings ./bazel-bin/common/kernel_aarch64/Image | grep 'Linux version'
               fi
 
@@ -1631,11 +1647,21 @@ jobs:
               if [ -n "$FINAL_CONFIG" ]; then
                 echo "最终配置: $FINAL_CONFIG"
                 grep -E '^CONFIG_LTO' "$FINAL_CONFIG" || echo '（未找到 CONFIG_LTO，可能未启用 LTO 支持）'
-                if grep -qx 'CONFIG_LTO_CLANG_THIN=y' "$FINAL_CONFIG"; then
+                if [ "$FORCE_THIN_LTO" = "true" ]; then
+                  if ! grep -qx 'CONFIG_LTO_CLANG_THIN=y' "$FINAL_CONFIG"; then
+                    echo "::error::已请求强制 ThinLTO，但最终配置未启用 CONFIG_LTO_CLANG_THIN=y"
+                    exit 1
+                  fi
+                  echo "已验证用户请求的强制 ThinLTO"
+                elif grep -qx 'CONFIG_LTO_CLANG_THIN=y' "$FINAL_CONFIG"; then
                   echo "::error::Image 使用了 Thin LTO，与官方 GKI 的 LTO_NONE 不一致，刷入后可能无法启动"
                   exit 1
                 fi
               else
+                if [ "$FORCE_THIN_LTO" = "true" ]; then
+                  echo "::error::无法找到生成的 .config，不能确认强制 ThinLTO 已生效"
+                  exit 1
+                fi
                 echo "::warning::未找到生成的 .config，跳过 LTO 一致性校验"
               fi
 

@@ -1,5 +1,5 @@
 # Thin entry point: reuse kernel-custom.yml -> build.yml for all build/packaging steps.
-# Keep this input menu aligned with kernel-custom.yml; only target/feature defaults differ.
+# Keep shared inputs aligned with kernel-custom.yml; force_thin_lto is TTL-specific.
 name: Kernel+TTL Patch
 run-name: TTL · ${{ inputs.kernel_version }} · ${{ inputs.os_patch_level }} · ${{ inputs.kernelsu_variant }}
 permissions:
@@ -90,6 +90,11 @@ permissions:
         required: true
         type: boolean
         default: true
+      force_thin_lto:
+        description: 强制 LTO=thin（关闭则跟随上游）
+        required: true
+        type: boolean
+        default: false
       use_rekernel:
         description: 启用 Re-Kernel 驱动
         required: false
@@ -143,3 +148,4 @@ jobs:
       supp_op: ${{ inputs.supp_op }}
       droidspaces_ntsync: ${{ inputs.droidspaces_ntsync }}
       use_ttl_patch: true
+      force_thin_lto: ${{ inputs.force_thin_lto }}

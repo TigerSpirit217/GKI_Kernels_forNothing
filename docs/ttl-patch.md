@@ -11,6 +11,12 @@
 打包均复用 `kernel-custom.yml → build.yml`，没有单独复制构建流程。
 自定义版本名留空即可保留上游 KMI 标识。产物名称增加 `-TTL` 以区分普通构建。
 
+**强制 LTO=thin** 默认关闭。开启后，经典 `build/build.sh` 构建必传
+`LTO=thin`，Bazel / Kleaf 构建必传 `--lto=thin`，并检查最终生成的
+`.config` 包含 `CONFIG_LTO_CLANG_THIN=y`；没有生效或找不到配置时会直接失败。
+关闭时不传 LTO 覆盖参数，保留上游的 LTO 选择和校验。开启时允许用户指定的
+ThinLTO，不再被原流程的禁止 ThinLTO 校验拒绝。
+
 ## 补丁行为
 
 `scripts/ttl_patch.py` 支持 GKI 5.10、5.15、6.1、6.6、6.12，在以下路径添加

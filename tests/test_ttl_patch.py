@@ -1,5 +1,8 @@
 import copy
+import os
 from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 import unittest
 
@@ -9,6 +12,8 @@ from scripts import ttl_patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
+BASH = (str(Path(shutil.which("git")).with_name("bash.exe"))
+        if os.name == "nt" and shutil.which("git") else shutil.which("bash"))
 
 
 def function(name, statement):
@@ -113,6 +118,9 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(ttl["name"], "Kernel+TTL Patch")
         old = custom[True]["workflow_dispatch"]["inputs"]
         new = copy.deepcopy(ttl["on"]["workflow_dispatch"]["inputs"])
+        thin = new.pop("force_thin_lto")
+        self.assertEqual(thin["type"], "boolean")
+        self.assertIs(thin["default"], False)
         defaults = {"os_patch_level": "2025-02", "kernelsu_variant": "SukiSU",
                     "use_kpm": "enabled (开启)", "use_zram": True, "use_bbg": True}
         for name, value in defaults.items():
@@ -121,10 +129,16 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(new, old)
         job = ttl["jobs"]["build"]
         self.assertEqual(job["uses"], "./.github/workflows/kernel-custom.yml")
-        self.assertEqual(set(job["with"]), set(old) | {"use_ttl_patch"})
+        self.assertEqual(set(job["with"]), set(old) | {"use_ttl_patch", "force_thin_lto"})
         self.assertIs(job["with"]["use_ttl_patch"], True)
+        self.assertEqual(job["with"]["force_thin_lto"], "${{ inputs.force_thin_lto }}")
         call = custom[True]["workflow_call"]["inputs"]
-        self.assertEqual(set(call), set(old) | {"use_ttl_patch"})
+        self.assertEqual(set(call), set(old) | {"use_ttl_patch", "force_thin_lto"})
+        self.assertIs(call["force_thin_lto"]["default"], False)
+        build_inputs = self.workflow("build.yml")[True]["workflow_call"]["inputs"]
+        self.assertIs(build_inputs["force_thin_lto"]["default"], False)
+        self.assertEqual(custom["jobs"]["build-custom-kernel"]["with"]["force_thin_lto"],
+                         "${{ inputs.force_thin_lto || false }}")
         for name, schema in old.items():
             self.assertEqual(call[name]["type"], "string" if schema["type"] == "choice" else schema["type"])
             self.assertEqual(call[name].get("default"),
@@ -139,6 +153,89 @@ class WorkflowTests(unittest.TestCase):
         self.assertLess(patch, names.index("配置内核名称"))
         self.assertLess(names.index("编译内核"), names.index("验证 TTL 补丁已编入内核"))
         self.assertEqual(steps[patch]["if"], "inputs.use_ttl_patch")
+
+
+@unittest.skipUnless(BASH and Path(BASH).is_file(), "Bash is required for build dispatch tests")
+class ThinLTOBuildTests(unittest.TestCase):
+    def run_build(self, root, modern, force, simulate="normal"):
+        kernel = root / "kernel"
+        config = kernel / "common/arch/arm64/configs/gki_defconfig"
+        config.parent.mkdir(parents=True)
+        config.write_text("CONFIG_INET=y\n")
+        config.with_name("gki_defconfig.orig").write_text("CONFIG_INET=y\n")
+        (kernel / "common/build.config.gki.aarch64").write_text("BUILD_SYSTEM_DLKM=1\n")
+        builder = kernel / ("tools/bazel" if modern else "build/build.sh")
+        builder.parent.mkdir(parents=True)
+        code = """#!/usr/bin/env bash
+set -e
+mode=NONE
+"""
+        if modern:
+            code += """printf '%s\\n' "$@" > "$GITHUB_WORKSPACE/bazel-args.txt"
+for arg in "$@"; do
+  if [ "$arg" = --lto=thin ]; then mode=CLANG_THIN; fi
+done
+config=bazel-bin/common/kernel_aarch64_config/out_dir/.config
+image=bazel-bin/common/kernel_aarch64/Image
+"""
+        else:
+            code += """printf '%s\\n' "${LTO-unset}" > "$GITHUB_WORKSPACE/lto-env.txt"
+if [ "${LTO-unset}" = thin ]; then mode=CLANG_THIN; fi
+config=out/android12-5.10/common/.config
+image=out/android12-5.10/dist/Image
+"""
+        code += """mkdir -p "$(dirname "$config")" "$(dirname "$image")"
+if [ "$SIMULATE" = ignored ]; then mode=NONE; fi
+if [ "$SIMULATE" != missing ]; then printf 'CONFIG_LTO_%s=y\\n' "$mode" > "$config"; fi
+printf 'Linux version test\\n' > "$image"
+"""
+        builder.write_text(code, encoding="utf-8", newline="\n")
+        builder.chmod(0o755)
+        workflow = yaml.safe_load((ROOT / ".github/workflows/build.yml").read_text(encoding="utf-8"))
+        compile_step = next(s for s in workflow["jobs"]["build-kernel"]["steps"]
+                            if s.get("id") == "compile_kernel")
+        self.assertEqual(compile_step["env"]["FORCE_THIN_LTO"], "${{ inputs.force_thin_lto }}")
+        command = compile_step["with"]["command"].replace("${{ inputs.android_version }}", "android12")
+        command = command.replace("${{ inputs.kernel_version }}", "5.10")
+        self.assertNotIn("${{", command)
+        prefix = """cd "$1"
+export GITHUB_WORKSPACE="$PWD"
+export KERNEL_ROOT="$PWD/kernel"
+export DEFCONFIG="$KERNEL_ROOT/common/arch/arm64/configs/gki_defconfig"
+strings() { cat "$1"; }
+"""
+        environment = dict(os.environ, FORCE_THIN_LTO="true" if force else "false", SIMULATE=simulate)
+        environment.pop("LTO", None)
+        return subprocess.run([BASH, "-c", prefix + command, "_", root.as_posix()],
+                              env=environment, capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+    def test_forced_and_upstream_modes_reach_both_build_systems(self):
+        for modern in (False, True):
+            for force in (False, True):
+                with self.subTest(modern=modern, force=force), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    result = self.run_build(root, modern, force)
+                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    if modern:
+                        args = (root / "bazel-args.txt").read_text().splitlines()
+                        self.assertEqual([arg for arg in args if arg.startswith("--lto=")],
+                                         ["--lto=thin"] if force else [])
+                    else:
+                        self.assertEqual((root / "lto-env.txt").read_text().strip(), "thin" if force else "unset")
+
+    def test_forced_mode_rejects_a_builder_that_drops_thin_lto(self):
+        for modern in (False, True):
+            with self.subTest(modern=modern), tempfile.TemporaryDirectory() as directory:
+                result = self.run_build(Path(directory), modern, True, "ignored")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("CONFIG_LTO_CLANG_THIN=y", result.stdout)
+
+    def test_forced_mode_rejects_missing_compiled_configuration(self):
+        for modern in (False, True):
+            with self.subTest(modern=modern), tempfile.TemporaryDirectory() as directory:
+                result = self.run_build(Path(directory), modern, True, "missing")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("::error::", result.stdout)
 
 
 if __name__ == "__main__":

@@ -25,7 +25,7 @@ VARIANTS = {"None", "Official", "SukiSU", "SukiSU(41013)", "BakaSU"}
 NOTHING_SWITCHES = {"enable_seccomp"}
 # TTL is exposed by its dedicated generic-GKI entry point. Keep the independent
 # Nothing builder's existing form and effective configuration unchanged.
-INTERNAL_INPUTS = {"use_ttl_patch": False}
+INTERNAL_INPUTS = {"use_ttl_patch": False, "force_thin_lto": False}
 RESERVED = {"android_version", "kernel_version", "sub_level", "os_patch_level", "ksu_variant",
             "ksu_mode", "enable_susfs", "version", "revision", "build_time", "supp_op", "artifact_upload_mode"} | set(INTERNAL_INPUTS)
 

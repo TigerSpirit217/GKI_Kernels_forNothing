@@ -209,6 +209,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_thin_lto:
+        description: 强制 ThinLTO（供 TTL 入口调用；关闭则跟随上游）
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   resolve-version:
@@ -306,6 +311,7 @@ jobs:
       use_nomount: ${{ inputs.use_nomount || false }}
       use_networking: ${{ inputs.use_networking || false }}
       use_ttl_patch: ${{ inputs.use_ttl_patch || false }}
+      force_thin_lto: ${{ inputs.force_thin_lto || false }}
       cve_2026_43499_patch: ${{ inputs.cve_2026_43499_patch }}
       supp_op: ${{ inputs.supp_op || false }}
       enable_susfs: ${{ inputs.ksu_mode != '禁用SUSFS' && inputs.ksu_mode != '禁用KSU' }}
