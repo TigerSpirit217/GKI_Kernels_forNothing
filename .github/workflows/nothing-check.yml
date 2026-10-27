@@ -1,9 +1,9 @@
 name: Nothing 适配层检查
 on:
   push:
-    paths: ['nothing/**', 'tests/nothing/**', '.github/workflows/nothing-*.yml', '.github/workflows/build.yml', 'scripts/susfs_fixes/**']
+    paths: ['nothing/**', 'tests/**', '.github/workflows/nothing-*.yml', '.github/workflows/build.yml', '.github/workflows/kernel-custom.yml', '.github/workflows/kernel-ttl.yml', 'scripts/susfs_fixes/**', 'scripts/ttl_patch.py']
   pull_request:
-    paths: ['nothing/**', 'tests/nothing/**', '.github/workflows/nothing-*.yml', '.github/workflows/build.yml', 'scripts/susfs_fixes/**']
+    paths: ['nothing/**', 'tests/**', '.github/workflows/nothing-*.yml', '.github/workflows/build.yml', '.github/workflows/kernel-custom.yml', '.github/workflows/kernel-ttl.yml', 'scripts/susfs_fixes/**', 'scripts/ttl_patch.py']
   workflow_dispatch:
 
 permissions:
@@ -19,6 +19,7 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -r nothing/requirements.txt
       - run: python -m unittest discover -s tests/nothing -v
+      - run: python -m unittest discover -s tests -p test_ttl_patch.py -v
       - run: python -m nothing.catalog --check
       - run: |
           bash -n nothing/build.sh

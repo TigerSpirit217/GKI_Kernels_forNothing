@@ -1,0 +1,145 @@
+# Thin entry point: reuse kernel-custom.yml -> build.yml for all build/packaging steps.
+# Keep this input menu aligned with kernel-custom.yml; only target/feature defaults differ.
+name: Kernel+TTL Patch
+run-name: TTL · ${{ inputs.kernel_version }} · ${{ inputs.os_patch_level }} · ${{ inputs.kernelsu_variant }}
+permissions:
+  contents: write
+  actions: write
+'on':
+  workflow_dispatch:
+    inputs:
+      kernel_version:
+        description: 内核版本
+        required: true
+        type: choice
+        options:
+        - '5.10'
+        - '5.15'
+        - '6.1'
+        - '6.6'
+        - '6.12'
+        default: '5.10'
+      kernelsu_variant:
+        description: KernelSU 变体
+        required: true
+        type: choice
+        options:
+        - Official
+        - SukiSU
+        - SukiSU(40726)
+        - SukiSU(40548)
+        - BakaSU
+        default: SukiSU
+      ksu_mode:
+        description: KernelSU / SUSFS 模式
+        required: true
+        type: choice
+        options:
+        - 关闭
+        - 禁用SUSFS
+        - 禁用KSU
+        default: 关闭
+      use_kpm:
+        description: KPM 功能（patched 尚不支持）
+        required: true
+        type: choice
+        default: enabled (开启)
+        options:
+        - disabled (关闭)
+        - enabled (开启)
+        - patched (开启并修补，尚不支持)
+      droidspaces:
+        description: 'Droidspaces 容器支持 (5.10~6.6: 槽位补丁, 6.12: 开/关)'
+        required: false
+        type: choice
+        options:
+        - 'off'
+        - '678'
+        - '123'
+        - '345'
+        default: 'off'
+      artifact_upload_mode:
+        description: 构建产物上传模式
+        required: true
+        type: choice
+        options:
+        - 仅上传 AnyKernel3.zip
+        - 上传全部
+        default: 仅上传 AnyKernel3.zip
+      os_patch_level:
+        description: 安全补丁级别 (如 2022-01, lts)
+        required: true
+        type: string
+        default: 2025-02
+      version:
+        description: 自定义版本名 (可选)
+        required: false
+        type: string
+      build_time:
+        description: 自定义构建时间 (可选，N或留空=当前UTC)
+        required: false
+        type: string
+        default: Sun Dec 01 08:10:00 UTC 2024
+      use_zram:
+        description: 启用 ZRAM 增强算法
+        required: true
+        type: boolean
+        default: true
+      use_bbg:
+        description: 启用 BBG 防格机
+        required: true
+        type: boolean
+        default: true
+      use_rekernel:
+        description: 启用 Re-Kernel 驱动
+        required: false
+        type: boolean
+        default: false
+      use_nomount:
+        description: 启用 NoMount 挂载元模块
+        required: false
+        type: boolean
+        default: false
+      use_networking:
+        description: 启用网络增强（BBRv3 / IPSet / Qdisc / CIFS）
+        required: false
+        type: boolean
+        default: false
+      cve_2026_43499_patch:
+        description: 应用 CVE-2026-43499 rtmutex 修复链
+        required: false
+        type: boolean
+        default: false
+      supp_op:
+        description: 启用一加 8E 支持
+        required: false
+        type: boolean
+        default: false
+      droidspaces_ntsync:
+        description: 启用 Droidspaces 容器 NTSync 支持（需启用 Droidspaces）
+        required: false
+        type: boolean
+        default: false
+jobs:
+  build:
+    uses: ./.github/workflows/kernel-custom.yml
+    secrets: inherit
+    with:
+      kernel_version: ${{ inputs.kernel_version }}
+      kernelsu_variant: ${{ inputs.kernelsu_variant }}
+      ksu_mode: ${{ inputs.ksu_mode }}
+      use_kpm: ${{ inputs.use_kpm }}
+      droidspaces: ${{ inputs.droidspaces }}
+      artifact_upload_mode: ${{ inputs.artifact_upload_mode }}
+      os_patch_level: ${{ inputs.os_patch_level }}
+      version: ${{ inputs.version }}
+      build_time: ${{ inputs.build_time }}
+      use_zram: ${{ inputs.use_zram }}
+      use_bbg: ${{ inputs.use_bbg }}
+      use_rekernel: ${{ inputs.use_rekernel }}
+      use_nomount: ${{ inputs.use_nomount }}
+      use_networking: ${{ inputs.use_networking }}
+      cve_2026_43499_patch: ${{ inputs.cve_2026_43499_patch }}
+      supp_op: ${{ inputs.supp_op }}
+      droidspaces_ntsync: ${{ inputs.droidspaces_ntsync }}
+      use_ttl_patch: true

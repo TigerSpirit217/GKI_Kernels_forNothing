@@ -23,8 +23,11 @@ END = "配置内核名称"
 EXCLUDED = {"添加一加 8E 处理器支持", "修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）"}
 VARIANTS = {"None", "Official", "SukiSU", "SukiSU(41013)", "BakaSU"}
 NOTHING_SWITCHES = {"enable_seccomp"}
+# TTL is exposed by its dedicated generic-GKI entry point. Keep the independent
+# Nothing builder's existing form and effective configuration unchanged.
+INTERNAL_INPUTS = {"use_ttl_patch": False}
 RESERVED = {"android_version", "kernel_version", "sub_level", "os_patch_level", "ksu_variant",
-            "ksu_mode", "enable_susfs", "version", "revision", "build_time", "supp_op", "artifact_upload_mode"}
+            "ksu_mode", "enable_susfs", "version", "revision", "build_time", "supp_op", "artifact_upload_mode"} | set(INTERNAL_INPUTS)
 
 
 def load_upstream(path=UPSTREAM):
@@ -93,6 +96,7 @@ def patch_context(plan, options, schema):
                    enable_susfs=options.get("enable_susfs", False),
                    os_patch_level="nothing", version="", revision="r1", build_time="",
                    supp_op=False, artifact_upload_mode="仅上传 AnyKernel3.zip")
+    context.update(INTERNAL_INPUTS)
     # Fail clearly when an upstream update changes the input contract.
     if set(context) != set(schema):
         raise ValueError("Upstream input schema changed; review Nothing's input adapter")

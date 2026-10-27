@@ -68,6 +68,11 @@ on:
         required: false
         type: boolean
         default: false
+      use_ttl_patch:
+        description: "保持转发数据包 TTL / IPv6 Hop Limit（需关闭热点卸载加速）"
+        required: false
+        type: boolean
+        default: false
       cve_2026_43499_patch:
         required: false
         type: boolean
@@ -126,6 +131,7 @@ jobs:
           echo "KPM 功能      : ${{ inputs.use_kpm }}"
           echo "Re-Kernel     : ${{ inputs.use_rekernel }}"
           echo "网络增强      : ${{ inputs.use_networking }}"
+          echo "TTL / HL 保持 : ${{ inputs.use_ttl_patch }}"
           echo "CVE-2026-43499: ${{ inputs.cve_2026_43499_patch }}"
           echo "SUSFS 集成补丁导出: ${{ inputs.export_susfs_patches }}"
           echo "Droidspaces   : ${{ inputs.droidspaces }}"
@@ -190,6 +196,9 @@ jobs:
       - name: 初始化构建环境
         run: |
           CONFIG="${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}"
+          if [ "${{ inputs.use_ttl_patch }}" = "true" ]; then
+            CONFIG="${CONFIG}-TTL"
+          fi
           KERNEL_ROOT="$GITHUB_WORKSPACE/$CONFIG"
           mkdir -p "$KERNEL_ROOT"
 
@@ -1406,6 +1415,10 @@ jobs:
           grep -q '^CONFIG_REKERNEL=y$' "$DEFCONFIG" || echo "CONFIG_REKERNEL=y" >> "$DEFCONFIG"
           grep -q '^CONFIG_REKERNEL_NETWORK=y$' "$DEFCONFIG" || echo "CONFIG_REKERNEL_NETWORK=y" >> "$DEFCONFIG"
 
+      - name: 应用 TTL / Hop Limit 保持补丁
+        if: inputs.use_ttl_patch
+        run: python3 "$GITHUB_WORKSPACE/scripts/ttl_patch.py" --kernel "$KERNEL_ROOT/common"
+
       - name: 配置内核选项
         working-directory: ${{ env.KERNEL_ROOT }}
         run: |
@@ -1638,6 +1651,23 @@ jobs:
             } >> "$LOG_FILE"
             exit "$BUILD_STATUS"
 
+      - name: 验证 TTL 补丁已编入内核
+        if: inputs.use_ttl_patch
+        run: |
+          python3 "$GITHUB_WORKSPACE/scripts/ttl_patch.py" --kernel "$KERNEL_ROOT/common" --verify --build-root "$KERNEL_ROOT"
+          cp "$GITHUB_WORKSPACE/docs/ttl-patch.md" "$ANYKERNEL3/TTL-Patch-Notes.md"
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## TTL / Hop Limit Patch
+          已验证 CONFIG_IP_FORWARD_PRESERVE_TTL=y。覆盖内核 IPv4、IPv6 和软件流表的单播转发，保留 TTL/HL <= 1 的过期检查。
+
+          **热点还需关闭硬件及 BPF offload**，否则流量可能绕过本补丁。以 root 执行后重启：
+          ```sh
+          settings put global tether_offload_disabled 1
+          device_config put connectivity override_tether_enable_bpf_offload false
+          ```
+          OEM 系统可能忽略上述开关；请在热点两端抓包验证 TTL / HL。完整说明随 AnyKernel3 包提供。
+          EOF
+
       - name: 整理编译失败日志
         if: ${{ always() && steps.compile_kernel.outcome == 'failure' }}
         env:
@@ -1717,7 +1747,7 @@ jobs:
         if: inputs.artifact_upload_mode == '上传全部'
         run: |
           cd "$ANYKERNEL3"
-          ZIP_NAME="${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}-AnyKernel3.zip"
+          ZIP_NAME="${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}${{ inputs.use_ttl_patch && '-TTL' || '' }}-AnyKernel3.zip"
           mv ../Image ./Image
           zip -r "../$ZIP_NAME" ./*
 
