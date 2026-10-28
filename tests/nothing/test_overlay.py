@@ -184,7 +184,7 @@ class AdapterTests(unittest.TestCase):
     def test_original_patch_bodies_are_inherited(self):
         action = upstream.generate_action(self.steps)
         for converted in action["runs"]["steps"]:
-            if converted["name"].startswith("Nothing 固定"):
+            if converted["name"].startswith("Nothing 固定") or converted["name"] == "Nothing 配置原厂展示配置":
                 continue
             original = next(step for step in self.steps if step.get("name") == converted["name"])
             self.assertEqual(converted["run"], upstream.rewrite(original["run"]))
@@ -193,6 +193,8 @@ class AdapterTests(unittest.TestCase):
         self.assertNotIn("配置内核名称", names)
         self.assertNotIn("修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）", names)
         self.assertIn("应用 SUSFS 补丁", names)
+        self.assertNotIn("应用 Stock Config 伪装", names)
+        self.assertLess(names.index("Nothing 配置原厂展示配置"), names.index("确定 KernelSU 分支"))
         self.assertLess(names.index("确定 KernelSU 分支"), names.index("Nothing 固定 SukiSU 41013 提交"))
         self.assertLess(names.index("Nothing 固定 SukiSU 41013 提交"), names.index("添加 KernelSU"))
         self.assertLess(names.index("克隆 SUSFS 源码"), names.index("Nothing 固定 SukiSU 配套 SUSFS 提交"))

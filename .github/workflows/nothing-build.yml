@@ -252,7 +252,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    if: inputs.operation == 'build'
+    uses: ./.github/workflows/nothing-check.yml
+
   nothing:
+    needs: check
+    if: ${{ !cancelled() && (needs.check.result == 'success' || inputs.operation == 'list-versions') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 180
     env:

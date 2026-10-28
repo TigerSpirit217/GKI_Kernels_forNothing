@@ -10,6 +10,7 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 from nothing.source import ROOT
 from nothing.verify import verify_config
 from nothing.seccomp import verify_applied
+from nothing.stock_config import verify as verify_stock_config
 
 
 def package(plan_path, kernel, out, anykernel, destination):
@@ -22,6 +23,7 @@ def package(plan_path, kernel, out, anykernel, destination):
         raise ValueError("Missing compiled Image")
     if hashlib.sha256(image.read_bytes()).hexdigest() != plan.get("image_sha256"):
         raise ValueError("Image differs from the verified build manifest")
+    verify_stock_config(kernel, plan.get("stock_config"), image)
     anykernel = Path(anykernel)
     for required in ("tools/ak3-core.sh", "META-INF/com/google/android/update-binary"):
         if not (anykernel / required).is_file():

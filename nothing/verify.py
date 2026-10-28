@@ -9,6 +9,7 @@ import subprocess
 
 from nothing.versioning import validate_release
 from nothing.seccomp import verify_applied
+from nothing.stock_config import verify as verify_stock_config
 
 
 def rejects(kernel):
@@ -67,6 +68,8 @@ def main():
     if plan.get("nothing_options", {}).get("enable_seccomp"):
         verify_applied(Path(args.kernel).parent, plan.get("seccomp_filter"))
     verify_config(args.kernel, args.out, plan["patch_inputs"], plan.get("nothing_options"))
+    verify_stock_config(args.kernel, plan.get("stock_config"),
+                        Path(args.out) / "arch/arm64/boot/Image" if args.command == "record" else None)
     if args.command == "record":
         out = Path(args.out)
         plan["kernel_release"] = (out / "include/config/kernel.release").read_text().strip()

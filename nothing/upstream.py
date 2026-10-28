@@ -122,7 +122,11 @@ def generate_action(steps):
     begin, end = names.index(START), names.index(END)
     if begin >= end:
         raise ValueError("Upstream patch step order changed")
-    selected = [steps[names.index("克隆依赖仓库")], steps[names.index("应用 Stock Config 伪装")]]
+    # Generic stock templates can describe a different Android/kernel/toolchain
+    # release. Keep this exception inside the Nothing adapter for upstream sync.
+    selected = [steps[names.index("克隆依赖仓库")],
+                {"name": "Nothing 配置原厂展示配置",
+                 "run": 'python -m nothing.stock_config prepare --kernel "$KERNEL_ROOT/common"'}]
     selected += [step for step in steps[begin:end] if step.get("name") not in EXCLUDED]
     converted = []
     for step in copy.deepcopy(selected):
@@ -184,6 +188,7 @@ def main():
     # Nothing-only options must not change the inherited workflow's input contract.
     plan["nothing_options"] = {key: options.get(key, False) for key in sorted(NOTHING_SWITCHES)}
     plan.pop("seccomp_filter", None)
+    plan.pop("stock_config", None)
     plan["upstream_workflow_sha256"] = hashlib.sha256(UPSTREAM.read_bytes()).hexdigest()
     Path(args.plan).write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if os.environ.get("GITHUB_ENV"):

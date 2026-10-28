@@ -1,9 +1,6 @@
 name: Nothing 适配层检查
 on:
-  push:
-    paths: ['nothing/**', 'tests/**', '.github/workflows/nothing-*.yml', '.github/workflows/build.yml', '.github/workflows/kernel-custom.yml', '.github/workflows/kernel-ttl.yml', 'scripts/susfs_fixes/**', 'scripts/ttl_patch.py']
-  pull_request:
-    paths: ['nothing/**', 'tests/**', '.github/workflows/nothing-*.yml', '.github/workflows/build.yml', '.github/workflows/kernel-custom.yml', '.github/workflows/kernel-ttl.yml', 'scripts/susfs_fixes/**', 'scripts/ttl_patch.py']
+  workflow_call:
   workflow_dispatch:
 
 permissions:
