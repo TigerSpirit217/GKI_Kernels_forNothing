@@ -80,8 +80,6 @@ builtin 的编译入口同时兼容旧版 `kernel/ksu.c` 和加入 preinit 后�
 
 Nothing 适配层另外负责：
 
-- 展示配置由 `nothing/stock_config.py` 处理，不再继承通用“Stock Config 伪装”步骤。仅对 `nothing/stock_configs/manifest.json` 中机型、源码 SHA、Android 基线、内核版本和 KMI 均匹配的条目使用已记录的原厂 IKCONFIG；目前收录 Phone (2) / `ed888387f1aa` 对应排查中提供的原厂 5.10.252 配置。来源是固件 build `2610141615` 的原厂 boot，而非从该源码发布提交生成的配置，完整来源与哈希保存在清单中。其他机型或提交使用实际构建配置，不回退到通用旧模板。
-- 此覆盖只改变 `config_data` / `/proc/config.gz` 的展示内容，不替换实际编译的 `gki_defconfig` 或 `.config`，不更改自定义署名、构建时间或 SUSFS uname 设置。编译前检查文件摘要，编译后及打包前核对 `Image` 内嵌 IKCONFIG，来源和摘要随 `nothing-build.json` 输出。它修正的是展示配置来源，不保证 Play Integrity 结果；新增机型/版本配置需提供对应原厂 boot 的来源和摘要，不能仅因内核主版本相同而复用。
 - 拉取选定 NothingOSS 提交，使用该源码声明的官方 Android Clang、Android 基线与 KMI generation，以源码自带的 `gki_defconfig` 编译 arm64 GKI `Image`。新版 `setlocalversion` 使用与源码一致的 KMI 后缀。
 - 跳过通用源码下载、通用内核重命名、其他厂商专用修复和通用 boot 镜像生成；版本名按本文的固定规则生成。
 - 对齐上游使用 ThinLTO，保留源码启用的 CFI，并在 Kconfig 同步后校验，避免默认 Full LTO 的链接内存开销。构建使用独立进程组、普通日志文件和 120 分钟内部时限；失败或收到终止信号后，先通知进程组退出，3 秒后仍有残留则发送 SIGKILL。工作流通过 `exec` 直接运行监督进程，以便接收 Runner 的停止信号。
