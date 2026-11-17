@@ -184,6 +184,8 @@ class AdapterTests(unittest.TestCase):
     def test_original_patch_bodies_are_inherited(self):
         action = upstream.generate_action(self.steps)
         for converted in action["runs"]["steps"]:
+            if converted["name"] in ("添加 KernelSU", upstream.SUSFS_EXPORT):
+                continue
             original = next(step for step in self.steps if step.get("name") == converted["name"])
             key = "run" if "run" in original else "uses"
             self.assertEqual(converted[key], upstream.rewrite(original[key]))
@@ -193,6 +195,16 @@ class AdapterTests(unittest.TestCase):
         self.assertNotIn("应用 Stock Config 伪装", names)
         self.assertNotIn("修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）", names)
         self.assertIn("应用 SUSFS 补丁", names)
+
+    def test_self_hosted_sukisu_install_and_export(self):
+        steps = {step["name"]: step["run"] for step in upstream.generate_action(self.steps)["runs"]["steps"] if "run" in step}
+        install = steps["添加 KernelSU"]
+        self.assertIn('bash "$GITHUB_WORKSPACE/nothing/setup-sukisu.sh" "${BRANCH#-s }"', install)
+        self.assertNotIn("raw.githubusercontent.com/SukiSU-Nova/", install)
+        self.assertIn("raw.githubusercontent.com/Baka-SU/", install)
+        self.assertIn("raw.githubusercontent.com/tiann/KernelSU/", install)
+        self.assertIn("git clone --branch main '$ksu_repo' KernelSU", steps[upstream.SUSFS_EXPORT])
+        self.assertIn(upstream.EXPORTED_SETUP, steps[upstream.SUSFS_EXPORT])
 
     def test_new_upstream_feature_is_inherited(self):
         steps = copy.deepcopy(self.steps)
@@ -237,9 +249,11 @@ class AdapterTests(unittest.TestCase):
             self.assertEqual(saved["upstream_workflow_sha256"], hashlib.sha256(upstream.UPSTREAM.read_bytes()).hexdigest())
             self.assertEqual(saved["patch_inputs"]["ksu_variant"], "SukiSU")
             self.assertEqual(saved["ksu_variant"], "SukiSU-Nova")
+            self.assertEqual(saved["sukisu_repository"], upstream.SUKISU_REPOSITORY)
             self.assertEqual(saved["nothing_options"], {"enable_seccomp": True})
             self.assertNotIn("enable_seccomp", saved["patch_inputs"])
             self.assertIn("LEGACY_SUKISU_CONFIG=\n", env_path.read_text(encoding="utf-8"))
+            self.assertIn("SUKISU_REPOSITORY=" + upstream.SUKISU_REPOSITORY + "\n", env_path.read_text(encoding="utf-8"))
             self.assertNotIn("BRANCH=", env_path.read_text(encoding="utf-8"))
             self.assertIn("context=", output_path.read_text(encoding="utf-8"))
             action = yaml.safe_load((root / "action/action.yml").read_text(encoding="utf-8"))

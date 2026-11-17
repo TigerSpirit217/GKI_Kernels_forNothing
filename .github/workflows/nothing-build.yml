@@ -178,7 +178,7 @@ on:
         - Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260703-1843 | f58e3b16af36
       # END NOTHING VERSION MENU
       ksu_variant:
-        description: KernelSU 变体
+        description: KernelSU 变体（SukiSU-Nova 使用作者自建仓库）
         type: choice
         options: [None, Official, SukiSU-Nova, BakaSU]
         default: None

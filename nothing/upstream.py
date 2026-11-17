@@ -21,6 +21,10 @@ START = "提取实际子版本号"
 END = "配置内核名称"
 EXCLUDED = {"添加一加 8E 处理器支持", "修复 6.6 WiFi/蓝牙兼容性（三星 + 小米）"}
 SUKISU_NOVA = "SukiSU-Nova"
+SUKISU_REPOSITORY = "https://git.zako.shirkneko.top:20004/shirkneko/SukiSU"
+NOVA_SETUP = 'curl -LSs "https://raw.githubusercontent.com/SukiSU-Nova/SukiSU-Nova/main/kernel/setup.sh" | bash $BRANCH'
+SUSFS_EXPORT = "生成 SUSFS 集成补丁"
+EXPORTED_SETUP = 'ksu_setup_cmd="curl -LSs https://raw.githubusercontent.com/$ksu_slug/main/kernel/setup.sh | bash -s $ksu_commit"'
 VARIANTS = {"None": "Official", "Official": "Official", SUKISU_NOVA: "SukiSU",
             "SukiSU": "SukiSU", "BakaSU": "BakaSU"}
 NOTHING_SWITCHES = {"enable_seccomp"}
@@ -119,8 +123,26 @@ def generate_action(steps):
         raise ValueError("Upstream patch step order changed")
     selected = [steps[names.index("克隆依赖仓库")]]
     selected += [step for step in steps[begin:end] if step.get("name") not in EXCLUDED]
+    selected_names = [step.get("name") for step in selected]
+    for anchor in ("添加 KernelSU", SUSFS_EXPORT):
+        if selected_names.count(anchor) != 1:
+            raise ValueError("Upstream step anchor changed; review SukiSU source adapter: " + anchor)
     converted = []
     for step in copy.deepcopy(selected):
+        if step.get("name") == "添加 KernelSU":
+            if NOVA_SETUP not in step["run"]:
+                raise ValueError("Upstream SukiSU installer changed; review the self-hosted source adapter")
+            step["run"] = step["run"].replace(
+                NOVA_SETUP, 'bash "$GITHUB_WORKSPACE/nothing/setup-sukisu.sh" "${BRANCH#-s }"')
+        elif step.get("name") == SUSFS_EXPORT:
+            if EXPORTED_SETUP not in step["run"]:
+                raise ValueError("Upstream SUSFS export changed; review SukiSU setup metadata")
+            step["run"] = step["run"].replace(
+                EXPORTED_SETUP, f'''if [ "$ksu_repo" = "$SUKISU_REPOSITORY" ]; then
+      ksu_setup_cmd="git clone --branch main '$ksu_repo' KernelSU && git -C KernelSU show refs/remotes/origin/main:kernel/setup.sh | bash -s -- '$ksu_commit'"
+    else
+      {EXPORTED_SETUP}
+    fi''')
         if "run" in step:
             step.setdefault("shell", "bash")
         step = rewrite(step)
@@ -141,7 +163,7 @@ def export_environment(plan, workspace):
            "SUSFS4KSU": str(workspace / "susfs4ksu"), "KERNEL_PATCHES": str(workspace / "kernel_patches"),
            "SUKISU_PATCHES": str(workspace / "SukiSU_patch"), "ZZH_PATCHES": str(workspace),
            "ANYKERNEL3": str(workspace / "AnyKernel3"), "ACTION_BUILD": str(workspace / "Action-Build"),
-           "LEGACY_SUKISU_CONFIG": "", "SUSFS_PATCH_EXPORT": "false"}
+           "LEGACY_SUKISU_CONFIG": "", "SUSFS_PATCH_EXPORT": "false", "SUKISU_REPOSITORY": SUKISU_REPOSITORY}
     return env
 
 
@@ -162,6 +184,10 @@ def main():
     env = export_environment(plan, Path(os.environ.get("GITHUB_WORKSPACE", ROOT)))
     plan["patch_inputs"] = context
     plan["ksu_variant"] = SUKISU_NOVA if context["ksu_variant"] == "SukiSU" else options.get("ksu_variant", "None")
+    if context["ksu_variant"] == "SukiSU":
+        plan["sukisu_repository"] = SUKISU_REPOSITORY
+    else:
+        plan.pop("sukisu_repository", None)
     # Nothing-only options must not change the inherited workflow's input contract.
     plan["nothing_options"] = {key: options.get(key, False) for key in sorted(NOTHING_SWITCHES)}
     plan.pop("seccomp_filter", None)
