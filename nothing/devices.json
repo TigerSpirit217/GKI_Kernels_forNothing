@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "devices": {
+    "phone-2": {
+      "name": "Nothing Phone (2)",
+      "aliases": ["phone2", "pong", "A065", "AIN065"],
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch_pattern": "^sm8475/",
+      "readme_pattern": "Pong[-_]|Phone\\s*\\(2\\)",
+      "kernel": "5.10",
+      "device_names": ["Pong", "pong", "A065", "AIN065"]
+    },
+    "phone-2a": {
+      "name": "Nothing Phone (2a)",
+      "aliases": ["phone2a", "pacman", "A142"],
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch_pattern": "^mt6886/Pacman/",
+      "readme_pattern": "Pacman[-_]|Phone\\s*\\(2a\\)",
+      "kernel": "5.15",
+      "device_names": ["Pacman", "pacman", "A142"]
+    },
+    "phone-3a": {
+      "name": "Nothing Phone (3a)",
+      "aliases": ["phone3a", "asteroids", "A059"],
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch_pattern": "^sm7635/[^/]+/mr$",
+      "readme_pattern": "Asteroids[-_]|Phone\\s*\\(3a\\)",
+      "kernel": "6.1",
+      "device_names": ["Asteroids", "asteroids", "A059"]
+    },
+    "phone-3a-pro": {
+      "name": "Nothing Phone (3a) Pro",
+      "aliases": ["phone3apro", "asteroidspro", "A059P"],
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch_pattern": "^sm7635/[^/]+/mr$",
+      "readme_pattern": "Asteroids[-_]|Phone\\s*\\(3a\\)",
+      "kernel": "6.1",
+      "device_names": ["Asteroids", "asteroids", "AsteroidsPro", "asteroidspro", "A059P"]
+    },
+    "phone-3": {
+      "name": "Nothing Phone (3)",
+      "aliases": ["phone3", "metroid", "A024"],
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch_pattern": "^sm8735/",
+      "readme_pattern": "Metroid[-_]|Phone\\s*\\(3\\)",
+      "kernel": "6.6",
+      "device_names": ["Metroid", "metroid", "A024"]
+    },
+    "cmf-phone-1": {
+      "name": "CMF Phone (1)",
+      "aliases": ["cmf1", "cmfphone1", "tetris", "A015"],
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch_pattern": "^mt6878/Tetris/",
+      "readme_pattern": "Tetris[-_]|CMF[^\\n]*Phone\\s*\\(?1\\)?",
+      "kernel": "6.1",
+      "device_names": ["Tetris", "tetris", "A015"]
+    },
+    "phone-4a": {
+      "name": "Nothing Phone (4a)",
+      "aliases": ["phone4a", "frogger", "A069"],
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch_pattern": "^sm7635/[^/]+/mr_Frogger$",
+      "readme_pattern": "Frogger[-_]|Phone\\s*\\(4a\\)(?!\\s*Pro)",
+      "kernel": "6.1",
+      "device_names": ["Frogger", "frogger", "A069"]
+    },
+    "phone-4a-pro": {
+      "name": "Nothing Phone (4a) Pro",
+      "aliases": ["phone4apro", "froggerpro", "A069P"],
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm7750",
+      "branch_pattern": "^sm7750/[^/]+/FroggerPro$",
+      "readme_pattern": "FroggerPro[-_]|Phone\\s*\\(4a\\)\\s*Pro",
+      "kernel": "6.6",
+      "device_names": ["FroggerPro", "froggerpro", "A069P"]
+    },
+    "cmf-phone-2-pro": {
+      "name": "CMF Phone (2) Pro",
+      "aliases": ["cmf2pro", "cmfphone2pro", "galaga", "A001"],
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch_pattern": "^mt6878/Galaga/",
+      "readme_pattern": "Galaga[-_]",
+      "kernel": "6.1",
+      "device_names": ["Galaga", "galaga", "A001"]
+    },
+    "phone-3a-lite": {
+      "name": "Nothing Phone (3a) Lite",
+      "aliases": ["phone3alite", "galaxian", "A001T"],
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch_pattern": "^mt6878/Galaxian/",
+      "readme_pattern": "Galaxian[-_]",
+      "kernel": "6.1",
+      "device_names": ["Galaxian", "galaxian", "A001T"]
+    },
+    "phone-4b": {
+      "name": "Nothing Phone (4b)",
+      "aliases": ["phone4b", "supercontra", "A009P"],
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm6650",
+      "branch_pattern": "^sm6650/[^/]+/SuperContra$",
+      "readme_pattern": "SuperContra[-_]|Phone\\s*\\(4b\\)",
+      "kernel": "6.1",
+      "device_names": ["SuperContra", "supercontra", "A009P"]
+    }
+  }
+}

@@ -1,0 +1,1416 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/b/mr",
+      "sha": "ed888387f1aa134dd5c9212b890af68a9de9b6ae",
+      "version": "Pong-B4.1-260818-1726",
+      "os_version": "4.1",
+      "committed_at": "2026-09-11T14:21:57.000+08:00",
+      "label": "Nothing Phone (2) | OS 4.1 | Pong-B4.1-260818-1726 | ed888387f1aa"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/b/mr",
+      "sha": "cb74def2a8430b66c71adb395f6ea30250620bd1",
+      "version": "Pong-B4.1-260618-1026",
+      "os_version": "4.1",
+      "committed_at": "2026-07-30T19:59:20.000+08:00",
+      "label": "Nothing Phone (2) | OS 4.1 | Pong-B4.1-260618-1026 | cb74def2a843"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/b/mr",
+      "sha": "89e7a438e23ac066f47509f6f41ff4c04dd8d625",
+      "version": "Pong-B4.1-260414-1749",
+      "os_version": "4.1",
+      "committed_at": "2026-04-30T17:10:13.000+08:00",
+      "label": "Nothing Phone (2) | OS 4.1 | Pong-B4.1-260414-1749 | 89e7a438e23a"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/b/mr",
+      "sha": "2ee971cbc73cdcbbc78e45c33b1d762c8f4f3861",
+      "version": "Pong-B4.0-260226-0955",
+      "os_version": "4.0",
+      "committed_at": "2026-04-20T19:19:40.000+08:00",
+      "label": "Nothing Phone (2) | OS 4.0 | Pong-B4.0-260226-0955 | 2ee971cbc73c"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/b/mr",
+      "sha": "44378229872f24b7eea44239bf45691279e7e856",
+      "version": "Pong-B4.0-251226-1110",
+      "os_version": "4.0",
+      "committed_at": "2026-01-16T18:47:00.000+08:00",
+      "label": "Nothing Phone (2) | OS 4.0 | Pong-B4.0-251226-1110 | 44378229872f"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/b/mr",
+      "sha": "c5a8655cd7428831b952be14e01dbe1640ce1232",
+      "version": "Pong-B4.0-251119-1654",
+      "os_version": "4.0",
+      "committed_at": "2026-01-15T18:50:01.000+08:00",
+      "label": "Nothing Phone (2) | OS 4.0 | Pong-B4.0-251119-1654 | c5a8655cd742"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "b422d73ad77196bf0d7b47e1b9d307ab10465999",
+      "version": "Pong-V3.2-250917-1451",
+      "os_version": "3.2",
+      "committed_at": "2026-01-15T18:46:47.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.2 | Pong-V3.2-250917-1451 | b422d73ad771"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "e13931e0db92728f1edbeb16d744fbbf296eed57",
+      "version": "Pong-V3.2-250828-1921",
+      "os_version": "3.2",
+      "committed_at": "2026-01-15T18:46:36.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.2 | Pong-V3.2-250828-1921 | e13931e0db92"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "aebf190a83ca8ad5e998adb965aa5fc771294b39",
+      "version": "Pong-V3.2-250708-2227",
+      "os_version": "3.2",
+      "committed_at": "2025-07-30T19:15:35.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.2 | Pong-V3.2-250708-2227 | aebf190a83ca"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "792b77b96b5205f9d73c0aee897670156d462def",
+      "version": "Pong-V3.0-250506-1805",
+      "os_version": "3.0",
+      "committed_at": "2025-05-21T20:23:45.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.0 | Pong-V3.0-250506-1805 | 792b77b96b52"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "67c59c6aab52e278c3c32b24be25e651b14ead92",
+      "version": "Pong-V3.0-250304-1717",
+      "os_version": "3.0",
+      "committed_at": "2025-04-15T12:55:20.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.0 | Pong-V3.0-250304-1717 | 67c59c6aab52"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "3ac388baea3927157d52959c81638f7f9b0a51c7",
+      "version": "Pong-V3.0-250113-1723",
+      "os_version": "3.0",
+      "committed_at": "2025-02-05T23:19:00.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.0 | Pong-V3.0-250113-1723 | 3ac388baea39"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/v/mr",
+      "sha": "a028f742577152e627a4e6b574b10d0239a289a9",
+      "version": "Pong-V3.0-241226-2001",
+      "os_version": "3.0",
+      "committed_at": "2025-01-07T15:58:00.000+08:00",
+      "label": "Nothing Phone (2) | OS 3.0 | Pong-V3.0-241226-2001 | a028f7425771"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "07751903976877c4a248288e0e89fed229e63e7d",
+      "version": "Pong-U2.6-241016-1700",
+      "os_version": "2.6",
+      "committed_at": "2025-01-07T15:28:15.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.6 | Pong-U2.6-241016-1700 | 077519039768"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "43a86cb4be85b7da008cb4d9ebcf675a87a3b35e",
+      "version": "Pong-U2.6-240828-1751",
+      "os_version": "2.6",
+      "committed_at": "2024-10-19T15:19:06.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.6 | Pong-U2.6-240828-1751 | 43a86cb4be85"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "43a86cb4be85b7da008cb4d9ebcf675a87a3b35e",
+      "version": "Pong-U2.6-240628-0430",
+      "os_version": "2.6",
+      "committed_at": "2024-10-19T15:19:06.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.6 | Pong-U2.6-240628-0430 | 43a86cb4be85"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "bea1466f1b20a844ce09030782fa462139aaad7a",
+      "version": "2.6",
+      "os_version": "2.6",
+      "committed_at": "2024-07-15T15:40:46.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.6 | 2.6 | bea1466f1b20"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "7d967cea9574e485f6476aa5ab704775d49bf7bd",
+      "version": "2.5.6",
+      "os_version": "2.5.6",
+      "committed_at": "2024-06-21T15:03:19.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.6 | 2.5.6 | 7d967cea9574"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "d235d32139f5fb619613b2d82d49d442c1817add",
+      "version": "2.5.5",
+      "os_version": "2.5.5",
+      "committed_at": "2024-04-24T16:17:50.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.5 | 2.5.5 | d235d32139f5"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "ca4d79fcd06ed475b8e3d9dca11a4eca84fafc4b",
+      "version": "2.5.3",
+      "os_version": "2.5.3",
+      "committed_at": "2024-04-08T19:13:36.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.3 | 2.5.3 | ca4d79fcd06e"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "f72845bc7d5c8546ee9dfc7acd325d57493a2d7e",
+      "version": "2.5.2",
+      "os_version": "2.5.2",
+      "committed_at": "2024-02-02T11:35:33.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.2 | 2.5.2 | f72845bc7d5c"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/mr",
+      "sha": "196cf7ed694b2d10dddbda2dec5506e17958854d",
+      "version": "2.5.1",
+      "os_version": "2.5.1",
+      "committed_at": "2023-12-25T10:08:38.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.1 | 2.5.1 | 196cf7ed694b"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/obt",
+      "sha": "cf676309772d27da7f98e864a472a111607f49aa",
+      "version": "2.5.0.BETA2",
+      "os_version": "2.5.0.BETA2",
+      "committed_at": "2023-12-06T18:15:14.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.0.BETA2 | 2.5.0.BETA2 | cf676309772d"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/u/obt",
+      "sha": "3a6c9cb00ba6e80671fd8def55505964f72a0b14",
+      "version": "2.5.0",
+      "os_version": "2.5.0",
+      "committed_at": "2023-12-04T15:44:21.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.5.0 | 2.5.0 | 3a6c9cb00ba6"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/t",
+      "sha": "c402fcdb3a1523d10b15ef1123bced45456f7592",
+      "version": "2.0.4",
+      "os_version": "2.0.4",
+      "committed_at": "2023-11-15T14:48:24.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.0.4 | 2.0.4 | c402fcdb3a15"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/t",
+      "sha": "a89d792b9d1292260819545aae7535bec3d7a7d7",
+      "version": "2.0.3",
+      "os_version": "2.0.3",
+      "committed_at": "2023-10-01T14:03:09.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.0.3 | 2.0.3 | a89d792b9d12"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/t",
+      "sha": "51e36fc28a1abe98350f21eacf77504accccbbfe",
+      "version": "2.0.2",
+      "os_version": "2.0.2",
+      "committed_at": "2023-09-04T19:16:39.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.0.2 | 2.0.2 | 51e36fc28a1a"
+    },
+    {
+      "model": "phone-2",
+      "repository": "NothingOSS/android_kernel_msm-5.10_nothing_sm8475",
+      "branch": "sm8475/t",
+      "sha": "04ec8b96bc85659552ad6b0312f7c95047c9d6a0",
+      "version": "2.0.1",
+      "os_version": "2.0.1",
+      "committed_at": "2023-07-21T19:54:16.000+08:00",
+      "label": "Nothing Phone (2) | OS 2.0.1 | 2.0.1 | 04ec8b96bc85"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/16b",
+      "sha": "974ca2a156425c64f38e15fb7fcc50d18fcdf9d1",
+      "version": "Pacman-B4.1-260813-0941",
+      "os_version": "4.1",
+      "committed_at": "2026-09-07T16:36:36.000+08:00",
+      "label": "Nothing Phone (2a) | OS 4.1 | Pacman-B4.1-260813-0941 | 974ca2a15642"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/16b",
+      "sha": "e7db892eadc8d4cc132082ec04b5aee25a5de1e5",
+      "version": "Pacman-B4.1-260609-1925",
+      "os_version": "4.1",
+      "committed_at": "2026-08-03T17:20:58.000+08:00",
+      "label": "Nothing Phone (2a) | OS 4.1 | Pacman-B4.1-260609-1925 | e7db892eadc8"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/16b",
+      "sha": "d8abecef8bf91a5bd545398c02c22d3dda8b8780",
+      "version": "Pacman-B4.1-260414-2141",
+      "os_version": "4.1",
+      "committed_at": "2026-06-12T09:07:04.000+08:00",
+      "label": "Nothing Phone (2a) | OS 4.1 | Pacman-B4.1-260414-2141 | d8abecef8bf9"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/16b",
+      "sha": "81f08370e43a568d432d7bd0f967a0559a8664c0",
+      "version": "Pacman-B4.0-260225-1817",
+      "os_version": "4.0",
+      "committed_at": "2026-03-18T10:17:31.000+08:00",
+      "label": "Nothing Phone (2a) | OS 4.0 | Pacman-B4.0-260225-1817 | 81f08370e43a"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/16b",
+      "sha": "02f45fecd3aa6780740aca0a79a120b810f7c744",
+      "version": "Pacman-B4.0-20251230-2052",
+      "os_version": "4.0",
+      "committed_at": "2026-01-02T11:26:22.000+08:00",
+      "label": "Nothing Phone (2a) | OS 4.0 | Pacman-B4.0-20251230-2052 | 02f45fecd3aa"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/v",
+      "sha": "78d06aae6ad55a258ef459752ec6e76c1ae2aa9f",
+      "version": "Pacman-V3.2-250815-1642",
+      "os_version": "3.2",
+      "committed_at": "2025-08-26T16:06:04.000+08:00",
+      "label": "Nothing Phone (2a) | OS 3.2 | Pacman-V3.2-250815-1642 | 78d06aae6ad5"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/v",
+      "sha": "077637ecb4e87679bfb88d8377e5ef5e32079aa5",
+      "version": "Pacman-V3.2-250620-1021",
+      "os_version": "3.2",
+      "committed_at": "2025-08-26T16:05:00.000+08:00",
+      "label": "Nothing Phone (2a) | OS 3.2 | Pacman-V3.2-250620-1021 | 077637ecb4e8"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/v",
+      "sha": "49ae55714ccc362d00510396c56200f4340f03a7",
+      "version": "Pacman-V3.0-250429-1922",
+      "os_version": "3.0",
+      "committed_at": "2025-05-26T10:09:09.000+08:00",
+      "label": "Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-250429-1922 | 49ae55714ccc"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/v",
+      "sha": "1328bd7065df21f2c31aa0367eff40c66f88e5e3",
+      "version": "Pacman-V3.0-250304-1904",
+      "os_version": "3.0",
+      "committed_at": "2025-05-26T10:08:55.000+08:00",
+      "label": "Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-250304-1904 | 1328bd7065df"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/v",
+      "sha": "149e420911a42cc1a96116b77d6675ebd09f7dff",
+      "version": "Pacman-V3.0-20241210-2057",
+      "os_version": "3.0",
+      "committed_at": "2025-02-08T00:09:15.000+08:00",
+      "label": "Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-20241210-2057 | 149e420911a4"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/v",
+      "sha": "a5ed367edf9389b2dd86938395cfb9085156cb49",
+      "version": "Pacman-V3.0-150114-1909",
+      "os_version": "3.0",
+      "committed_at": "2025-02-10T15:02:30.000+08:00",
+      "label": "Nothing Phone (2a) | OS 3.0 | Pacman-V3.0-150114-1909 | a5ed367edf93"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "c09392da48d41a814258665c617249fa765ab222",
+      "version": "Pacman-U2.6-20241021-2253",
+      "os_version": "2.6",
+      "committed_at": "2025-01-09T14:03:21.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.6 | Pacman-U2.6-20241021-2253 | c09392da48d4"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "c4b1f9d360242157e64bae3f138c18c1347719eb",
+      "version": "Pacman-U2.6-20240828-1906",
+      "os_version": "2.6",
+      "committed_at": "2025-01-09T14:02:41.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.6 | Pacman-U2.6-20240828-1906 | c4b1f9d36024"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "ee98ef4924cb9962effdaa8f59a852281a060296",
+      "version": "2.6",
+      "os_version": "2.6",
+      "committed_at": "2024-07-18T10:18:19.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.6 | 2.6 | ee98ef4924cb"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "eecc955f80041f77125417f074c1040edfee8e89",
+      "version": "2.5.6",
+      "os_version": "2.5.6",
+      "committed_at": "2024-05-30T16:48:25.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.5.6 | 2.5.6 | eecc955f8004"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "72300d592421595e8946333f5931ddb5344e2bf4",
+      "version": "2.5.5.a",
+      "os_version": "2.5.5.a",
+      "committed_at": "2024-05-30T09:59:56.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.5.5.a | 2.5.5.a | 72300d592421"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "cab2a9211ec892776172fcd01124bf89cfbc4390",
+      "version": "2.5.5",
+      "os_version": "2.5.5",
+      "committed_at": "2024-04-22T12:11:49.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.5.5 | 2.5.5 | cab2a9211ec8"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "1de1445769dcbfbfb47d670261ffbaca397dff13",
+      "version": "2.5.4.b",
+      "os_version": "2.5.4.b",
+      "committed_at": "2024-04-17T19:11:10.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.5.4.b | 2.5.4.b | 1de1445769dc"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "e8c7337ad52557c73348658dcd78b903dd5415e4",
+      "version": "2.5.4.a",
+      "os_version": "2.5.4.a",
+      "committed_at": "2024-04-02T17:09:31.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.5.4.a | 2.5.4.a | e8c7337ad525"
+    },
+    {
+      "model": "phone-2a",
+      "repository": "NothingOSS/android_kernel_5.15_nothing_mt6886",
+      "branch": "mt6886/Pacman/t",
+      "sha": "b690b79a44e78b4ebe67f66844d1bfc41976bc17",
+      "version": "2.5.3",
+      "os_version": "2.5.3",
+      "committed_at": "2024-03-19T14:32:05.000+08:00",
+      "label": "Nothing Phone (2a) | OS 2.5.3 | 2.5.3 | b690b79a44e7"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "cf8c976798d9db432d413493543bdd9a73c517b2",
+      "version": "Asteroids-B4.1-260928-1204",
+      "os_version": "4.1",
+      "committed_at": "2026-10-14T10:08:10.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260928-1204 | cf8c976798d9"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "13c3e315ae1b159d420322edd55db5f236931a44",
+      "version": "Asteroids-B4.1-260810-1153",
+      "os_version": "4.1",
+      "committed_at": "2026-08-27T21:53:57.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260810-1153 | 13c3e315ae1b"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "11562380ec6c9a8ddf4f8185b2e9ad362606c5fa",
+      "version": "Asteroids-B4.1-260618-1048",
+      "os_version": "4.1",
+      "committed_at": "2026-08-12T18:49:50.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260618-1048 | 11562380ec6c"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "b6b2b0fb2e8c0abdfa1e60246ac1a8f4ddc44d22",
+      "version": "Asteroids-B4.1-260414-1749",
+      "os_version": "4.1",
+      "committed_at": "2026-04-30T17:00:42.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.1 | Asteroids-B4.1-260414-1749 | b6b2b0fb2e8c"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "2670467a441baeadb76f84f4ae46266fcd62d970",
+      "version": "Asteroids-B4.0-260225-1824",
+      "os_version": "4.0",
+      "committed_at": "2026-04-28T17:02:01.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.0 | Asteroids-B4.0-260225-1824 | 2670467a441b"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "f155687681ceede963c87a33da23ae09a1681ed0",
+      "version": "Asteroids-B4.0-251229-2335",
+      "os_version": "4.0",
+      "committed_at": "2026-04-24T10:27:38.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.0 | Asteroids-B4.0-251229-2335 | f155687681ce"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "3fd80122a15b0858078ba0a59ad1d6a449e5e36b",
+      "version": "Asteroids-B4.0-251118-1551",
+      "os_version": "4.0",
+      "committed_at": "2026-03-15T18:51:01.000+08:00",
+      "label": "Nothing Phone (3a) | OS 4.0 | Asteroids-B4.0-251118-1551 | 3fd80122a15b"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "d5f5f965fd0b478eaf4eb63fd984c5a4a92135a7",
+      "version": "Asteroids-V3.2-251013-1406",
+      "os_version": "3.2",
+      "committed_at": "2025-11-11T14:11:24.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.2 | Asteroids-V3.2-251013-1406 | d5f5f965fd0b"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "9d5dede960f12b040a2555d3fc62404ea0f7f551",
+      "version": "Asteroids-V3.2-250924-1736",
+      "os_version": "3.2",
+      "committed_at": "2025-10-01T12:56:29.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.2 | Asteroids-V3.2-250924-1736 | 9d5dede960f1"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "f3fb9d6f341b99b46f1d169f99b9d281c30119de",
+      "version": "Asteroids-V3.2-250717-1803",
+      "os_version": "3.2",
+      "committed_at": "2025-08-04T17:38:05.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.2 | Asteroids-V3.2-250717-1803 | f3fb9d6f341b"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "c8fcfa7020afa7b76da72a863b8f989029759310",
+      "version": "Asteroids-V3.1-250610-1841",
+      "os_version": "3.1",
+      "committed_at": "2025-07-02T14:02:37.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250610-1841 | c8fcfa7020af"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "ec39cc636fc3bc2662c092e7772e7e1738df61e5",
+      "version": "Asteroids-V3.1-250529-1004",
+      "os_version": "3.1",
+      "committed_at": "2025-06-12T10:26:46.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250529-1004 | ec39cc636fc3"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "84bc3d7b784083af6fd47e8e87d8753c50ebc37e",
+      "version": "Asteroids-V3.1-250417-1222",
+      "os_version": "3.1",
+      "committed_at": "2025-05-21T21:49:28.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250417-1222 | 84bc3d7b7840"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "f2ab7c8fdd52bdc4eff3f35580c70e029f285753",
+      "version": "Asteroids-V3.1-250401-1916",
+      "os_version": "3.1",
+      "committed_at": "2025-04-15T16:16:11.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250401-1916 | f2ab7c8fdd52"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "d5ed13964edb9ec464c32c327bcef79f2887b837",
+      "version": "Asteroids-V3.1-250320-2319",
+      "os_version": "3.1",
+      "committed_at": "2025-04-15T16:11:17.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250320-2319 | d5ed13964edb"
+    },
+    {
+      "model": "phone-3a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "635de46a8386bdb80af9a4f89abf5e054770c799",
+      "version": "Asteroids-V3.1-250302-1856",
+      "os_version": "3.1",
+      "committed_at": "2025-03-21T16:40:27.000+08:00",
+      "label": "Nothing Phone (3a) | OS 3.1 | Asteroids-V3.1-250302-1856 | 635de46a8386"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "cf8c976798d9db432d413493543bdd9a73c517b2",
+      "version": "Asteroids-B4.1-260928-1204",
+      "os_version": "4.1",
+      "committed_at": "2026-10-14T10:08:10.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260928-1204 | cf8c976798d9"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "13c3e315ae1b159d420322edd55db5f236931a44",
+      "version": "Asteroids-B4.1-260810-1153",
+      "os_version": "4.1",
+      "committed_at": "2026-08-27T21:53:57.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260810-1153 | 13c3e315ae1b"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "11562380ec6c9a8ddf4f8185b2e9ad362606c5fa",
+      "version": "Asteroids-B4.1-260618-1048",
+      "os_version": "4.1",
+      "committed_at": "2026-08-12T18:49:50.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260618-1048 | 11562380ec6c"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "b6b2b0fb2e8c0abdfa1e60246ac1a8f4ddc44d22",
+      "version": "Asteroids-B4.1-260414-1749",
+      "os_version": "4.1",
+      "committed_at": "2026-04-30T17:00:42.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.1 | Asteroids-B4.1-260414-1749 | b6b2b0fb2e8c"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "2670467a441baeadb76f84f4ae46266fcd62d970",
+      "version": "Asteroids-B4.0-260225-1824",
+      "os_version": "4.0",
+      "committed_at": "2026-04-28T17:02:01.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.0 | Asteroids-B4.0-260225-1824 | 2670467a441b"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "f155687681ceede963c87a33da23ae09a1681ed0",
+      "version": "Asteroids-B4.0-251229-2335",
+      "os_version": "4.0",
+      "committed_at": "2026-04-24T10:27:38.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.0 | Asteroids-B4.0-251229-2335 | f155687681ce"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr",
+      "sha": "3fd80122a15b0858078ba0a59ad1d6a449e5e36b",
+      "version": "Asteroids-B4.0-251118-1551",
+      "os_version": "4.0",
+      "committed_at": "2026-03-15T18:51:01.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 4.0 | Asteroids-B4.0-251118-1551 | 3fd80122a15b"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "d5f5f965fd0b478eaf4eb63fd984c5a4a92135a7",
+      "version": "Asteroids-V3.2-251013-1406",
+      "os_version": "3.2",
+      "committed_at": "2025-11-11T14:11:24.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.2 | Asteroids-V3.2-251013-1406 | d5f5f965fd0b"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "9d5dede960f12b040a2555d3fc62404ea0f7f551",
+      "version": "Asteroids-V3.2-250924-1736",
+      "os_version": "3.2",
+      "committed_at": "2025-10-01T12:56:29.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.2 | Asteroids-V3.2-250924-1736 | 9d5dede960f1"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "f3fb9d6f341b99b46f1d169f99b9d281c30119de",
+      "version": "Asteroids-V3.2-250717-1803",
+      "os_version": "3.2",
+      "committed_at": "2025-08-04T17:38:05.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.2 | Asteroids-V3.2-250717-1803 | f3fb9d6f341b"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "c8fcfa7020afa7b76da72a863b8f989029759310",
+      "version": "Asteroids-V3.1-250610-1841",
+      "os_version": "3.1",
+      "committed_at": "2025-07-02T14:02:37.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250610-1841 | c8fcfa7020af"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "ec39cc636fc3bc2662c092e7772e7e1738df61e5",
+      "version": "Asteroids-V3.1-250529-1004",
+      "os_version": "3.1",
+      "committed_at": "2025-06-12T10:26:46.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250529-1004 | ec39cc636fc3"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "84bc3d7b784083af6fd47e8e87d8753c50ebc37e",
+      "version": "Asteroids-V3.1-250417-1222",
+      "os_version": "3.1",
+      "committed_at": "2025-05-21T21:49:28.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250417-1222 | 84bc3d7b7840"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "f2ab7c8fdd52bdc4eff3f35580c70e029f285753",
+      "version": "Asteroids-V3.1-250401-1916",
+      "os_version": "3.1",
+      "committed_at": "2025-04-15T16:16:11.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250401-1916 | f2ab7c8fdd52"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "d5ed13964edb9ec464c32c327bcef79f2887b837",
+      "version": "Asteroids-V3.1-250320-2319",
+      "os_version": "3.1",
+      "committed_at": "2025-04-15T16:11:17.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250320-2319 | d5ed13964edb"
+    },
+    {
+      "model": "phone-3a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/v/mr",
+      "sha": "635de46a8386bdb80af9a4f89abf5e054770c799",
+      "version": "Asteroids-V3.1-250302-1856",
+      "os_version": "3.1",
+      "committed_at": "2025-03-21T16:40:27.000+08:00",
+      "label": "Nothing Phone (3a) Pro | OS 3.1 | Asteroids-V3.1-250302-1856 | 635de46a8386"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "5f6161492828015935da9f041ca1b968fc00c88f",
+      "version": "Metroid-B4.1-260814-1733",
+      "os_version": "4.1",
+      "committed_at": "2026-08-31T18:11:02.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260814-1733 | 5f6161492828"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "b2381b5e146c4e50dd5871d3254c83e2af227614",
+      "version": "Metroid-B4.1-260624-1457",
+      "os_version": "4.1",
+      "committed_at": "2026-08-12T14:59:24.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260624-1457 | b2381b5e146c"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "5f0c40321921ab4abbf245a0f0fce296a5faddec",
+      "version": "Metroid-B4.1-260603-1221",
+      "os_version": "4.1",
+      "committed_at": "2026-08-12T14:34:10.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260603-1221 | 5f0c40321921"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "f77c201583fb9b631e6b7ced037daa2b329dd7fe",
+      "version": "Metroid-B4.1-260414-1846",
+      "os_version": "4.1",
+      "committed_at": "2026-05-07T20:32:14.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.1 | Metroid-B4.1-260414-1846 | f77c201583fb"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "84d2c2bda87df8aea703898bcda3520198e078c1",
+      "version": "Metroid-B4.0-260206-1135",
+      "os_version": "4.0",
+      "committed_at": "2026-03-24T18:13:59.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.0 | Metroid-B4.0-260206-1135 | 84d2c2bda87d"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "d45428f469da495583fb24c06662d3a25ab38c31",
+      "version": "Metroid-B4.0-251224-1229",
+      "os_version": "4.0",
+      "committed_at": "2026-03-23T19:02:57.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.0 | Metroid-B4.0-251224-1229 | d45428f469da"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/b/mr",
+      "sha": "0089471b3751caee7eb34cdfe24a3b08554c0718",
+      "version": "Metroid-B4.0-251117-1909",
+      "os_version": "4.0",
+      "committed_at": "2026-03-19T16:15:59.000+08:00",
+      "label": "Nothing Phone (3) | OS 4.0 | Metroid-B4.0-251117-1909 | 0089471b3751"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "031e8669eb198d93e69532b01af973a1c2a82710",
+      "version": "Metroid-V3.5-250923-1421",
+      "os_version": "3.5",
+      "committed_at": "2025-10-10T21:22:36.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250923-1421 | 031e8669eb19"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "5531712a747be8b29ecc52bb166575fc704adeeb",
+      "version": "Metroid-V3.5-250911-2112",
+      "os_version": "3.5",
+      "committed_at": "2025-10-09T19:18:27.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250911-2112 | 5531712a747b"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "31cbe1637106fadd2ff9529356d56a1c16a60ef0",
+      "version": "Metroid-V3.5-250829_1700",
+      "os_version": "3.5",
+      "committed_at": "2025-10-09T17:53:40.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250829_1700 | 31cbe1637106"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "daf87869f4db729a22b92ba7d7db3bd89d376291",
+      "version": "Metroid-V3.5-250808_1022",
+      "os_version": "3.5",
+      "committed_at": "2025-08-18T18:37:23.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250808_1022 | daf87869f4db"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "7e659b6c5b03053036a4cdafd544c3cd8717e6bb",
+      "version": "Metroid-V3.5-250801-1847",
+      "os_version": "3.5",
+      "committed_at": "2025-08-18T17:53:14.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250801-1847 | 7e659b6c5b03"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "a9351e106b97c12570194b2bf8bfe853f1e2fbfd",
+      "version": "Metroid-V3.5-250719-1646",
+      "os_version": "3.5",
+      "committed_at": "2025-08-01T12:16:09.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250719-1646 | a9351e106b97"
+    },
+    {
+      "model": "phone-3",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm8735",
+      "branch": "sm8735/v/mr",
+      "sha": "a3a2224b21d4681c27ba8c749027cbf1c6e6e777",
+      "version": "Metroid-V3.5-250711-2047",
+      "os_version": "3.5",
+      "committed_at": "2025-07-22T10:24:37.000+08:00",
+      "label": "Nothing Phone (3) | OS 3.5 | Metroid-V3.5-250711-2047 | a3a2224b21d4"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/16b",
+      "sha": "cd14396e7fd755bed79b8683ac6a2636137cb29a",
+      "version": "Tetris-B4.1-260812-1726",
+      "os_version": "4.1",
+      "committed_at": "2026-08-28T13:04:16.000+08:00",
+      "label": "CMF Phone (1) | OS 4.1 | Tetris-B4.1-260812-1726 | cd14396e7fd7"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/16b",
+      "sha": "088517d30b9c41553f20f70f4810a5a3d19a48eb",
+      "version": "Tetris-B4.1-260615-1652",
+      "os_version": "4.1",
+      "committed_at": "2026-08-07T18:35:33.000+08:00",
+      "label": "CMF Phone (1) | OS 4.1 | Tetris-B4.1-260615-1652 | 088517d30b9c"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/16b",
+      "sha": "b658c50271f719e57effc9a95b419eb688eed99a",
+      "version": "Tetris-B4.1-260415-1709",
+      "os_version": "4.1",
+      "committed_at": "2026-05-30T08:58:45.000+08:00",
+      "label": "CMF Phone (1) | OS 4.1 | Tetris-B4.1-260415-1709 | b658c50271f7"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/16b",
+      "sha": "8a392bfa94bc9b09256de453d3c1411c005fdc20",
+      "version": "Tetris-B4.0-260225-1904",
+      "os_version": "4.0",
+      "committed_at": "2026-03-16T11:03:45.000+08:00",
+      "label": "CMF Phone (1) | OS 4.0 | Tetris-B4.0-260225-1904 | 8a392bfa94bc"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/16b",
+      "sha": "480694b5110c3132a76ccde83a4d91eddafa3b76",
+      "version": "Tetris-B4.0-260108-1653",
+      "os_version": "4.0",
+      "committed_at": "2026-01-22T13:12:26.000+08:00",
+      "label": "CMF Phone (1) | OS 4.0 | Tetris-B4.0-260108-1653 | 480694b5110c"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/v",
+      "sha": "ed33ff7586887970671c0c5ae8883810e1e4fc29",
+      "version": "Tetris-V3.2-250723-1800",
+      "os_version": "3.2",
+      "committed_at": "2025-08-27T10:38:18.000+08:00",
+      "label": "CMF Phone (1) | OS 3.2 | Tetris-V3.2-250723-1800 | ed33ff758688"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/v",
+      "sha": "56473a53e3356bd68e496a03c8be8fdf511f52c7",
+      "version": "Tetris-V3.2-250609-2111",
+      "os_version": "3.2",
+      "committed_at": "2025-08-27T10:37:43.000+08:00",
+      "label": "CMF Phone (1) | OS 3.2 | Tetris-V3.2-250609-2111 | 56473a53e335"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/v",
+      "sha": "a2edd1deddbb1f356411d6acdbcff766330f3e9d",
+      "version": "Tetris-V3.0-250409-1734",
+      "os_version": "3.0",
+      "committed_at": "2025-05-26T09:02:19.000+08:00",
+      "label": "CMF Phone (1) | OS 3.0 | Tetris-V3.0-250409-1734 | a2edd1deddbb"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/v",
+      "sha": "ac4cc3f55e08cb620c3377cf9fd2ff8ced70c8c4",
+      "version": "Tetris-V3.0-250208-2015",
+      "os_version": "3.0",
+      "committed_at": "2025-05-26T09:01:45.000+08:00",
+      "label": "CMF Phone (1) | OS 3.0 | Tetris-V3.0-250208-2015 | ac4cc3f55e08"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/v",
+      "sha": "c9266147b3e014ad374e0f9056fe083f4e95cf4e",
+      "version": "Tetris-V3.0-250111-2249",
+      "os_version": "3.0",
+      "committed_at": "2025-05-16T09:49:55.000+08:00",
+      "label": "CMF Phone (1) | OS 3.0 | Tetris-V3.0-250111-2249 | c9266147b3e0"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "684dad5a69669584e0bd60907ea63d18892b02d7",
+      "version": "2.6.0",
+      "os_version": "2.6.0",
+      "committed_at": "2024-07-18T16:09:27.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6.0 | 2.6.0 | 684dad5a6966"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "d6343dbbb3eaeaf4a2a52d6ef6a30501a09ea464",
+      "version": "Tetris-U2.6-241204-2338",
+      "os_version": "2.6",
+      "committed_at": "2025-01-10T08:48:04.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6 | Tetris-U2.6-241204-2338 | d6343dbbb3ea"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "d6343dbbb3eaeaf4a2a52d6ef6a30501a09ea464",
+      "version": "Tetris-U2.6-241021-2030",
+      "os_version": "2.6",
+      "committed_at": "2025-01-10T08:48:04.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6 | Tetris-U2.6-241021-2030 | d6343dbbb3ea"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "560064cb3c90a2b1b20610414e0d10537c1b8f3a",
+      "version": "Tetris-U2.6-240910-1735",
+      "os_version": "2.6",
+      "committed_at": "2025-01-10T08:47:47.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6 | Tetris-U2.6-240910-1735 | 560064cb3c90"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "079372f4fd81789226d629e1e5225266a339bbcc",
+      "version": "Tetris-U2.6-240813-2046",
+      "os_version": "2.6",
+      "committed_at": "2024-08-26T10:13:52.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6 | Tetris-U2.6-240813-2046 | 079372f4fd81"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "c333ed7bad0ef1d38ef9ed216071ca0874b4cf89",
+      "version": "Tetris-U2.6-240729-1047",
+      "os_version": "2.6",
+      "committed_at": "2024-08-06T10:23:55.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6 | Tetris-U2.6-240729-1047 | c333ed7bad0e"
+    },
+    {
+      "model": "cmf-phone-1",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Tetris/u",
+      "sha": "d94d4fd444df1e643b77833094e9d4c9da9b8c77",
+      "version": "Tetris-U2.6-240702-2200",
+      "os_version": "2.6",
+      "committed_at": "2024-07-26T09:24:18.000+08:00",
+      "label": "CMF Phone (1) | OS 2.6 | Tetris-U2.6-240702-2200 | d94d4fd444df"
+    },
+    {
+      "model": "phone-4a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr_Frogger",
+      "sha": "1f8b17e7b90ecaac2a717ff95be98fe1cb1ad61a",
+      "version": "Frogger-B4.1-260808-1352",
+      "os_version": "4.1",
+      "committed_at": "2026-08-28T14:14:46.000+08:00",
+      "label": "Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260808-1352 | 1f8b17e7b90e"
+    },
+    {
+      "model": "phone-4a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr_Frogger",
+      "sha": "97cb5096ddc18d6ce8f14de7c87325549e399877",
+      "version": "Frogger-B4.1-260630-1839",
+      "os_version": "4.1",
+      "committed_at": "2026-08-04T12:43:37.000+08:00",
+      "label": "Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260630-1839 | 97cb5096ddc1"
+    },
+    {
+      "model": "phone-4a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr_Frogger",
+      "sha": "cd9c0f461a28f043c39c04c3afa692b5d1d4a15d",
+      "version": "Frogger-B4.1-260430-1731",
+      "os_version": "4.1",
+      "committed_at": "2026-06-23T11:40:21.000+08:00",
+      "label": "Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260430-1731 | cd9c0f461a28"
+    },
+    {
+      "model": "phone-4a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr_Frogger",
+      "sha": "857741777e27a9764e91ca374bcfa685f9ca3c34",
+      "version": "Frogger-B4.1-260402-1229",
+      "os_version": "4.1",
+      "committed_at": "2026-05-08T15:06:24.000+08:00",
+      "label": "Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260402-1229 | 857741777e27"
+    },
+    {
+      "model": "phone-4a",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm7635",
+      "branch": "sm7635/b/mr_Frogger",
+      "sha": "b039f2496843dd9011c164552fdac816244ff71d",
+      "version": "Frogger-B4.1-260309-1830",
+      "os_version": "4.1",
+      "committed_at": "2026-03-18T16:00:24.000+08:00",
+      "label": "Nothing Phone (4a) | OS 4.1 | Frogger-B4.1-260309-1830 | b039f2496843"
+    },
+    {
+      "model": "phone-4a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm7750",
+      "branch": "sm7750/b/FroggerPro",
+      "sha": "5987ea9202be26dee3ccb6d68db61a8fed5c3c5d",
+      "version": "FroggerPro-B4.1-260907-1153",
+      "os_version": "4.1",
+      "committed_at": "2026-09-29T15:21:56.000+08:00",
+      "label": "Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260907-1153 | 5987ea9202be"
+    },
+    {
+      "model": "phone-4a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm7750",
+      "branch": "sm7750/b/FroggerPro",
+      "sha": "62e8c603d9dac31eed2a5e7085d559c30c179358",
+      "version": "FroggerPro-B4.1-260723-1820",
+      "os_version": "4.1",
+      "committed_at": "2026-08-13T10:06:38.000+08:00",
+      "label": "Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260723-1820 | 62e8c603d9da"
+    },
+    {
+      "model": "phone-4a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm7750",
+      "branch": "sm7750/b/FroggerPro",
+      "sha": "40c25ad9d88cde59a82681096c13329d079142fa",
+      "version": "FroggerPro-B4.1-260522-1414",
+      "os_version": "4.1",
+      "committed_at": "2026-06-23T09:56:46.000+08:00",
+      "label": "Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260522-1414 | 40c25ad9d88c"
+    },
+    {
+      "model": "phone-4a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm7750",
+      "branch": "sm7750/b/FroggerPro",
+      "sha": "a1e19cd1e69ffc44642e6f4d0a55c357699fcb39",
+      "version": "FroggerPro-B4.1-260424-1447",
+      "os_version": "4.1",
+      "committed_at": "2026-06-23T09:55:11.000+08:00",
+      "label": "Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260424-1447 | a1e19cd1e69f"
+    },
+    {
+      "model": "phone-4a-pro",
+      "repository": "NothingOSS/android_kernel_msm-6.6_nothing_sm7750",
+      "branch": "sm7750/b/FroggerPro",
+      "sha": "45f9164412a9516fe0dda7f9ba0d19779e729710",
+      "version": "FroggerPro-B4.1-260323-1635",
+      "os_version": "4.1",
+      "committed_at": "2026-05-08T15:00:07.000+08:00",
+      "label": "Nothing Phone (4a) Pro | OS 4.1 | FroggerPro-B4.1-260323-1635 | 45f9164412a9"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/16b",
+      "sha": "c60af28d4da857e628f6875b239e893786d79baa",
+      "version": "Galaga-B4.1-260812-1729",
+      "os_version": "4.1",
+      "committed_at": "2026-08-28T13:01:40.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 4.1 | Galaga-B4.1-260812-1729 | c60af28d4da8"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/16b",
+      "sha": "8bf9f1e1d2f7ee79e7dd4510543103d64f498c45",
+      "version": "Galaga-B4.1-260615-1653",
+      "os_version": "4.1",
+      "committed_at": "2026-08-07T18:40:16.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 4.1 | Galaga-B4.1-260615-1653 | 8bf9f1e1d2f7"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/16b",
+      "sha": "6bed54e9d8b14850bb867ccba6607329cd6eaa06",
+      "version": "Galaga-B4.1-260415-1710",
+      "os_version": "4.1",
+      "committed_at": "2026-05-30T08:54:55.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 4.1 | Galaga-B4.1-260415-1710 | 6bed54e9d8b1"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/16b",
+      "sha": "fa043d713cff35bbb58fbafcf228267b79b1110d",
+      "version": "Galaga-B4.0-260226-1122",
+      "os_version": "4.0",
+      "committed_at": "2026-03-16T11:27:18.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 4.0 | Galaga-B4.0-260226-1122 | fa043d713cff"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/16b",
+      "sha": "db23649bbf71f6d0fe7f83c9129f9b2ce2edae71",
+      "version": "Galaga-B4.0-260108-1654",
+      "os_version": "4.0",
+      "committed_at": "2026-01-22T14:32:20.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 4.0 | Galaga-B4.0-260108-1654 | db23649bbf71"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/v",
+      "sha": "58a876342adbf703768e7dcd4c461ae5f984d296",
+      "version": "Galaga-V3.2-250903-2153",
+      "os_version": "3.2",
+      "committed_at": "2025-10-01T14:53:09.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250903-2153 | 58a876342adb"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/v",
+      "sha": "e3137840588530bbc0528588cdb68d139cbd4f72",
+      "version": "Galaga-V3.2-250715-1813",
+      "os_version": "3.2",
+      "committed_at": "2025-08-27T10:29:16.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250715-1813 | e31378405885"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/v",
+      "sha": "5308fd367683aa0b5904c53a76a2b971c99875de",
+      "version": "Galaga-V3.2-250616-1258",
+      "os_version": "3.2",
+      "committed_at": "2025-07-07T14:12:26.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250616-1258 | 5308fd367683"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/v",
+      "sha": "2a5b1416182f2638139342c3c74396a1446297d1",
+      "version": "Galaga-V3.2-250605-1102",
+      "os_version": "3.2",
+      "committed_at": "2025-07-07T14:12:03.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250605-1102 | 2a5b1416182f"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/v",
+      "sha": "3b77fb9c30629085661df8e3bbc357a31144ed27",
+      "version": "Galaga-V3.2-250526-1427",
+      "os_version": "3.2",
+      "committed_at": "2025-07-07T14:11:35.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250526-1427 | 3b77fb9c3062"
+    },
+    {
+      "model": "cmf-phone-2-pro",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaga/v",
+      "sha": "26887fbce6418cd31ac1b3488d9c44e3860a196a",
+      "version": "Galaga-V3.2-250425-1517",
+      "os_version": "3.2",
+      "committed_at": "2025-05-06T11:45:52.000+08:00",
+      "label": "CMF Phone (2) Pro | OS 3.2 | Galaga-V3.2-250425-1517 | 26887fbce641"
+    },
+    {
+      "model": "phone-3a-lite",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaxian/16b",
+      "sha": "a92e11aaa8fc70736f1187dc0d695645271a30ea",
+      "version": "Galaxian-B4.1-260819-1839",
+      "os_version": "4.1",
+      "committed_at": "2026-09-11T14:49:19.000+08:00",
+      "label": "Nothing Phone (3a) Lite | OS 4.1 | Galaxian-B4.1-260819-1839 | a92e11aaa8fc"
+    },
+    {
+      "model": "phone-3a-lite",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaxian/16b",
+      "sha": "7e0a04b72387900f952612a8b6f40d5f5a37fe63",
+      "version": "Galaxian-B4.1-260508-1508",
+      "os_version": "4.1",
+      "committed_at": "2026-06-29T09:53:07.000+08:00",
+      "label": "Nothing Phone (3a) Lite | OS 4.1 | Galaxian-B4.1-260508-1508 | 7e0a04b72387"
+    },
+    {
+      "model": "phone-3a-lite",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaxian/16b",
+      "sha": "8be25db93cca62585bf3da20ae7f1ebced072eb8",
+      "version": "4.1",
+      "os_version": "4.1",
+      "committed_at": "2026-08-11T12:46:55.000+08:00",
+      "label": "Nothing Phone (3a) Lite | OS 4.1 | 4.1 | 8be25db93cca"
+    },
+    {
+      "model": "phone-3a-lite",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaxian/16b",
+      "sha": "f78c4de16d49b4ea83022172a757ee5c6fa18991",
+      "version": "Galaxian-B4.0-260303-1710",
+      "os_version": "4.0",
+      "committed_at": "2026-05-30T09:02:18.000+08:00",
+      "label": "Nothing Phone (3a) Lite | OS 4.0 | Galaxian-B4.0-260303-1710 | f78c4de16d49"
+    },
+    {
+      "model": "phone-3a-lite",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaxian/16b",
+      "sha": "f8a88925341508a16c213b79809be72ddd5214c0",
+      "version": "Galaxian-B4.0-260116-1904",
+      "os_version": "4.0",
+      "committed_at": "2026-02-03T14:24:16.000+08:00",
+      "label": "Nothing Phone (3a) Lite | OS 4.0 | Galaxian-B4.0-260116-1904 | f8a889253415"
+    },
+    {
+      "model": "phone-3a-lite",
+      "repository": "NothingOSS/android_kernel_6.1_nothing_mt6878",
+      "branch": "mt6878/Galaxian/v",
+      "sha": "856c7d86fdfcb4ff79abe486d034f43b0fa3c528",
+      "version": "Galaxian-V3.5-251029-1642",
+      "os_version": "3.5",
+      "committed_at": "2025-11-19T16:55:10.000+08:00",
+      "label": "Nothing Phone (3a) Lite | OS 3.5 | Galaxian-V3.5-251029-1642 | 856c7d86fdfc"
+    },
+    {
+      "model": "phone-4b",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm6650",
+      "branch": "sm6650/b/SuperContra",
+      "sha": "fae8691a386f670b8b6a00fc55d3b9bfddf6945a",
+      "version": "SuperContra-B4.1-260904-1739",
+      "os_version": "4.1",
+      "committed_at": "2026-09-29T15:04:30.000+08:00",
+      "label": "Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260904-1739 | fae8691a386f"
+    },
+    {
+      "model": "phone-4b",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm6650",
+      "branch": "sm6650/b/SuperContra",
+      "sha": "869bf830627195a5bb579a58fbe7b79a091d8500",
+      "version": "SuperContra-B4.1-260811-1606",
+      "os_version": "4.1",
+      "committed_at": "2026-08-28T14:11:26.000+08:00",
+      "label": "Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260811-1606 | 869bf8306271"
+    },
+    {
+      "model": "phone-4b",
+      "repository": "NothingOSS/android_kernel_msm-6.1_nothing_sm6650",
+      "branch": "sm6650/b/SuperContra",
+      "sha": "f58e3b16af3666e618a9094a44307ae040fdbf42",
+      "version": "SuperContra-B4.1-260703-1843",
+      "os_version": "4.1",
+      "committed_at": "2026-07-31T10:35:43.000+08:00",
+      "label": "Nothing Phone (4b) | OS 4.1 | SuperContra-B4.1-260703-1843 | f58e3b16af36"
+    }
+  ],
+  "updated_at": "2026-10-19T06:20:25+00:00"
+}
