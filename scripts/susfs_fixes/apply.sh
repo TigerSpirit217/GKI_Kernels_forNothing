@@ -220,6 +220,13 @@ fi
 
 patch -p1 < "$SUSFS_PATCH" || true
 
+# SukiSU builtin 使用自身的策略更新逻辑，SUSFS access 查询会暴露递增后的序号。
+# 在应用侧响应中与 SukiSU main 的 avd.seqno=1 保持一致。
+if [[ "$KSU_VARIANT" == "SukiSU" && "$ANDROID_VERSION" == "android12" && "$KERNEL_VERSION" == "5.10" ]]; then
+  echo "统一 SukiSU SUSFS access 响应的策略序号"
+  patch --batch --forward --fuzz=0 -p1 < "$GITHUB_WORKSPACE/scripts/susfs_fixes/sukisu_access_seqno.patch"
+fi
+
 # 为尚未提供 SU 会话 FD 接口的 SukiSU/BakaSU 恢复旧版 exec hook 行为
 EXEC_HELPER=""
 if [[ "$KSU_VARIANT" == SukiSU* || "$KSU_VARIANT" == "BakaSU" ]]; then
